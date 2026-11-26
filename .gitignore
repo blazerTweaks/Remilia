@@ -1,0 +1,33 @@
+# Upstream downloads and prepared trees (fetched by scripts, never committed)
+/work/
+*.source.tar.xz
+*.source.tar.xz.asc
+firefox-*/
+librewolf-*/
+obj-*/
+
+# Build outputs
+*.mar
+*.exe
+*.zip
+*.msix
+
+# Never commit signing material
+*.pem
+*.key
+*.p12
+*.pfx
+signing/
+
+# Python bytecode
+__pycache__/
+
+# Packaged build artifacts (scripts/package.sh)
+/dist/
+
+# Claude Code local scheduler state
+.claude/scheduled_tasks.lock
+
+# Maintainer-only documents: kept locally, never published
+/docs/decisions/
+/docs/research/

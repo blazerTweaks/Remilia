@@ -1,0 +1,6 @@
+# Scripts and pins are read by bash inside Linux containers: keep LF endings
+# even on Windows checkouts with core.autocrlf.
+*.sh        text eol=lf
+*.env       text eol=lf
+*.Dockerfile text eol=lf
+*.py        text eol=lf

@@ -1,0 +1,6 @@
+[
+  { "code": "en", "name": "English", "canonical": true },
+  { "code": "pt-BR", "name": "Português (Brasil)" },
+  { "code": "ja", "name": "日本語" },
+  { "code": "es", "name": "Español" }
+]
