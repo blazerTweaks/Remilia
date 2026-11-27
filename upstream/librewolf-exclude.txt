@@ -1,0 +1,27 @@
+# LibreWolf patches that REMILIA does not apply (upstream category,
+# ARCHITECTURE.md §10).
+#
+# One entry per line: the patch path exactly as it appears in LibreWolf's
+# assets/patches.txt, then one or more spaces or tabs, then the reason:
+#
+#   patches/example.patch Not used by REMILIA because the feature is not shipped
+#
+# scripts/remilia_layers.py checks every entry (V0 check and prepare.sh):
+#   - the path has the form patches/<name>.patch (letters, digits and . _ / + -),
+#     appears exactly once in patches.txt and only once in this list;
+#   - the reason is required: 10 to 200 characters after outer spaces are
+#     removed, no commas, no control or line-break characters, no reference to
+#     internal/. The reason is public: it is copied into REMILIA-PROVENANCE.txt,
+#     which ships with the package;
+#   - a line in the old format, with a decision identifier instead of a
+#     reason, is refused with a message that shows the current format.
+# Blank lines are ignored. Comment lines start with "#", optionally after
+# spaces or tabs.
+#
+# prepare.sh removes the listed lines from patches.txt before running
+# LibreWolf's patch.sh. An entry that is not in patches.txt (for example after
+# a LibreWolf update renamed the patch) stops the preparation.
+# Only patches.txt entries can be excluded; the other steps of patch.sh
+# (copies, sed edits) always run. REMILIA_LAYERS=none ignores this list.
+#
+# No exclusions in LibreWolf 161.0-1.
