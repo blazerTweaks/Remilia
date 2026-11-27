@@ -1,0 +1,2 @@
+# V1 test only: exclude one LibreWolf patch that no other patch depends on.
+patches/msix.patch fixture: MSIX packaging is not used and no other patch depends on it (V1 test only)

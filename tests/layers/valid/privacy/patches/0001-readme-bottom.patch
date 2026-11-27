@@ -1,0 +1,12 @@
+Category: privacy
+Summary: fixture: append a line to README.md
+
+TEST FIXTURE (tests/layers/README.md). Never applied to the baseline tree, never packaged.
+
+--- a/README.md
++++ b/README.md
+@@ -16,3 +16,4 @@
+ If you have a question about developing Firefox, and can't find the solution
+ on [Firefox Source Docs](https://firefox-source-docs.mozilla.org/), you can try asking your question on Matrix at
+ chat.mozilla.org in the [Introduction channel](https://chat.mozilla.org/#/room/#introduction:mozilla.org).
++REMILIA fixture (privacy 0001): line appended at the end.

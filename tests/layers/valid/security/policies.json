@@ -1,0 +1,9 @@
+{
+    "policies": {
+        "ExtensionSettings": {
+            "fixture-security@remilia.invalid": {
+                "installation_mode": "blocked"
+            }
+        }
+    }
+}

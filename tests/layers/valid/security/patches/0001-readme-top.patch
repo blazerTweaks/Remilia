@@ -1,0 +1,13 @@
+Category: security
+Summary: fixture: insert a line near the top of README.md
+
+TEST FIXTURE (tests/layers/README.md). Never applied to the baseline tree, never packaged.
+
+--- a/README.md
++++ b/README.md
+@@ -1,4 +1,5 @@
+ ![Firefox Browser](./docs/readme/readme-banner.svg)
++REMILIA fixture (security 0001): line inserted near the top.
+ 
+ [Firefox](https://firefox.com/) is a fast, reliable and private web browser from the non-profit [Mozilla organization](https://mozilla.org/).
+ 

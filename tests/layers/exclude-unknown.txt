@@ -1,0 +1,2 @@
+# V1 test only: an entry that is not in patches.txt must stop the preparation.
+patches/does-not-exist.patch fixture: an exclusion that is not in patches.txt must stop the preparation

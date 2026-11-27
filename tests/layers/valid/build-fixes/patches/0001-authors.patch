@@ -1,0 +1,11 @@
+Category: build-fixes
+Summary: fixture: append a line to AUTHORS
+
+TEST FIXTURE (tests/layers/README.md). Never applied to the baseline tree, never packaged.
+
+--- a/AUTHORS
++++ b/AUTHORS
+@@ -1,2 +1,3 @@
+ For a full list of the people who are credited with making a
+ contribution to Mozilla, see https://www.mozilla.org/credits/ .
++REMILIA fixture (build-fixes 0001).
