@@ -3,6 +3,12 @@
 source "$(dirname "$0")/lib.sh"
 objdir="$SRC/obj-$MOZ_TARGET"
 [ -d "$objdir/dist/bin" ] || die "run build.sh first"
+# Test fixtures (tests/layers/) must never be packaged. prepare.sh already
+# refuses them outside staging trees; this re-checks the provenance record.
+prov="$SRC/REMILIA-PROVENANCE.txt"
+if grep -q '^Layer root:' "$prov" && ! grep -qx 'Layer root:  remilia' "$prov"; then
+  die "$prov records a layer root other than remilia/; refusing to package"
+fi
 
 log "mach package"
 (cd "$SRC" && ./mach package)
