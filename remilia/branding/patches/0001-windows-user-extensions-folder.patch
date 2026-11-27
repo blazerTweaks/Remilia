@@ -1,0 +1,27 @@
+Category: branding
+Summary: per-user system extensions folder on Windows is %APPDATA%\Remilia\Extensions, not LibreWolf's
+
+Purpose: LibreWolf's mozilla-dirs.patch hard-codes "LibreWolf" as the parent
+of the per-user system extensions folder (AppendSysUserExtensionPath). On
+Windows that is %APPDATA%\LibreWolf\Extensions, so extensions that other
+software installs there for LibreWolf would also be loaded by Remilia.
+Files: toolkit/xre/nsXREDirProvider.cpp (XP_MACOSX || XP_WIN branch; the
+string is shared with macOS, which Remilia does not target). The Unix branch
+(".librewolf") is not changed: Linux is not a Remilia target.
+Not changed on purpose: the macOS update root (XP_MACOSX branch of
+GetUpdateRootDir); on Windows the update root comes from the install path.
+Prefs touched: none.
+Upstreamable: no (Remilia identity).
+Reverting: Remilia uses %APPDATA%\LibreWolf\Extensions again.
+
+--- a/toolkit/xre/nsXREDirProvider.cpp
++++ b/toolkit/xre/nsXREDirProvider.cpp
+@@ -1304,7 +1304,7 @@
+ 
+ #if defined(XP_MACOSX) || defined(XP_WIN)
+ 
+-  static const char* const sXR = "LibreWolf";
++  static const char* const sXR = "Remilia";
+   rv = aFile->AppendNative(nsDependentCString(sXR));
+   NS_ENSURE_SUCCESS(rv, rv);
+ 
