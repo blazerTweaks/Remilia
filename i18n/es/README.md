@@ -7,7 +7,7 @@
 > - **Language:** es
 > - **Original language:** English
 > - **Source:** [README.md](../../README.md)
-> - **Source revision:** sha256:a74aed18217bab524644cac5ce8630516f6196b0719a7a2359127c72693b71fa
+> - **Source revision:** sha256:7d3436fb918ba4e9b83dc34ed449cb27a527d7757e695ceeb03668a563859353
 <!-- /i18n:meta -->
 
 # REMILIA Browser
@@ -16,9 +16,12 @@
 construido sobre Firefox (Gecko) y LibreWolf, con una identidad propia inspirada
 en Remilia Scarlet.
 
-> **Estado: Fase 1 (investigación y arquitectura).** Todavía no existe ninguna
-> compilación de REMILIA. Nada de lo que aparece a continuación es una función
-> publicada. El progreso se registra en [ROADMAP.md](ROADMAP.md).
+> **Estado: en desarrollo.** La investigación está terminada y la
+> infraestructura de compilación existe, pero todavía no hay ninguna compilación
+> de REMILIA: la primera compilación completa está prevista para cuando la
+> imagen de marca, la seguridad y la privacidad estén integradas. Nada de lo que
+> aparece a continuación es una función publicada. El progreso se registra en
+> [ROADMAP.md](ROADMAP.md).
 
 ## Qué es REMILIA
 
@@ -59,6 +62,11 @@ REMILIA está construido sobre Mozilla Firefox (MPL-2.0) y LibreWolf (MPL-2.0), 
 incluye uBlock Origin (GPL-3.0, distribuido sin modificar). "Firefox" es una
 marca registrada de Mozilla y no se usa en el nombre ni en la imagen de marca de
 REMILIA.
+
+Los archivos originales propios de REMILIA están bajo la Mozilla Public License
+2.0 ([LICENSE](../../LICENSE)). Los archivos heredados de Firefox, LibreWolf y
+otros componentes de terceros conservan sus propias licencias y avisos, que
+REMILIA no modifica.
 
 Touhou Project y Remilia Scarlet son creaciones de ZUN / Team Shanghai Alice.
 REMILIA es un proyecto independiente inspirado por fans. No usa ninguna

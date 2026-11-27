@@ -14,8 +14,9 @@
    SECURITY.md, with the reason, in the same change.
 4. **Upstream first.** Prefer prefs, then policies, then file overlays, then
    source patches. See UPSTREAM.md.
-5. **No new dependencies or frameworks** without a concrete reason recorded in
-   an ADR. Browser UI uses Firefox's own front-end technologies.
+5. **No new dependencies or frameworks** without a concrete reason, stated in
+   the change and accepted by the maintainer. Browser UI uses Firefox's own
+   front-end technologies.
 6. **Never fabricate test results or benchmarks.** Record what was run, on which
    build and date, and what failed.
 
@@ -27,22 +28,41 @@
   category, `remilia/<category>/`. A patch goes in that category's `patches/`
   and `series`, with a header (category, purpose, files and prefs touched,
   upstreamable?, effect of reverting it). A change spanning two categories is
-  split into two.
-- Architecture-level choices get an architecture decision record (ADR):
-  Context, Decision, Consequences, Status.
+  split into two. The exact formats are in `remilia/README.md`.
+- A value that overrides LibreWolf gets an entry in the category's
+  `deviations.tsv` and its reason in PRIVACY.md or SECURITY.md.
+- Architecture-level choices are proposed to the maintainer before
+  implementation, with context, decision and consequences. Once adopted, their
+  effect is described in ARCHITECTURE.md.
 - Update ROADMAP.md when a task changes status.
 
 ## Verifying
 
-After any change that touches the build: a full build, then the smoke checklist in
-BUILD.md ("Verifying a build"). After a privacy-pref change: re-run the
-relevant tests in `tests/` and update results.
+Every change: the static checks (V0 in ROADMAP.md, "Validation strategy").
+Before a phase closes: the tree checks (V1).
+
+```sh
+python scripts/remilia_layers.py check        # V0: categories, duplicates, deviations
+python -m unittest discover -s tests/layers   # V0: tests of the category tool
+python -m unittest discover -s tests/validation  # V0: tests of the validation harness
+python i18n/i18n.py check                     # V0: documentation translations
+./scripts/docker.sh verify                    # V1: staging trees, no compilation
+```
+
+A full build is not required
+after each change; the first one comes when branding, security and privacy are
+integrated. If a change can only be validated by compiling, say why
+before starting the build.
 
 A successful build is not a working browser. Before calling any build
-functional, run the validation checklist (ROADMAP.md, Phase 2, step 3) and
-record the results in `tests/results/` (ADR 0005).
+functional, run the [validation checklist](ROADMAP.md#validation-checklist)
+and record the results in `internal/evidence/<date>-<build>/` (a local folder
+ignored by Git; validation records are never committed). Work that passed only
+V0 and V1 is `static-verified`, not `done`.
 
 ## Licensing
 
-Contributions touching Firefox or LibreWolf files are MPL-2.0. The licence for
-REMILIA-original files is pending (ROADMAP B5).
+REMILIA's own original files are MPL-2.0 ([LICENSE](LICENSE)).
+Contributions touching Firefox or LibreWolf files are MPL-2.0 as well. Files
+inherited from Firefox, LibreWolf and other third-party components keep their
+own licenses and notices; do not change them.

@@ -7,7 +7,7 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [CONTRIBUTING.md](../../CONTRIBUTING.md)
-> - **Source revision:** sha256:2264196e465502b70acd3022adfb1275a9317dc9a2ceca7b8788f556fea90b67
+> - **Source revision:** sha256:d2159a306b0c86d12c64fd3d5e3d306ebc924a3b7f6fa3b887e39d72b6f7e428
 <!-- /i18n:meta -->
 
 # Contribuindo com o REMILIA
@@ -24,8 +24,8 @@
    SECURITY.md, com o motivo, na mesma alteração.
 4. **Upstream primeiro.** Prefira prefs, depois políticas, depois sobreposição
    de arquivos, depois patches de código-fonte. Veja UPSTREAM.md.
-5. **Nenhuma nova dependência ou framework** sem um motivo concreto registrado
-   em um ADR. A interface do navegador usa as tecnologias de front-end do
+5. **Nenhuma nova dependência ou framework** sem um motivo concreto, explicado
+   na própria mudança e aceito pelo mantenedor. A interface do navegador usa as tecnologias de front-end do
    próprio Firefox.
 6. **Nunca invente resultados de testes ou benchmarks.** Registre o que foi
    executado, em qual build e em que data, e o que falhou.
@@ -39,23 +39,44 @@
   categoria, `remilia/<category>/`. Um patch vai para `patches/` e `series`
   dessa categoria, com um cabeçalho (categoria, propósito, arquivos e prefs
   afetados, se pode ir para o upstream, efeito de revertê-lo). Uma mudança que
-  abrange duas categorias é dividida em duas.
-- Escolhas de nível de arquitetura ganham um registro de decisão de arquitetura
-  (ADR): Contexto, Decisão, Consequências, Status.
+  abrange duas categorias é dividida em duas. Os formatos exatos estão em
+  `remilia/README.md`.
+- Um valor que sobrescreve o LibreWolf ganha uma entrada no `deviations.tsv`
+  da categoria e o seu motivo no PRIVACY.md ou no SECURITY.md.
+- Escolhas de nível de arquitetura são apresentadas ao mantenedor antes da
+  implementação, com contexto, decisão e consequências. Depois de adotadas, o
+  efeito delas é descrito no ARCHITECTURE.md.
 - Atualize o ROADMAP.md quando o status de uma tarefa mudar.
 
 ## Verificando
 
-Depois de qualquer mudança que afete a build: uma build completa e, em seguida,
-a checklist de testes de fumaça do BUILD.md ("Verificando uma build"). Depois de
-uma mudança em pref de privacidade: execute novamente os testes relevantes em
-`tests/` e atualize os resultados.
+A cada mudança: as verificações estáticas (V0 no ROADMAP.md, "Estratégia de
+validação"). Antes de uma fase ser encerrada: as verificações de árvore (V1).
+
+```sh
+python scripts/remilia_layers.py check        # V0: categories, duplicates, deviations
+python -m unittest discover -s tests/layers   # V0: tests of the category tool
+python -m unittest discover -s tests/validation  # V0: tests of the validation harness
+python i18n/i18n.py check                     # V0: documentation translations
+./scripts/docker.sh verify                    # V1: staging trees, no compilation
+```
+
+Não é preciso uma build completa depois de cada mudança; a primeira vem quando
+branding, segurança e privacidade estiverem integrados. Se uma
+mudança só puder ser validada compilando, explique o motivo antes de iniciar a
+build.
 
 Uma build bem-sucedida não é um navegador funcionando. Antes de chamar qualquer
-build de funcional, execute o checklist de validação (ROADMAP.md, Fase 2, etapa
-3) e registre os resultados em `tests/results/` (ADR 0005).
+build de funcional, execute o
+[checklist de validação](ROADMAP.md#checklist-de-validação) e registre os
+resultados em `internal/evidence/<date>-<build>/` (uma pasta local ignorada
+pelo Git; os registros de validação nunca entram em commits). Um trabalho
+aprovado apenas em V0 e
+V1 fica `static-verified`, não `done`.
 
 ## Licenciamento
 
-Contribuições que alteram arquivos do Firefox ou do LibreWolf são MPL-2.0. A
-licença dos arquivos originais do REMILIA está pendente (ROADMAP B5).
+Os arquivos originais do próprio REMILIA são MPL-2.0 ([LICENSE](../../LICENSE)).
+Contribuições que alteram arquivos do Firefox ou do LibreWolf também são
+MPL-2.0. Os arquivos herdados do Firefox, do LibreWolf e de outros componentes
+de terceiros mantêm suas próprias licenças e avisos; não os altere.

@@ -7,14 +7,17 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [BUILD.md](../../BUILD.md)
-> - **Source revision:** sha256:5532a997ca4ac008ffcc43b6011129078eac39ce1b873fea15db8e6ee4c0a3ff
+> - **Source revision:** sha256:adf617eee0385e53aee38f2f12b67f9a1d5dec7f1161d376d756d87546b218ce
 <!-- /i18n:meta -->
 
 # REMILIA のビルド
 
-ステータス：**まだビルドできません。** fetch／patch／build のスクリプトはフェーズ 2
-の作業です。このドキュメントでは、確認済みの要件と予定している手順を説明します。
-*(Phase 2)* と記載された手順は、まだ実行されていません。
+ステータス：**ビルド基盤は作成済みで一部を実証済み。最初のフルビルドは延期。**
+fetch、prepare、toolchains の各ステップは正常に完了しています。コンパイルの
+ステップは、無変更の LibreWolf 161.0-1 の統合 C++ ファイル 1145 個のうち 260 個まで
+進んだところで意図的に停止しました。最初のフルビルドは、ブランディング、セキュリティ、
+プライバシーが統合された時点で REMILIA に対して行います（ROADMAP のフェーズ 5）。
+*(Phase 5)* と記載された手順は、まだ完了していません。
 
 ## 要件
 
@@ -29,7 +32,8 @@ Mozilla の Windows 向けビルドガイド（`docs/setup/windows_build.md`、m
 
 リファレンスマシン（メンテナー）：Ryzen 5 3600（6C/12T）、32 GB RAM、
 Windows 10 Pro 19045、Docker Desktop（WSL2）、Visual Studio インストール済み。
-ビルド時間はフェーズ 2 の後にここに記録します。現時点では数値を示していません。
+ビルド時間は最初のフルビルド（フェーズ 5）の後にここに記録します。現時点では
+数値を示していません。
 
 ## 方法 A — Docker でのクロスコンパイル（リリース用として予定）
 
@@ -38,13 +42,16 @@ LibreWolf が公開している Windows バイナリのビルド方法（`bsys6`
 ターゲット付きの Rust、Mozilla の `taskcluster/scripts/misc/get_vs.py` で取得する
 Windows SDK、Wine（`widl`）、`fxc2`、NSIS を含む Debian イメージを使います。
 
-*(Phase 2)*
+*(`build` と `package` は Phase 5)*
 
 ```sh
-# inside WSL2 or any x86_64 Linux with Docker
-./scripts/fetch.sh            # Firefox tarball + GPG verify, LibreWolf @ pinned commit
-./scripts/prepare.sh          # apply LibreWolf, then REMILIA layers
-./scripts/build.sh windows    # runs mach in the build container
+# from the repository root, in Git Bash or any shell with Docker
+./scripts/docker.sh image       # build-environment image
+./scripts/docker.sh fetch       # Firefox tarball + GPG verify, LibreWolf @ pinned commit
+./scripts/docker.sh prepare     # apply LibreWolf, then REMILIA layers
+./scripts/docker.sh toolchains  # clang, Rust, Windows SDK, Wine, NSIS
+./scripts/docker.sh build       # mach build
+./scripts/docker.sh package     # .win64.zip + sha256 + provenance in dist/
 ```
 
 注意：
@@ -52,12 +59,51 @@ Windows SDK、Wine（`widl`）、`fxc2`、NSIS を含む Debian イメージを�
   置き、`/mnt/c` や `/mnt/d` の下には **置かない** でください。ファイルシステムを
   またぐ I/O は非常に低速です。
 - Docker Desktop の WSL2 VM には、デフォルトでホストの RAM の 50% が割り当てられます。
-  リンク時にメモリが不足する場合は、`%USERPROFILE%\.wslconfig`（`memory=24GB`）で
-  増やしてください。
+  リファレンスマシンではデフォルトのままだと VM のメモリが不足しました。
+  `%USERPROFILE%\.wslconfig` に `memory=18GB` と `swap=24GB` を設定し、並列ジョブ 6 で
+  ビルドできています。
+- `prepare.sh` は、準備済みのツリーを上書きしません。オブジェクトディレクトリが
+  その中にあるためです。`--force` を付けると両方とも削除されます。`remilia-builds`
+  ボリュームに保持しているツリーには決して使わないでください。
+- `REMILIA_LAYERS` で `prepare.sh` が適用する REMILIA のカテゴリーを選びます。
+  `all`（既定）、`none`（無変更の LibreWolf）、または `security,privacy` のような
+  リストです。`remilia/README.md` を参照してください。
+- `prepare.sh --staging <name>` は `/builds/work/staging/<name>` に別のツリーを
+  準備し、保持しているツリーには一切触れません。別のレイヤールートや除外リスト
+  （テスト用フィクスチャ）を受け付けるのはステージングツリーだけです。
+
+## コンパイルしないツリーチェック（V1）
+
+```sh
+./scripts/docker.sh verify
+```
+
+ステージングツリーを準備し、保持しているツリーと比較します。カテゴリーなし、
+フィクスチャの各カテゴリー単独と全カテゴリー、パッチの逆適用、LibreWolf パッチの
+除外を確認します。コンパイルは行いません。`remilia-builds` ボリュームは
+`staging/` ディレクトリを除いて読み取り専用でマウントされるため、保持している
+ツリー、そのオブジェクトディレクトリ、ログは変更できません。各ステージング
+ツリーは存在する間だけ約 6 GB を使い、その後削除されます。レポートは
+`dist/verify-tree/<timestamp>/` に出力されます。
+
+## リソース監視（Windows ホスト）
+
+`scripts/windows/guard-build.ps1` はビルド中の Windows と WSL2 のメモリを計測し、
+メモリが尽きたときに SIGINT でビルドを止めます（WSL や Docker を停止することは
+ありません）。ビルドコンテナより先に起動してください。ビルドコンテナは
+`--name remilia-build-run` で起動する必要があります（または `-Container` を
+指定します）。
+
+```powershell
+.\scripts\windows\guard-build.ps1 -Csv "$env:TEMP\guard.csv" -Events "$env:TEMP\guard-events.log"
+```
+
+しきい値はパラメーター、または `-ConfigFile` で渡す `.psd1` ファイルのキーで
+指定します。既定値はフェーズ 2 のビルドで使った値です。
 
 ## 方法 B — MozillaBuild による Windows ネイティブビルド（開発用）
 
-*(Phase 2)*
+*(Phase 5、任意)*
 
 1. MozillaBuild（最新版）を `C:\mozilla-build` にインストールする。
 2. `C:\mozilla-build\start-shell.bat` を開く。
@@ -69,7 +115,7 @@ Windows SDK、Wine（`widl`）、`fxc2`、NSIS を含む Debian イメージを�
 （JS/CSS/XHTML/Fluent）の変更を数秒で再ビルドできます。UI やブランディングの作業に
 使ってください。
 
-## ビルドの検証 *(Phase 2)*
+## ビルドの検証 *(Phase 5)*
 
 - `./mach run` は一時プロファイルで起動します。
 - `about:support` にはバージョンと、`Multiprocess Windows`、`Fission`、

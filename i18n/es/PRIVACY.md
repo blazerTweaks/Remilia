@@ -7,7 +7,7 @@
 > - **Language:** es
 > - **Original language:** English
 > - **Source:** [PRIVACY.md](../../PRIVACY.md)
-> - **Source revision:** sha256:3d383430b03fb0ac9e685314d8c6a73cc750d90952a99898e79c50b0e2627a8b
+> - **Source revision:** sha256:683dcc0023b4ace9a5698760b08280755c308a8e03692cca9acec2fc39cf5d1d
 <!-- /i18n:meta -->
 
 # REMILIA Browser — Privacidad
@@ -109,7 +109,7 @@ de actualizaciones de REMILIA. Ninguno de ellos envía el historial de navegaci�
 
 - No se impone ningún proveedor de búsqueda predeterminado. Candidatos
   ofrecidos: DuckDuckGo, Brave Search, Startpage, Mojeek (heredado), Google, Bing.
-  La opción predeterminada está por decidir (ADR pendiente).
+  La opción predeterminada está por decidir (ROADMAP, decisión abierta D1).
 - Las sugerencias de búsqueda están **desactivadas** por defecto. Si se activan,
   lo que se teclea se envía al proveedor elegido; el ajuste lo dice con palabras
   claras.

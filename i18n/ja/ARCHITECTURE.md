@@ -7,14 +7,17 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [ARCHITECTURE.md](../../ARCHITECTURE.md)
-> - **Source revision:** sha256:7871350590894ef0f326a9e435b9da5c25f9ca493007087c61f04062da58faf9
+> - **Source revision:** sha256:0a67ffd6d7c69a8fda3bf872c3e6b6e505e5db82ad402287610c01a001c2bb3e
 <!-- /i18n:meta -->
 
 # REMILIA Browser — アーキテクチャ
 
 プロジェクトのコードネーム：**SCARLET**
-ステータス：フェーズ 2（ブラウザの基盤）— ビルドパイプラインを構築中。REMILIA の変更はまだ適用していない。
-最終レビュー：2026-11-25
+ステータス：ビルド基盤は作成済みで一部を実証済み。最初のフルビルドは REMILIA の
+カテゴリーが統合されるまで延期。最初のフルビルドを、無変更の LibreWolf ではなく
+REMILIA のビルドにするためである。カテゴリーの仕組みは存在する
+（フェーズ 3a、`static-verified`）が、REMILIA の変更はまだ適用していない。
+最終レビュー：2026-11-26
 
 このドキュメントは、*REMILIA が何をもとに構築され、各レイヤーがどのように
 組み合わさり、なぜそうするのか* を記録するものです。
@@ -69,8 +72,6 @@ Electron アプリでもありません。すべてのページは Gecko によ�
 | **固定した LibreWolf のコミットの上にレイヤーを重ねる** | **採用** | LibreWolf 自身のビルドがすでに「検証済みの Firefox tarball + 順序付きパッチリスト + コピーされるファイル」という形で動いている。REMILIA はこれと同じパターンを一段上で繰り返す。4 レイヤーが明確に分離され、差分は小さく、リベースも容易。 |
 | Release ではなく Firefox ESR を使う | 現時点では却下 | LibreWolf は Release に追従している。ESR に従うと LibreWolf によるメンテナンスを手放すことになる。REMILIA のメンテナーの体制で 4 週間サイクルを維持できない場合は再検討する（§8 を参照）。 |
 
-決定記録：ADR-0001。
-
 ### 2.2 LibreWolf の実際の構成（2026-11-25 に確認）
 
 出典：`https://codeberg.org/librewolf/source`、`main` のコミット
@@ -114,25 +115,32 @@ Electron アプリでもありません。すべてのページは Gecko によ�
 ```
 REMILIA/
 ├── upstream/               # category "upstream": pins.env (Firefox, LibreWolf,
-│                           #   l10n, bsys6, base image, Rust); LibreWolf exclusions
+│                           #   l10n, bsys6, base image, Rust); librewolf-exclude.txt;
+│                           #   librewolf-base/ (snapshot of LibreWolf's config files)
 ├── remilia/                # REMILIA changes, one directory per category
+│   ├── README.md           # the category contract checked by the tools
 │   ├── build-fixes/        # compile-only fixes, no behaviour change (layer 3)
 │   ├── security/           # sandbox, certificates, signing, updates (layer 3)
 │   ├── privacy/            # tracking, fingerprinting, cookies, DNS, telemetry,
 │   │                       #   uBlock Origin (layer 3)
 │   └── branding/           # logos, icons, colours, theme, names, UI (layer 4)
 │       # each category holds only what it needs:
-│       #   patches/ + series, prefs.cfg, policies.json, mozconfig, files/
+│       #   patches/ + series, prefs.cfg, policies.json, mozconfig, files/,
+│       #   replaces.txt, deviations.tsv
 ├── build/                  # build-environment image (windows-cross.Dockerfile)
-├── scripts/                # fetch, prepare, toolchains, build, package, docker
+├── scripts/                # fetch, prepare, toolchains, build, package, docker,
+│   │                       #   remilia_layers.py (categories), verify-tree.sh (V1)
+│   └── windows/            # host-side tools (build resource guard)
 ├── i18n/                   # documentation translations
-├── tests/                  # validation checklists and recorded results
+├── tests/                  # validation harness, category test fixtures
+│                           #   (tests/layers/)
+├── LICENSE                 # MPL-2.0, for REMILIA's own files
 └── *.md                    # this documentation set
 ```
 
-`remilia/` と `tests/` はまだ存在しません。実際の内容が初めて入るとき（それぞれ
-フェーズ 3a とフェーズ 2 の検証時）に作成し、空の雛形は作りません。カテゴリーの
-ルールは §10 にあります。
+現時点の `remilia/` には契約（`README.md`）しかありません。各カテゴリーの
+ディレクトリは、実際の内容が初めて入るとき（フェーズ 3b 以降）に作成し、空の
+雛形は作りません。カテゴリーのルールは §10 にあります。
 
 ---
 
@@ -160,7 +168,7 @@ package → ./mach package → zip → NSIS installer, .mar update files
    フロントエンドの差分ビルド）に適しています。LibreWolf のシェルスクリプトには、
    MozillaBuild に同梱されている GNU ツールが必要です。
 
-フェーズ 2 で両方を検証し、どちらをリリースの正式な方法とするかを記録します。
+フェーズ 5 で両方を検証し、どちらをリリースの正式な方法とするかを記録します。
 想定：リリースは Docker でのクロスコンパイル、反復開発はネイティブビルド。
 
 ---
@@ -214,8 +222,6 @@ REMILIA が意図的に LibreWolf と **異なる** 点を含む、設定項目�
   Firefox 自身の ETP パネルはすでにサイトごとの実際のトラッカー数を表示しており、
   そのまま残します。
 
-決定記録：ADR-0003。
-
 ---
 
 ## 7. アップデート
@@ -248,7 +254,7 @@ Firefox は **4 週間** ごとにメジャーリリースを行い、さらに�
 現実的な要件：
 
 - **リリースごと：** ピンの更新、パッチシリーズの再適用、リジェクトの修正、
-  フルビルド（6 コアの Ryzen 5 3600 で最適化ビルドに約 1.5〜3 時間。フェーズ 2 で
+  フルビルド（6 コアの Ryzen 5 3600 で最適化ビルドに約 1.5〜3 時間。フェーズ 5 で
   計測予定）、スモークテスト、署名、公開。
 - **目標：** セキュリティリリースを LibreWolf のリリースから **72 時間** 以内に公開する。
   これを確実に達成できない場合は、ユーザーにはっきりと伝えなければなりません。
@@ -276,7 +282,7 @@ Firefox は **4 週間** ごとにメジャーリリースを行い、さらに�
 
 REMILIA のすべての変更は、ちょうど 1 つのカテゴリーに属します。各カテゴリーは
 分離されており、それぞれ独立してレビュー、デバッグ、取り消し、アップストリームとの
-再同期ができます（ADR-0004）。
+再同期ができます。
 
 | カテゴリー | 対象 | 場所 |
 |---|---|---|
@@ -296,14 +302,21 @@ REMILIA のすべての変更は、ちょうど 1 つのカテゴリーに属し
   `mozconfig` のそれぞれ 1 つだけである。`prepare.sh` は各カテゴリーの断片から
   これらを組み立て、カテゴリーごとにヘッダーを付け、2 つのカテゴリーが同じ pref や
   ポリシーを設定している場合は失敗する。
+- LibreWolf の値を上書きする値には、書面の理由を指す登録済みの逸脱
+  （`deviations.tsv`）が必要で、LibreWolf が使った関数（`pref`、`defaultPref`、
+  `lockPref`）を維持しなければならない。LibreWolf がロックしている pref の
+  再定義は、実行中のブラウザで効果を確認するまで `runtime-unverified` と
+  記録する。
 - 適用順は固定：build-fixes → security → privacy → branding。任意の組み合わせを
   適用できるため、各カテゴリーを単独でビルド・検証でき、不具合をカテゴリー単位まで
   二分探索で絞り込める。
 - すべてのパッチのヘッダーには、カテゴリー、目的、影響するファイルと pref、
   アップストリームに提出可能かどうか、取り消した場合に何が変わるかを記載する。
 
-`prepare.sh` での組み立てと組み合わせの選択はフェーズ 3a の作業です。現時点の
-`prepare.sh` は REMILIA のレイヤーを一切適用しません。
+実装（フェーズ 3a）：`REMILIA_LAYERS` に対応した `prepare.sh` と、チェックと
+組み立てを行う `scripts/remilia_layers.py`。契約は `remilia/README.md` です。
+逸脱は `upstream/librewolf-base/` にある LibreWolf の設定ファイルのスナップショット
+と照合するため、静的チェックは Docker なしで実行できます。
 
 ---
 
@@ -311,8 +324,18 @@ REMILIA のすべての変更は、ちょうど 1 つのカテゴリーに属し
 
 コンパイルの成功が証明するのは、ビルド基盤が機能していることだけです。それで
 ブラウザが使えるようになるわけではありません。どのビルドも、
-[ROADMAP.md](ROADMAP.md) の検証チェックリスト（フェーズ 2、ステップ 3）に合格し、
-その結果が `tests/results/` に記録されるまでは、動作するものとは見なしません
-（ADR-0005）。
-後から追加する各カテゴリーでは、そのカテゴリー単独の場合と、すべてのカテゴリーを
-適用した場合の 2 回、チェックリストを実施します。
+[ROADMAP.md](ROADMAP.md#検証チェックリスト) の検証チェックリストに合格し、
+その結果が `tests/validation/README.md` に記載された形式で記録されるまでは、
+動作するものとは見なしません。検証記録はメンテナーがローカルに保管し、この
+リポジトリでは公開しません。
+
+最初のフルビルドは、ブランディング、セキュリティ、プライバシーが統合されるまで
+延期します。それまでは、変更をコンパイルせずに確認します：変更のたびに
+静的チェック（V0）を行い、各フェーズを完了する前にカテゴリーごとのツリーを新しく
+準備して確認します（V1）。V1 はビルド用ボリューム内の `staging/` に別の
+ステージングツリーを準備します。V1 の実行中、保持しているツリーとその
+オブジェクトディレクトリを含むボリュームの残りの部分は読み取り専用でマウント
+されます。V0 と V1 にだけ合格した作業は `static-verified` であり、
+`done` にはしません。フルビルド（V2）とチェックリスト（V3）は ROADMAP の
+フェーズ 5 で行います。各カテゴリーにも単独のフルビルドを行うかどうかはフェーズ 5
+で決めます。`REMILIA_LAYERS`（§10）によってそれが可能になります。
