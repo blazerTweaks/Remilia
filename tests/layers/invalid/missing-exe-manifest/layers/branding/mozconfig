@@ -1,0 +1,2 @@
+# fixture: application name changed without the executable manifest
+ac_add_options --with-app-name=remilia-fixture # deviation: BRAND-001

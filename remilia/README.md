@@ -167,6 +167,11 @@ export EXAMPLE_VAR=1 # deviation: BF-001
   `# deviation: <ID>` at the end of the line and a `deviations.tsv` entry.
 - Fragments are appended after the Windows cross-compile block, so they are
   read last.
+- `--with-app-name=<name>` sets the executable name. `<name>` must be lower
+  case (`a-z`, `0-9`, `-`), and a selected category must provide
+  `files/browser/app/<name>.exe.manifest`: the build embeds the executable
+  manifest only if that file exists, and otherwise builds without one, with
+  no error.
 - A `mozconfig` change can only be confirmed by a full build (V2).
 
 ## `files/` and `replaces.txt`
@@ -193,7 +198,9 @@ SEC-002	policy	ExtensionSettings/uBlock0@raymondhill.net	SECURITY.md
 - `kind`: `pref`, `policy` or `mozconfig`.
 - `key`: the pref name, policy unit or mozconfig key it overrides.
 - `reference`: where the reason is written, as `<document>` or
-  `<document>#<anchor>`. Allowed documents: `PRIVACY.md` and `SECURITY.md`.
+  `<document>#<anchor>`. Allowed documents: `PRIVACY.md`, `SECURITY.md` and
+  `UPSTREAM.md` (for branding: the touch-point table, anchor
+  `#rebranding-a-librewolf-tree-touch-points`).
   `tests/layers/README.md` is also allowed, but never in `remilia/`: only in
   the test fixtures, that is, any other layer root, including the copies of
   `tests/layers/` that V1 prepares in staging. `prepare.sh` accepts another

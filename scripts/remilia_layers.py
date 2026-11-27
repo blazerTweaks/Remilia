@@ -77,9 +77,12 @@ EXCLUDE_PATH_ONLY = re.compile(r"^(" + EXCLUDE_PATH + r")[ \t]*$")
 LEGACY_DECISION_ID = re.compile(r"ADR-\d+", re.I)
 INTERNAL_MENTION = re.compile(r"(?<![A-Za-z0-9_.-])internal[/\\]", re.I)
 REASON_MIN, REASON_MAX = 10, 200
+# --with-app-name becomes the executable name and the manifest file name.
+APP_NAME = re.compile(r"[a-z][a-z0-9-]*")
+APP_NAME_KEY = "with:app-name"
 
 # deviations.tsv "reference": public documents only (exact, case-sensitive).
-REFERENCE_DOCS = ("PRIVACY.md", "SECURITY.md")
+REFERENCE_DOCS = ("PRIVACY.md", "SECURITY.md", "UPSTREAM.md")
 FIXTURE_REFERENCE_DOCS = ("tests/layers/README.md",)  # only for layer roots other than remilia/
 
 
@@ -235,6 +238,7 @@ class MozLine:
     key: str
     deviation: str | None
     where: str
+    value: str | None = None  # the --option=value part, for ac_add_options
 
 
 @dataclass
@@ -476,7 +480,8 @@ def load_category(name: str, root: Path, problems: Problems) -> Category:
             if key in keys:
                 problems.add(where, f"{key} set twice in this category")
             keys.add(key)
-            cat.moz.append(MozLine(name, key, dev, where))
+            ac = MOZ_AC.match(body)
+            cat.moz.append(MozLine(name, key, dev, where, ac.group(2) if ac else None))
 
     # files/ and replaces.txt
     fdir = root / "files"
@@ -720,6 +725,24 @@ def check_together(cats: list[Category], base: Base | None, problems: Problems) 
                 continue
             mowner[ml.key] = ml
             use_deviation(cat, ml.deviation, "mozconfig", ml.key, ml.where, ml.key in bmoz)
+
+    # Executable manifest. config/rules.mk embeds <srcdir>/<program>.manifest
+    # only if that file exists; without it the build succeeds and the
+    # executable silently ships with no manifest.
+    for ml in mowner.values():
+        if ml.key != APP_NAME_KEY:
+            continue
+        name = (ml.value or "").strip()
+        if len(name) >= 2 and name[0] == name[-1] and name[0] in "'\"":
+            name = name[1:-1]
+        if not APP_NAME.fullmatch(name):
+            problems.add(ml.where, f"--with-app-name value {ml.value!r} must be a lower-case name "
+                         "(a-z, 0-9, '-'): it becomes the executable and manifest file name")
+            continue
+        manifest = f"browser/app/{name}.exe.manifest"
+        if not any(manifest in c.files for c in cats):
+            problems.add(ml.where, f"--with-app-name={name} needs files/{manifest} in a selected "
+                         "category: the build embeds the executable manifest only if that file exists")
 
     # files written by several categories
     fowner: dict[str, str] = {}

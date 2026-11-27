@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- TEST FIXTURE: executable manifest for --with-app-name=remilia-fixture. Not a Remilia file. -->
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+<assemblyIdentity version="1.0.0.0" processorArchitecture="*" name="remilia-fixture" type="win32"/>
+<description>remilia-fixture</description>
+</assembly>
