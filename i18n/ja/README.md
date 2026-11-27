@@ -7,22 +7,22 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [README.md](../../README.md)
-> - **Source revision:** sha256:7d3436fb918ba4e9b83dc34ed449cb27a527d7757e695ceeb03668a563859353
+> - **Source revision:** sha256:6acd831d682ae634bb998ba687cd06e4a62293724e21f9e8eadee0e0d4e0459b
 <!-- /i18n:meta -->
 
-# REMILIA Browser
+# Remilia Browser
 
 **Project SCARLET** — Firefox（Gecko）と LibreWolf をベースに構築された、
 プライバシー重視のデスクトップブラウザです。レミリア・スカーレットに着想を得た
 独自のアイデンティティを持ちます。
 
-> **ステータス：開発中。** 調査は完了し、ビルド基盤もありますが、REMILIA の
+> **ステータス：開発中。** 調査は完了し、ビルド基盤もありますが、Remilia の
 > ビルドはまだ存在しません。最初のフルビルドは、ブランディング、セキュリティ、
 > プライバシーが統合された時点で行う予定です。以下に記載されている内容は、
 > いずれもリリース済みの機能ではありません。進捗は [ROADMAP.md](ROADMAP.md) で
 > 管理しています。
 
-## REMILIA とは
+## Remilia とは
 
 - **本物のブラウザ**：Gecko によるレンダリング、Firefox のネットワークスタック、
   マルチプロセスとサイト分離、Windows サンドボックス、Firefox 拡張機能との
@@ -36,7 +36,7 @@
   オリジナルブランディング。原作への言及は控えめで、東方を知らない人にも
   プロフェッショナルに見える UI を目指します。
 
-## REMILIA ではないもの
+## Remilia ではないもの
 
 WebView のラッパーでも、Electron でも、新しいエンジンでも、匿名化ツールでも
 ありません。何から保護し、何から保護しないかについては
@@ -56,15 +56,15 @@ WebView のラッパーでも、Electron でも、新しいエンジンでも、
 
 ## クレジットとライセンス
 
-REMILIA は Mozilla Firefox（MPL-2.0）と LibreWolf（MPL-2.0）をベースに構築されて
+Remilia は Mozilla Firefox（MPL-2.0）と LibreWolf（MPL-2.0）をベースに構築されて
 おり、uBlock Origin（GPL-3.0、無変更で配布）を同梱します。「Firefox」は Mozilla の
-商標であり、REMILIA の名称やブランディングには使用しません。
+商標であり、Remilia の名称やブランディングには使用しません。
 
-REMILIA 独自のオリジナルファイルは Mozilla Public License 2.0
+Remilia 独自のオリジナルファイルは Mozilla Public License 2.0
 （[LICENSE](../../LICENSE)）でライセンスされます。Firefox、LibreWolf その他の
 第三者コンポーネントから継承したファイルは、それぞれのライセンスと表示を保持し、
-REMILIA はそれらを変更しません。
+Remilia はそれらを変更しません。
 
 東方Project およびレミリア・スカーレットは ZUN／上海アリス幻樂団による創作物です。
-REMILIA はファンの着想による独立したプロジェクトです。公式アートワークは一切使用
-しておらず、REMILIA のビジュアル素材はすべてオリジナルです。
+Remilia はファンの着想による独立したプロジェクトです。公式アートワークは一切使用
+しておらず、Remilia のビジュアル素材はすべてオリジナルです。

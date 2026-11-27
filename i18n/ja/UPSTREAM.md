@@ -7,23 +7,23 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [UPSTREAM.md](../../UPSTREAM.md)
-> - **Source revision:** sha256:928a4476b63ce5794056918ae2ad2afdbffbb1132346c2eb913cabf00f5beb2d
+> - **Source revision:** sha256:78b60c4f52a5aa358b5bae55549602fb82f0f7cdead29794fe77201d14c5e91b
 <!-- /i18n:meta -->
 
 # アップストリームとの同期
 
-REMILIA は 2 つのプロジェクトのダウンストリームです。これらに追従し続けることは、
+Remilia は 2 つのプロジェクトのダウンストリームです。これらに追従し続けることは、
 最も重要な継続的メンテナンス作業です。セキュリティ修正のほぼすべてが
 アップストリームからもたらされるためです。
 
 ## レイヤー
 
-| レイヤー | 取得元 | 固定場所 | REMILIA が編集するか |
+| レイヤー | 取得元 | 固定場所 | Remilia が編集するか |
 |---|---|---|---|
 | 1. Firefox | `archive.mozilla.org/pub/firefox/releases/<ver>/source/`（GPG 署名付き tarball）。正規リポジトリ：`github.com/mozilla-firefox/firefox` | `upstream/pins.env` → `FIREFOX_VERSION` | 直接は編集しない。レイヤー 3 のパッチを通じてのみ |
-| 2. LibreWolf | `codeberg.org/librewolf/source`（パッチ、設定、ビルドスクリプト） | `upstream/pins.env` → `LIBREWOLF_COMMIT` | 編集しない。REMILIA がその上から上書きする |
-| 3. REMILIA のビルド修正、セキュリティ、プライバシー | `remilia/build-fixes/`、`remilia/security/`、`remilia/privacy/`（それぞれ 1 カテゴリー。ARCHITECTURE.md §10） | — | する |
-| 4. REMILIA のブランディング | `remilia/branding/` | — | する |
+| 2. LibreWolf | `codeberg.org/librewolf/source`（パッチ、設定、ビルドスクリプト） | `upstream/pins.env` → `LIBREWOLF_COMMIT` | 編集しない。Remilia がその上から上書きする |
+| 3. Remilia のビルド修正、セキュリティ、プライバシー | `remilia/build-fixes/`、`remilia/security/`、`remilia/privacy/`（それぞれ 1 カテゴリー。ARCHITECTURE.md §10） | — | する |
+| 4. Remilia のブランディング | `remilia/branding/` | — | する |
 
 ## 追跡すべきリリースサイクル
 
@@ -32,7 +32,7 @@ REMILIA は 2 つのプロジェクトのダウンストリームです。これ
   mozilla.org/security/advisories/。
 - LibreWolf：`<firefox-version>-<lw-release>` 形式のタグ（例：`161.0-1`）。
   通常は Firefox から数日以内。
-- uBlock Origin：独立している。AMO を通じて更新され、REMILIA のリリースとは
+- uBlock Origin：独立している。AMO を通じて更新され、Remilia のリリースとは
   連動しない。
 
 ## アップデート手順
@@ -41,7 +41,7 @@ REMILIA は 2 つのプロジェクトのダウンストリームです。これ
 2. `upstream/pins.env` を更新する：`FIREFOX_VERSION`、`LIBREWOLF_COMMIT`、`LIBREWOLF_TAG`。
 3. `./scripts/fetch.sh` を実行する。Mozilla の GPG 署名とコミットハッシュが検証される。
 4. `./scripts/prepare.sh`。`upstream/librewolf-base/` が新しい LibreWolf の
-   ファイルと異なる間は、REMILIA のカテゴリーの適用を拒否します。REMILIA の
+   ファイルと異なる間は、Remilia のカテゴリーの適用を拒否します。Remilia の
    パッチが当たらない場合：
    - 新しいツリーに合わせて更新する。
    - パッチが変更するコードの意味が変わった場合は、パッチの目的ヘッダーを見直し、
@@ -49,14 +49,14 @@ REMILIA は 2 つのプロジェクトのダウンストリームです。これ
 5. `scripts/remilia_layers.py snapshot` で LibreWolf ベースのスナップショットを
    更新し、その差分（`librewolf.cfg`、`policies.json`、`mozconfig`、
    `patches.txt`）を確認する。変更された pref はすべて PRIVACY.md と SECURITY.md
-   に照らして確認する。REMILIA の上書きがアップストリームと衝突したり重複したり
+   に照らして確認する。Remilia の上書きがアップストリームと衝突したり重複したり
    している可能性があるためです。その後
    `python scripts/remilia_layers.py check` を実行する。
 6. ツリーチェック（`./scripts/docker.sh verify`）の後、ビルドし、検証
    チェックリストを実施し、パッケージ化、署名、公開を行う。
 7. リリースノートには、含まれている MFSA アドバイザリを列挙する。
 
-## REMILIA パッチのルール
+## Remilia パッチのルール
 
 - 1 つのパッチには 1 つの関心事と 1 つのカテゴリー（ARCHITECTURE.md §10）。
   ヘッダーには、カテゴリー、目的、影響する pref・ファイル、LibreWolf や Mozilla に
@@ -73,7 +73,7 @@ REMILIA は 2 つのプロジェクトのダウンストリームです。これ
   そのパスが `patches.txt` にちょうど 1 回現れること、理由を確認する。理由の代わりに
   決定の識別子を書いた旧形式の行は拒否される。LibreWolf 161.0-1 では
   リストは空です。
-- REMILIA 固有でない修正は、まずアップストリームに提案する。
+- Remilia 固有でない修正は、まずアップストリームに提案する。
 
 ## LibreWolf ツリーのリブランディング：変更箇所
 
@@ -95,7 +95,7 @@ REMILIA は 2 つのプロジェクトのダウンストリームです。これ
   "What the checks cover"）。これはフェーズ 3b、4a、4b の持ち越し作業である。
 
 フェーズ 3b では、ユーザーに見えるアイデンティティ（名前、アイコン、UI、実行
-ファイル、プロファイル）を REMILIA に変更します。内部名はそのまま残します：
+ファイル、プロファイル）を Remilia に変更します。内部名はそのまま残します：
 `lw/` ディレクトリ、`librewolf.cfg` というファイル名、`librewolf.*` の pref
 名前空間です。これらを変更すると、セキュリティとプライバシーがブランディングに
 依存してしまいます。
@@ -104,10 +104,10 @@ REMILIA は 2 つのプロジェクトのダウンストリームです。これ
 |---|---|---|---|
 | アプリケーション名、ブランディングディレクトリ、リモーティング名 | `mozconfig` 21、23、30 行目；`browser/branding/librewolf/configure.sh` 8–11 行目；`toolkit/moz.configure` 23、37 行目のベンダー名とアプリ名の既定値 | ブランディング（`mozconfig` の逸脱） | 3b |
 | ディストリビューション ID `net.librewolf` | `mozconfig` 22 行目 | ブランディング | 3b、B1 が必要 |
-| ブランディングディレクトリ：アイコン（`.ico`、`.png`、`.icns`、`.bmp`）、ワードマーク、`brand.ftl`、`brand.dtd`、`brand.properties`、`branding.nsi` | `browser/branding/librewolf/`（42 項目。`patch.sh` が LibreWolf の `themes/` からコピー） | ブランディング：REMILIA の新しいブランディングディレクトリを作り、LibreWolf のものは編集しない | 3b |
+| ブランディングディレクトリ：アイコン（`.ico`、`.png`、`.icns`、`.bmp`）、ワードマーク、`brand.ftl`、`brand.dtd`、`brand.properties`、`branding.nsi` | `browser/branding/librewolf/`（42 項目。`patch.sh` が LibreWolf の `themes/` からコピー） | ブランディング：Remilia の新しいブランディングディレクトリを作り、LibreWolf のものは編集しない | 3b |
 | 実行ファイルのマニフェスト | `browser/app/librewolf.exe.manifest` 6、9 行目 | ブランディング | 3b |
 | プロファイルとデータのディレクトリ名 | `toolkit/xre/nsXREDirProvider.cpp` 337、430、432、1010、1307、1317 行目（`profile-directory.patch`、`mozilla-dirs.patch`）；バックアップフォルダー `browser/components/backup/BackupService.sys.mjs` 661 行目 | ブランディング | 3b |
-| プロファイルから読み込むユーザー上書きファイル `librewolf.overrides.cfg` | `extensions/pref/autoconfig/src/prefcalls.js` 25–54 行目 | 未決：内部の AutoConfig の仕組みの中にある、ユーザーに見えるファイル名 | 3b で決定 |
+| ユーザー上書きファイル `librewolf.overrides.cfg`（Windows では `%USERPROFILE%\.librewolf\` から読み込む） | `extensions/pref/autoconfig/src/prefcalls.js` 25–54 行目 | セキュリティ：Remilia は `%USERPROFILE%\.remilia\` から読み込み、ファイル名は変えない（SECURITY.md、S5） | 3b、完了（`static-verified`） |
 | 「について」ダイアログと `about:librewolf` ページ | `browser/base/content/aboutDialog.xhtml` 38、44、45 行目；`toolkit/content/librewolf.html`；`toolkit/locales/en-US/toolkit/about/aboutLibreWolf.ftl`；`docshell/build/components.conf` 18 行目 | ブランディング（表示テキスト）。`about:` のアドレスは 3b の未決事項 | 3b |
 | 設定画面 | `browser/components/preferences/librewolf.js`、`librewolf.inc.xhtml`；`browser/locales/en-US/browser/preferences/preferences.ftl`（46 行） | 名前とアイコンはブランディング。各項目の動作はそれぞれのカテゴリーに属する | 3b |
 | 埋め込みの文字列 | `appstrings.properties`（`patch.sh` が書き換え、12 行）；`dom/locales/en-US/chrome/appstrings.properties`；`lw/l10n/` のオーバーレイ（表示名を含む 1545 行） | ブランディング | 3b |

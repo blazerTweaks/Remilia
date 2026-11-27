@@ -2,17 +2,17 @@
 **English** | [Português (Brasil)](i18n/pt-BR/README.md) | [日本語](i18n/ja/README.md) | [Español](i18n/es/README.md)
 <!-- /i18n:nav -->
 
-# REMILIA Browser
+# Remilia Browser
 
 **Project SCARLET** — a privacy-focused desktop browser built on Firefox (Gecko)
 and LibreWolf, with its own identity inspired by Remilia Scarlet.
 
 > **Status: in development.** Research is done and the build infrastructure
-> exists, but there is no REMILIA build yet: the first full build is planned
+> exists, but there is no Remilia build yet: the first full build is planned
 > once branding, security and privacy are integrated. Nothing below is a
 > shipped feature. Progress is tracked in [ROADMAP.md](ROADMAP.md).
 
-## What REMILIA is
+## What Remilia is
 
 - A **real browser**: Gecko rendering, Firefox networking, multiprocess and
   site isolation, the Windows sandbox, and Firefox extension compatibility, all
@@ -26,7 +26,7 @@ and LibreWolf, with its own identity inspired by Remilia Scarlet.
   reference is subtle, and the UI looks professional to people who have
   never heard of Touhou.
 
-## What REMILIA is not
+## What Remilia is not
 
 Not a WebView wrapper, not Electron, not a new engine, and not an anonymity tool.
 See [PRIVACY.md](PRIVACY.md) for what it does and does not protect against.
@@ -45,15 +45,15 @@ See [PRIVACY.md](PRIVACY.md) for what it does and does not protect against.
 
 ## Credits and licensing
 
-REMILIA is built on Mozilla Firefox (MPL-2.0) and LibreWolf (MPL-2.0), and
+Remilia is built on Mozilla Firefox (MPL-2.0) and LibreWolf (MPL-2.0), and
 bundles uBlock Origin (GPL-3.0, distributed unmodified). "Firefox" is a Mozilla
-trademark and is not used in REMILIA's name or branding.
+trademark and is not used in Remilia's name or branding.
 
-REMILIA's own original files are licensed under the Mozilla Public License 2.0
+Remilia's own original files are licensed under the Mozilla Public License 2.0
 ([LICENSE](LICENSE)). Files inherited from Firefox, LibreWolf and other
-third-party components keep their own licenses and notices, which REMILIA does
+third-party components keep their own licenses and notices, which Remilia does
 not change.
 
 Touhou Project and Remilia Scarlet are creations of ZUN / Team Shanghai Alice.
-REMILIA is an independent fan-inspired project. It uses no official artwork, and
-all REMILIA visual assets are original.
+Remilia is an independent fan-inspired project. It uses no official artwork, and
+all Remilia visual assets are original.

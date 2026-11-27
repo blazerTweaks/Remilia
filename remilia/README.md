@@ -1,11 +1,11 @@
-# REMILIA change categories — contract
+# Remilia change categories — contract
 
-This directory holds REMILIA's own changes to the LibreWolf tree, split into
+This directory holds Remilia's own changes to the LibreWolf tree, split into
 isolated categories (ARCHITECTURE.md §10). This file is the
 contract that `scripts/remilia_layers.py` enforces. When this file and the
 tool disagree, the tool is wrong.
 
-License: REMILIA's original files are MPL-2.0 (see `LICENSE` at the
+License: Remilia's original files are MPL-2.0 (see `LICENSE` at the
 repository root). Files copied or derived from Firefox or LibreWolf keep
 their original license and notices.
 
@@ -31,7 +31,7 @@ the LibreWolf base snapshot `librewolf-base/`.
 | Value | Effect |
 |---|---|
 | `all` (default) | Every category directory that exists, plus the upstream exclusion list |
-| `none` | Nothing REMILIA-owned: no exclusions, no categories. The tree is unmodified LibreWolf |
+| `none` | Nothing Remilia-owned: no exclusions, no categories. The tree is unmodified LibreWolf |
 | `security,privacy` | Only these categories (still in the fixed order), plus the exclusion list |
 
 An unknown name, or a requested category whose directory does not exist, is
@@ -167,6 +167,11 @@ export EXAMPLE_VAR=1 # deviation: BF-001
   `# deviation: <ID>` at the end of the line and a `deviations.tsv` entry.
 - Fragments are appended after the Windows cross-compile block, so they are
   read last.
+- `--with-app-name=<name>` sets the executable name. `<name>` must be lower
+  case (`a-z`, `0-9`, `-`), and a selected category must provide
+  `files/browser/app/<name>.exe.manifest`: the build embeds the executable
+  manifest only if that file exists, and otherwise builds without one, with
+  no error.
 - A `mozconfig` change can only be confirmed by a full build (V2).
 
 ## `files/` and `replaces.txt`
@@ -176,7 +181,7 @@ export EXAMPLE_VAR=1 # deviation: BF-001
 - Overwriting a file that exists in the LibreWolf tree needs the path in
   `replaces.txt` (one path per line, `#` comments allowed). A listed path
   that does not exist in the tree is an error.
-- A file written by an earlier REMILIA category can never be overwritten.
+- A file written by an earlier Remilia category can never be overwritten.
 - The same forbidden paths as for patches apply.
 
 ## `deviations.tsv`
@@ -193,7 +198,9 @@ SEC-002	policy	ExtensionSettings/uBlock0@raymondhill.net	SECURITY.md
 - `kind`: `pref`, `policy` or `mozconfig`.
 - `key`: the pref name, policy unit or mozconfig key it overrides.
 - `reference`: where the reason is written, as `<document>` or
-  `<document>#<anchor>`. Allowed documents: `PRIVACY.md` and `SECURITY.md`.
+  `<document>#<anchor>`. Allowed documents: `PRIVACY.md`, `SECURITY.md` and
+  `UPSTREAM.md` (for branding: the touch-point table, anchor
+  `#rebranding-a-librewolf-tree-touch-points`).
   `tests/layers/README.md` is also allowed, but never in `remilia/`: only in
   the test fixtures, that is, any other layer root, including the copies of
   `tests/layers/` that V1 prepares in staging. `prepare.sh` accepts another
@@ -236,7 +243,7 @@ the three snapshot files:
 | Policies, at the unit level described above | `lw/policies.json` (LibreWolf 161.0-1 has no `Preferences` policy) |
 | `ac_add_options`, `mk_add_options` and `export` keys | `mozconfig` (LibreWolf's, plus the Windows cross-compile block) |
 
-**Not detected.** A REMILIA pref can silently override a default set in any of
+**Not detected.** A Remilia pref can silently override a default set in any of
 these places. It then passes V0 and V1 with no deviation required:
 
 - Firefox and LibreWolf default-pref files, such as

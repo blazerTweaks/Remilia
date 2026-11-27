@@ -7,10 +7,10 @@
 > - **Language:** es
 > - **Original language:** English
 > - **Source:** [CONTRIBUTING.md](../../CONTRIBUTING.md)
-> - **Source revision:** sha256:d2159a306b0c86d12c64fd3d5e3d306ebc924a3b7f6fa3b887e39d72b6f7e428
+> - **Source revision:** sha256:54c611a0a73f59196c60663e6a67fb6e8c3faff4b56ea530995b10477c23308b
 <!-- /i18n:meta -->
 
-# Contribuir a REMILIA
+# Contribuir a Remilia
 
 ## Reglas básicas
 
@@ -36,14 +36,15 @@
 - Commits pequeños, con un asunto y una categoría cada uno (upstream,
   correcciones de compilación, seguridad, privacidad, imagen de marca;
   ARCHITECTURE.md §10). El mensaje explica el *porqué*.
-- Nuevo parche, pref o política de REMILIA: colócalo en el directorio de su
+- Nuevo parche, pref o política de Remilia: colócalo en el directorio de su
   única categoría, `remilia/<category>/`. Un parche va en `patches/` y `series`
   de esa categoría, con una cabecera (categoría, propósito, archivos y prefs
   afectados, si se puede enviar al upstream, efecto de revertirlo). Un cambio que
   abarca dos categorías se divide en dos. Los formatos exactos están en
   `remilia/README.md`.
 - Un valor que sobrescribe a LibreWolf lleva una entrada en el `deviations.tsv`
-  de la categoría y su motivo en PRIVACY.md o SECURITY.md.
+  de la categoría y su motivo en PRIVACY.md o SECURITY.md (branding: la
+  tabla de puntos de contacto de UPSTREAM.md).
 - Las decisiones a nivel de arquitectura se presentan al mantenedor antes de
   implementarlas, con contexto, decisión y consecuencias. Una vez adoptadas,
   su efecto se describe en ARCHITECTURE.md.
@@ -77,7 +78,7 @@ ha superado V0 y V1 queda `static-verified`, no `done`.
 
 ## Licencias
 
-Los archivos originales propios de REMILIA son MPL-2.0 ([LICENSE](../../LICENSE)).
+Los archivos originales propios de Remilia son MPL-2.0 ([LICENSE](../../LICENSE)).
 Las contribuciones que afectan a archivos de Firefox o LibreWolf también son
 MPL-2.0. Los archivos heredados de Firefox, LibreWolf y otros componentes de
 terceros conservan sus propias licencias y avisos; no los modifiques.

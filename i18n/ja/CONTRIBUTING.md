@@ -7,10 +7,10 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [CONTRIBUTING.md](../../CONTRIBUTING.md)
-> - **Source revision:** sha256:d2159a306b0c86d12c64fd3d5e3d306ebc924a3b7f6fa3b887e39d72b6f7e428
+> - **Source revision:** sha256:54c611a0a73f59196c60663e6a67fb6e8c3faff4b56ea530995b10477c23308b
 <!-- /i18n:meta -->
 
-# REMILIA へのコントリビューション
+# Remilia へのコントリビューション
 
 ## 基本ルール
 
@@ -33,13 +33,14 @@
 - コミットは小さく、1 つのコミットに 1 つの関心事と 1 つのカテゴリー（アップストリーム、
   ビルド修正、セキュリティ、プライバシー、ブランディング。ARCHITECTURE.md §10）。
   メッセージには *なぜ* を書く。
-- REMILIA の新しいパッチ、pref、ポリシー：所属する 1 つのカテゴリーのディレクトリ
+- Remilia の新しいパッチ、pref、ポリシー：所属する 1 つのカテゴリーのディレクトリ
   `remilia/<category>/` に置く。パッチはそのカテゴリーの `patches/` と `series` に
   入れ、ヘッダー（カテゴリー、目的、影響するファイルと pref、アップストリームに提出
   可能か、取り消した場合の影響）を付ける。2 つのカテゴリーにまたがる変更は 2 つに
   分割する。正確な形式は `remilia/README.md` にある。
 - LibreWolf の値を上書きする値は、そのカテゴリーの `deviations.tsv` にエントリーを
-  追加し、理由を PRIVACY.md または SECURITY.md に記す。
+  追加し、理由を PRIVACY.md または SECURITY.md に記す（ブランディングは
+  UPSTREAM.md の変更箇所一覧）。
 - アーキテクチャに関わる選択は、実装の前にコンテキスト、決定、影響を添えて
   メンテナーに提案する。採用されたら、その効果を ARCHITECTURE.md に記述する。
 - タスクのステータスが変わったら ROADMAP.md を更新する。
@@ -70,7 +71,7 @@ python i18n/i18n.py check                     # V0: documentation translations
 
 ## ライセンス
 
-REMILIA 独自のオリジナルファイルは MPL-2.0 です（[LICENSE](../../LICENSE)）。
+Remilia 独自のオリジナルファイルは MPL-2.0 です（[LICENSE](../../LICENSE)）。
 Firefox や LibreWolf のファイルに関わるコントリビューションも MPL-2.0 となります。
 Firefox、LibreWolf その他の第三者コンポーネントから継承したファイルは、それぞれの
 ライセンスと表示を保持します。それらを変更しないでください。

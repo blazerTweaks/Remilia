@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-r"""REMILIA Phase 2 validation harness for a Windows x64 build (ROADMAP.md, Phase 2 step 3).
+r"""Remilia Phase 2 validation harness for a Windows x64 build (ROADMAP.md, Phase 2 step 3).
 
 Collects *evidence* for each checklist item; it does not decide PASS/FAIL on its
 own. A human reviews results.json, the logs and the screenshots, and writes the
@@ -7,7 +7,7 @@ verdicts into internal/evidence/ (local only, ignored by Git, never published).
 This tool never modifies the browser under test.
 
 Usage (Windows host, from any directory):
-  python tests/validation/validate_win64.py --app-dir <unzipped browser dir> --exe librewolf.exe \
+  python tests/validation/validate_win64.py --app-dir <unzipped browser dir> --exe remilia.exe \
       --geckodriver <geckodriver.exe> --out internal/evidence/<date>-<build>/ [--zip <package.zip>] \
       [--only package,startup,suite,profiles] [--snapshot-only] [--overwrite]
 
@@ -158,8 +158,28 @@ def browser_processes(exe_name):
 
 # --------------------------------------------------------------------- package
 
+# Files every package must contain, besides the main executable (--exe).
+# librewolf.cfg keeps its LibreWolf name on purpose (remilia/README.md).
+ESSENTIAL_FILES = ("xul.dll", "nss3.dll", "mozglue.dll", "omni.ja", "browser/omni.ja",
+                   "application.ini", "platform.ini", "dependentlibs.list",
+                   "distribution/policies.json", "defaults/pref/local-settings.js", "librewolf.cfg")
+
+RT_MANIFEST = 24  # PE resource type of an embedded application manifest
+
+
+def essential_files(exe_name):
+    """The essential files of a package whose main executable is exe_name."""
+    return [exe_name, *ESSENTIAL_FILES]
+
+
+def has_embedded_manifest(pe):
+    """True if a parsed pefile.PE carries an RT_MANIFEST resource."""
+    root = getattr(pe, "DIRECTORY_ENTRY_RESOURCE", None)
+    return any(e.id == RT_MANIFEST for e in (root.entries if root else []))
+
+
 @guarded("package")
-def check_package(app_dir, zip_path):
+def check_package(app_dir, zip_path, exe_name):
     import pefile
 
     if zip_path:
@@ -179,11 +199,15 @@ def check_package(app_dir, zip_path):
             record("package", "re_extraction_identical", hashes[0] == hashes[1])
             record("package", "re_extraction_files", len(hashes[0]))
 
-    essential = ["librewolf.exe", "xul.dll", "nss3.dll", "mozglue.dll", "omni.ja",
-                 "browser/omni.ja", "application.ini", "platform.ini", "dependentlibs.list",
-                 "distribution/policies.json", "defaults/pref/local-settings.js", "librewolf.cfg"]
     record("package", "essential_files",
-           {f: (app_dir / f).exists() for f in essential})
+           {f: (app_dir / f).exists() for f in essential_files(exe_name)})
+    # config/rules.mk embeds <program>.manifest only if it exists: check the result.
+    main_exe = app_dir / exe_name
+    if main_exe.is_file():
+        pe = pefile.PE(str(main_exe), fast_load=True)
+        pe.parse_data_directories(directories=[pefile.DIRECTORY_ENTRY["IMAGE_DIRECTORY_ENTRY_RESOURCE"]])
+        record("package", "main_exe_manifest_embedded", has_embedded_manifest(pe))
+        pe.close()
 
     sys32 = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32"
     pe_report, unresolved = {}, {}
@@ -217,7 +241,7 @@ def check_package(app_dir, zip_path):
     for flag in ("aslr", "high_entropy_va", "dep_nx", "cfg"):
         record("package", f"pe_missing_{flag}", [k for k, v in pe_report.items() if not v[flag]])
     record("package", "unresolved_imports", unresolved)
-    out, _, _ = ps(f"(Get-AuthenticodeSignature '{app_dir / 'librewolf.exe'}').Status")
+    out, _, _ = ps(f"(Get-AuthenticodeSignature '{main_exe}').Status")
     record("package", "authenticode_status", out)
     (OUT / "pe_report.json").write_text(json.dumps(pe_report, indent=1))
 
@@ -775,7 +799,7 @@ def main():
     record("meta", "started_utc", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
     record("meta", "exe", str(exe))
     if "package" in steps and not a.snapshot_only:
-        check_package(a.app_dir, a.zip)
+        check_package(a.app_dir, a.zip, a.exe)
     if "startup" in steps and not a.snapshot_only:
         check_startup(exe, a.exe)
     if "suite" in steps:

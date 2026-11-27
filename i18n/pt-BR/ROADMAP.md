@@ -7,7 +7,7 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [ROADMAP.md](../../ROADMAP.md)
-> - **Source revision:** sha256:8eb893f429dcbf83c1219323c2c15a0124cb94b0ca56816e3336b79fa481efec
+> - **Source revision:** sha256:7c173f95a3c52e9e5b8ad4d6ce1df15a5d1630ef3d47b0b79adf5ac36d4fdf33
 <!-- /i18n:meta -->
 
 # Roadmap e status
@@ -33,7 +33,7 @@ testado em um navegador em execução; nunca equivale a `done`).
    comprova a infraestrutura de build. Nada é chamado de funcional antes que o
    checklist de validação passe e seus resultados sejam registrados
    (ARCHITECTURE.md §11).
-3. **A primeira build completa foi adiada, não abandonada.** O REMILIA é
+3. **A primeira build completa foi adiada, não abandonada.** O Remilia é
    desenvolvido primeiro e compilado quando branding, segurança e privacidade
    estiverem integrados o suficiente para representar o projeto.
    Até lá, as fases são encerradas com verificações estáticas e de árvore, e
@@ -46,7 +46,7 @@ testado em um navegador em execução; nunca equivale a `done`).
 1. Infraestrutura de build: download, verificação, patches do LibreWolf,
    toolchains, Docker, scripts de build e de empacotamento (Fase 2; a build em
    si foi adiada).
-2. Estrutura e configurações para as mudanças próprias do REMILIA (Fase 3a).
+2. Estrutura e configurações para as mudanças próprias do Remilia (Fase 3a).
 3. Branding (Fase 3b).
 4. Segurança (Fase 4a).
 5. Privacidade, incluindo a integração do uBlock Origin (Fase 4b).
@@ -85,12 +85,12 @@ Regras:
 | B2 | **Par de chaves de assinatura de atualizações MAR** gerado e guardado offline | Fase 4a; antes de qualquer build pública | Mantenedor |
 | B3 | **Chave de API do Safe Browsing**: obter uma ou aceitar a alternativa documentada (SECURITY.md §S3) | Fase 4a | Mantenedor |
 | B4 | **Certificado de assinatura de código do Windows (Authenticode).** Sem ele, o SmartScreen exibe avisos no instalador | Fase 8 | Mantenedor |
-| B5 | ~~Licença dos arquivos próprios do REMILIA~~ Resolvido em 2026-11-26: MPL-2.0 (`LICENSE`); os arquivos herdados mantêm suas licenças | Fase 3a | Mantenedor |
+| B5 | ~~Licença dos arquivos próprios do Remilia~~ Resolvido em 2026-11-26: MPL-2.0 (`LICENSE`); os arquivos herdados mantêm suas licenças | Fase 3a | Mantenedor |
 | B6 | Instalar o **MozillaBuild** (requer um instalador interativo e UAC) para o caminho de build B | Fase 5 (opcional) | Mantenedor |
 | D1 | Mecanismo de busca padrão | Fase 4b | Em aberto |
 | D2 | Padrão de limpeza ao fechar (privacidade vs. permanecer conectado) | Fase 4b | Em aberto |
 | D3 | Padrão de DoH (desativado vs. escolha na primeira execução) | Fase 4b | Em aberto |
-| D4 | Painel de proteção da barra de ferramentas: popup do uBO vs. um painel do REMILIA sobre os dados do uBO | Fase 6 | Em aberto |
+| D4 | Painel de proteção da barra de ferramentas: popup do uBO vs. um painel do Remilia sobre os dados do uBO | Fase 6 | Em aberto |
 
 ## Fase 1 — Pesquisa `done`
 
@@ -120,7 +120,7 @@ as etapas restantes passam para a Fase 5.
 - [x] l10n fixada em um commit do `firefox-l10n` da Mozilla (o espelho do LibreWolf retornou HTTP 502; mesmo commit, mesmo conteúdo).
 - [x] `scripts/toolchains.sh`: clang, sysroots, Wine, NSIS e Windows SDK no volume `remilia-mozbuild` (marcador de conclusão presente, 2026-11-26).
 - [x] Correções de build encontradas ao executar a build: diretório de trabalho movido para `/builds/work` (o clang-cl lia `/work/...` como sua opção `/wo`); VM do WSL2 configurada com `memory=18GB`, `swap=24GB` depois de ficar sem memória; 6 jobs paralelos.
-- [x] Harness de validação `tests/validation/validate_win64.py` escrito. Ainda não executado contra uma build do REMILIA.
+- [x] Harness de validação `tests/validation/validate_win64.py` escrito. Ainda não executado contra uma build do Remilia.
 - [x] Monitor de recursos da build movido para o repositório como `scripts/windows/guard-build.ps1` (lógica do guard v2 inalterada; limites e caminhos viraram parâmetros). Execução de teste em 2026-11-26; ainda não usado em uma build a partir deste local.
 - [ ] `deferred` `scripts/build.sh` no LibreWolf sem modificações: três tentativas registradas em log; a última foi interrompida de propósito em 2026-11-26, em 260 de 1145 arquivos C++ unificados. O diretório de objetos (6,9 GB) e todos os logs estão preservados no volume `remilia-builds`.
 - [ ] `deferred` `scripts/package.sh`, tempo de build e recursos medidos no BUILD.md, escolha do caminho oficial de build (a documentar no BUILD.md): transferidos para a Fase 5.
@@ -143,7 +143,7 @@ Encerrada em 2026-11-26 por verificação estática (V0 + V1), depois que o
 mantenedor revisou os resultados e a auditoria final. Os itens continuam
 `static-verified` até que a Fase 5 traga evidências em execução.
 
-- [x] `static-verified` Licença: MPL-2.0 para os arquivos próprios do REMILIA (`LICENSE`, B5).
+- [x] `static-verified` Licença: MPL-2.0 para os arquivos próprios do Remilia (`LICENSE`, B5).
 - [x] `static-verified` Contrato das categorias `remilia/README.md`: estrutura, cabeçalhos de patch, `prefs.cfg`, `policies.json`, `mozconfig`, `files/` + `replaces.txt`, `deviations.tsv`.
 - [x] `static-verified` `scripts/remilia_layers.py`: verificações V0 e montagem determinística de `librewolf.cfg`, `policies.json` e `mozconfig`, com um cabeçalho por categoria. Duplicatas entre categorias e sobrescritas não declaradas do LibreWolf falham; uma sobrescrita deve manter a função do LibreWolf; a redefinição de um `lockPref` é marcada como `runtime-unverified`.
 - [x] `static-verified` Snapshot da base do LibreWolf `upstream/librewolf-base/`, verificado contra a árvore preparada.
@@ -167,7 +167,7 @@ inventário de identidade só cobre linhas de texto que contêm "librewolf"
 Categoria: apenas branding. Nenhuma mudança de privacidade ou segurança nesta fase.
 Não iniciada: aguarda autorização explícita do mantenedor.
 
-- [ ] Nome REMILIA: nome do aplicativo, remoting name, identidade dos executáveis, diretório de perfil (veja os pontos de contato em UPSTREAM.md). O diretório interno `lw/`, o nome `librewolf.cfg` e o namespace de prefs `librewolf.*` ficam, para que segurança e privacidade nunca dependam do branding (`remilia/README.md`).
+- [ ] Nome Remilia: nome do aplicativo, remoting name, identidade dos executáveis, diretório de perfil (veja os pontos de contato em UPSTREAM.md). O diretório interno `lw/`, o nome `librewolf.cfg` e o namespace de prefs `librewolf.*` ficam, para que segurança e privacidade nunca dependam do branding (`remilia/README.md`).
 - [ ] Conceito do logo: par simétrico de asas de morcego em volta de um losango escarlate. SVG mestre, testado em 16/32/64/128/256 px.
 - [ ] Variantes: colorida, monocromática, para fundo claro, para fundo escuro, transparente.
 - [ ] Geração de `.ico` para Windows; bitmaps do instalador.
@@ -182,7 +182,7 @@ Não iniciada: aguarda autorização explícita do mantenedor.
 Categoria: apenas segurança.
 
 - [ ] Assinatura de extensões obrigatória (SECURITY.md S1).
-- [ ] Identidade do atualizador do REMILIA: chaves MAR, host de atualização (S2; requer B1, B2).
+- [ ] Identidade do atualizador do Remilia: chaves MAR, host de atualização (S2; requer B1, B2).
 - [ ] Certificados: revisão das configurações herdadas (SECURITY.md).
 - [ ] Sandbox: níveis herdados mantidos; diferenças em relação ao Firefox oficial verificadas na Fase 5.
 - [ ] Decisão sobre o Safe Browsing (S3, B3) e domínios restritos para extensões (S4).
@@ -199,13 +199,13 @@ Categoria: apenas privacidade.
 - [ ] Resolver D1–D3.
 - [ ] Interface de configurações: explicações claras, expondo os efeitos colaterais e as opções do RFP.
 - [ ] uBlock Origin: fixar o xpi assinado pela AMO (SHA-256) e incluí-lo em `distribution/extensions/`.
-- [ ] `assets.json` do REMILIA (padrão do uBO mais `spa-1`, os acréscimos do LibreWolf, listas brasileiras em avaliação), entregue via `assetsBootstrapLocation`.
+- [ ] `assets.json` do Remilia (padrão do uBO mais `spa-1`, os acréscimos do LibreWolf, listas brasileiras em avaliação), entregue via `assetsBootstrapLocation`.
 - [ ] Pendente da 3a: os padrões de prefs relevantes para privacidade definidos fora do `librewolf.cfg` não são detectados pelas verificações; revisá-los antes de definir prefs de privacidade e decidir se a ferramenta deve cobri-los.
 - [ ] Portão (V0 + V1): privacidade sozinha e com todas as categorias; resultados registrados.
 
 ## Fase 5 — Primeira build integrada e validação `todo`
 
-A primeira build completa do REMILIA: a infraestrutura da Fase 2 aplicada às
+A primeira build completa do Remilia: a infraestrutura da Fase 2 aplicada às
 categorias integradas.
 
 - [ ] V2: build, empacotamento, sha256, procedência. Registrar no BUILD.md o tempo de build e o uso de disco e de RAM.
@@ -221,7 +221,7 @@ A Fase 5 só é encerrada depois que o mantenedor revisar os resultados registra
 Barra de ferramentas, abas, barra de endereços, downloads, favoritos,
 configurações e a decisão D4 (construir um painel apenas sobre dados reais do
 uBO). Em grande parte são recursos já existentes no Firefox; o trabalho do
-REMILIA é tema (branding) e configuração (privacidade/segurança), registrados
+Remilia é tema (branding) e configuração (privacidade/segurança), registrados
 por categoria.
 
 ## Fase 7 — Segurança e testes `todo`

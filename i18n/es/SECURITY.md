@@ -7,23 +7,23 @@
 > - **Language:** es
 > - **Original language:** English
 > - **Source:** [SECURITY.md](../../SECURITY.md)
-> - **Source revision:** sha256:a93382773a101575a8d0edac736d9c03534c00051f0870bfca987ba98d37c1a1
+> - **Source revision:** sha256:ab8ffc730db55bc9fd30040ac1cde236b667f95b8bba14b8d107b4f169263334
 <!-- /i18n:meta -->
 
-# REMILIA Browser — Seguridad
+# Remilia Browser — Seguridad
 
-Estado: **solo diseño.** Todavía no existe ninguna compilación de REMILIA.
+Estado: **solo diseño.** Todavía no existe ninguna compilación de Remilia.
 
 La privacidad y la seguridad son cosas distintas. Un ajuste de privacidad nunca
 debe debilitar la arquitectura de seguridad de Firefox. Este archivo enumera
-cada modificación relevante para la seguridad que REMILIA hace o hereda, con su
+cada modificación relevante para la seguridad que Remilia hace o hereda, con su
 justificación.
 
 ## Cómo informar de vulnerabilidades
 
 Hasta que exista un canal específico, informa de forma privada al mantenedor. No
 abras issues públicas para vulnerabilidades. Las vulnerabilidades del motor
-corresponden al upstream (Bugzilla de Mozilla, grupo de seguridad); REMILIA
+corresponden al upstream (Bugzilla de Mozilla, grupo de seguridad); Remilia
 distribuirá la corrección cuando se publique la versión del upstream que la
 contenga.
 
@@ -53,14 +53,15 @@ contenga.
 | `network.IDN_show_punycode = true` | Protección contra homógrafos. |
 | `pdfjs.enableScripting = false` | Sin JS en el visor de PDF. |
 
-## Diferencias de REMILIA respecto a LibreWolf (motivadas por la seguridad)
+## Diferencias de Remilia respecto a LibreWolf (motivadas por la seguridad)
 
-| # | LibreWolf | REMILIA (previsto) | Motivo |
+| # | LibreWolf | Remilia (previsto) | Motivo |
 |---|---|---|---|
 | S1 | `MOZ_REQUIRE_SIGNING=` (vacío): las extensiones sin firmar se pueden activar con una pref | Mantener el valor predeterminado de Mozilla: firma **obligatoria**, no anulable mediante pref | Impide instalar extensiones manipuladas o sin firmar. Los desarrolladores pueden seguir cargando complementos temporales desde `about:debugging`. |
-| S2 | Incluye las claves públicas de firma MAR de LibreWolf; servidor de actualizaciones `update.librewolf.net` | Claves MAR y servidor de actualizaciones propios de REMILIA | Un binario de REMILIA solo debe aceptar actualizaciones firmadas por REMILIA. Obligatorio antes de cualquier compilación pública. |
+| S2 | Incluye las claves públicas de firma MAR de LibreWolf; servidor de actualizaciones `update.librewolf.net` | Claves MAR y servidor de actualizaciones propios de Remilia | Un binario de Remilia solo debe aceptar actualizaciones firmadas por Remilia. Obligatorio antes de cualquier compilación pública. |
 | S3 | Safe Browsing totalmente desactivado | **Evaluar — ver más abajo** | Los requisitos del proyecto piden protección de Safe Browsing. |
 | S4 | `extensions.webextensions.restrictedDomains = ""` (las extensiones pueden ejecutarse en addons.mozilla.org, etc.) | **Evaluar:** restaurar el valor predeterminado de Firefox | La lista de dominios restringidos impide que una extensión comprometida manipule las páginas de la tienda de complementos. |
+| S5 | En Windows, AutoConfig también carga `%USERPROFILE%\.librewolf\librewolf.overrides.cfg`, así que las sobrescrituras escritas para un LibreWolf instalado también se aplican | Solo lee `%USERPROFILE%\.remilia\librewolf.overrides.cfg` (implementado, `static-verified`) | El archivo de otro programa no debe cambiar las prefs de Remilia, incluidas las de seguridad y privacidad. |
 
 ### S3 — Safe Browsing: problema abierto
 
@@ -73,7 +74,7 @@ uso comercial requiere la Web Risk API, que es de pago.
 
 Opciones, a decidir en la Fase 4:
 
-1. Obtener una clave de API de Safe Browsing para REMILIA (proyecto no comercial)
+1. Obtener una clave de API de Safe Browsing para Remilia (proyecto no comercial)
    y activar las comprobaciones de las listas de phishing/malware. Las
    comprobaciones *remotas* de reputación de descargas
    (`browser.safebrowsing.downloads.remote.*`) envían metadatos de los archivos
@@ -100,6 +101,6 @@ Mark-of-the-Web) son independientes de Safe Browsing y siguen activadas.
 ## Política de actualizaciones de seguridad
 
 Las versiones de seguridad de Firefox son la máxima prioridad. Objetivo: una
-compilación de REMILIA publicada en un plazo de 72 horas tras la versión
+compilación de Remilia publicada en un plazo de 72 horas tras la versión
 correspondiente de LibreWolf. Cada nota de versión enumera los Mozilla Security
 Advisories (MFSA) que incluye.

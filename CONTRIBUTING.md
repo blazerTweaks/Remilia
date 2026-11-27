@@ -2,7 +2,7 @@
 **English** | [Português (Brasil)](i18n/pt-BR/CONTRIBUTING.md) | [日本語](i18n/ja/CONTRIBUTING.md) | [Español](i18n/es/CONTRIBUTING.md)
 <!-- /i18n:nav -->
 
-# Contributing to REMILIA
+# Contributing to Remilia
 
 ## Ground rules
 
@@ -24,13 +24,14 @@
 
 - Small commits, one concern and one category each (upstream, build fixes,
   security, privacy, branding; ARCHITECTURE.md §10). The message says *why*.
-- New REMILIA patch, pref or policy: put it in the directory of its single
+- New Remilia patch, pref or policy: put it in the directory of its single
   category, `remilia/<category>/`. A patch goes in that category's `patches/`
   and `series`, with a header (category, purpose, files and prefs touched,
   upstreamable?, effect of reverting it). A change spanning two categories is
   split into two. The exact formats are in `remilia/README.md`.
 - A value that overrides LibreWolf gets an entry in the category's
-  `deviations.tsv` and its reason in PRIVACY.md or SECURITY.md.
+  `deviations.tsv` and its reason in PRIVACY.md or SECURITY.md (branding:
+  the touch-point table in UPSTREAM.md).
 - Architecture-level choices are proposed to the maintainer before
   implementation, with context, decision and consequences. Once adopted, their
   effect is described in ARCHITECTURE.md.
@@ -62,7 +63,7 @@ V0 and V1 is `static-verified`, not `done`.
 
 ## Licensing
 
-REMILIA's own original files are MPL-2.0 ([LICENSE](LICENSE)).
+Remilia's own original files are MPL-2.0 ([LICENSE](LICENSE)).
 Contributions touching Firefox or LibreWolf files are MPL-2.0 as well. Files
 inherited from Firefox, LibreWolf and other third-party components keep their
 own licenses and notices; do not change them.

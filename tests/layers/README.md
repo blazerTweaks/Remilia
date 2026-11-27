@@ -1,7 +1,7 @@
 # Category test fixtures
 
 Test data for `scripts/remilia_layers.py` and the V1 tree checks
-(`scripts/verify-tree.sh`). **These are not REMILIA changes.** They are never
+(`scripts/verify-tree.sh`). **These are not Remilia changes.** They are never
 applied to the baseline tree and never packaged:
 
 - `prepare.sh` accepts a layer root other than `remilia/`, or an exclusion list
@@ -28,4 +28,4 @@ fictional: they exist only to exercise the deviation rules.
 | build-fixes | Patch to `AUTHORS`; new `mozconfig` variable | A category with a patch and a fragment |
 | security | Two patches (`README.md` top, `CODE_OF_CONDUCT.md`); new pref; `lockPref` redefinition of `app.update.service.enabled` (SEC-001); new `ExtensionSettings` entry | Removal test (`0001` is removed from `series` in V1); `runtime-unverified` marking |
 | privacy | Patch to `README.md` bottom; new pref; override of `network.trr.mode` (PRIV-001); new `ExtensionSettings` entry and override of LibreWolf's uBlock Origin entry (PRIV-002) | Overlap report (same file as security `0001`); second-level policy merge |
-| branding | New file; replacement of LibreWolf's `brand.ftl` (`replaces.txt`); override of `--with-app-name` (BRAND-001) | Overlays and `mozconfig` deviations |
+| branding | New file; replacement of LibreWolf's `brand.ftl` (`replaces.txt`); override of `--with-app-name` (BRAND-001) with the matching `browser/app/remilia-fixture.exe.manifest` | Overlays, `mozconfig` deviations, executable manifest rule |

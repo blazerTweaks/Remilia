@@ -1,0 +1,2 @@
+# Inherited files the branding category overwrites
+browser/app/module.ver

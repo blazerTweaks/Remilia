@@ -293,12 +293,53 @@ class PolicyAndMozconfigTests(Workspace):
 
     def test_mozconfig_deviation_ok(self):
         self.cat("branding", **{"mozconfig": "ac_add_options --with-app-name=remilia # deviation: BRAND-001\n",
-                                "deviations.tsv": "BRAND-001\tmozconfig\twith:app-name\tSECURITY.md\n"})
+                                "deviations.tsv": "BRAND-001\tmozconfig\twith:app-name\tUPSTREAM.md\n",
+                                "files__browser__app__remilia.exe.manifest": "<assembly/>\n"})
         plan, p = self.check()
         self.assertClean(p)
         out = rl.assemble(plan, rl.Base.from_snapshot(self.base))[rl.MOZCONFIG_PATH]
         self.assertTrue(out.startswith(BASE_MOZCONFIG))
         self.assertIn("# ===== REMILIA category: branding =====", out)
+
+    def branding_app_name(self, value: str, manifest: str | None = None) -> rl.Problems:
+        files = {"mozconfig": f"ac_add_options --with-app-name={value} # deviation: BRAND-001\n",
+                 "deviations.tsv": "BRAND-001\tmozconfig\twith:app-name\tUPSTREAM.md\n"}
+        if manifest:
+            files["files__browser__app__" + manifest] = "<assembly/>\n"
+        self.cat("branding", **files)
+        return self.check()[1]
+
+    def test_app_name_needs_the_executable_manifest(self):
+        p = self.branding_app_name("remilia")
+        self.assertProblem(p, "--with-app-name=remilia needs files/browser/app/remilia.exe.manifest "
+                              "in a selected category")
+
+    def test_app_name_manifest_with_another_name_does_not_count(self):
+        p = self.branding_app_name("remilia", manifest="librewolf.exe.manifest")
+        self.assertProblem(p, "needs files/browser/app/remilia.exe.manifest")
+
+    def test_app_name_manifest_from_another_selected_category(self):
+        self.cat("build-fixes", **{"files__browser__app__remilia.exe.manifest": "<assembly/>\n"})
+        self.assertClean(self.branding_app_name("remilia"))
+
+    def test_app_name_quoted_value(self):
+        self.assertClean(self.branding_app_name("'remilia'", manifest="remilia.exe.manifest"))
+
+    def test_app_name_must_be_a_safe_file_name(self):
+        for value in ("Remilia", "re milia", "../x", "-x", "remilia.exe", "x_y"):
+            with self.subTest(value=value):
+                shutil.rmtree(self.layers / "branding", ignore_errors=True)
+                p = self.branding_app_name(value)
+                self.assertProblem(p, "must be a lower-case name (a-z, 0-9, '-')")
+
+    def test_without_app_name_is_refused(self):
+        self.cat("branding", **{"mozconfig": "ac_add_options --without-app-name # deviation: BRAND-001\n",
+                                "deviations.tsv": "BRAND-001\tmozconfig\twith:app-name\tUPSTREAM.md\n"})
+        self.assertProblem(self.check()[1], "--with-app-name value None must be a lower-case name")
+
+    def test_app_name_unchanged_needs_nothing(self):
+        self.cat("branding", **{"mozconfig": "export REMILIA_FIXTURE=1\n"})
+        self.assertClean(self.check()[1])
 
 
 class AssemblyTests(Workspace):
@@ -762,7 +803,7 @@ class ReferenceTests(Workspace):
         self.assertIn(fragment, "\n".join(msgs))
 
     def test_f1_allowed_documents(self):
-        for ref in ("PRIVACY.md", "SECURITY.md"):
+        for ref in ("PRIVACY.md", "SECURITY.md", "UPSTREAM.md"):
             self.assertRefOk(ref)
             self.assertRefOk(ref, fixture=True)
 
@@ -775,6 +816,9 @@ class ReferenceTests(Workspace):
         self.assertEqual(Path(rl._I18N.__file__).resolve(), (ROOT / "i18n" / "i18n.py").resolve())
         # Heading with an em dash: the slug keeps two hyphens, as GitHub and i18n.py do.
         self.assertRefOk("PRIVACY.md#what-remilia-protects-against--and-what-it-does-not")
+        # Branding deviations point to the touch-point table of UPSTREAM.md.
+        self.assertRefOk("UPSTREAM.md#rebranding-a-librewolf-tree-touch-points")
+        self.assertRefBad("UPSTREAM.md#no-such-anchor", "is not a heading anchor of UPSTREAM.md")
 
     def test_f3_missing_or_empty_anchor(self):
         self.assertRefBad("PRIVACY.md#no-such-anchor", "#no-such-anchor is not a heading anchor of PRIVACY.md")
@@ -789,7 +833,7 @@ class ReferenceTests(Workspace):
 
     def test_f5_f6_documents_outside_the_list(self):
         for ref in ("NOPE.md", "ROADMAP.md", "README.md", "ARCHITECTURE.md", "remilia/README.md"):
-            self.assertRefBad(ref, "is not an allowed document; use one of: PRIVACY.md, SECURITY.md")
+            self.assertRefBad(ref, "is not an allowed document; use one of: PRIVACY.md, SECURITY.md, UPSTREAM.md")
 
     def test_f7_absolute_paths_inside_and_outside_the_repository(self):
         inside = (ROOT / "PRIVACY.md").as_posix()
@@ -811,7 +855,7 @@ class ReferenceTests(Workspace):
             self.assertRefBad(ref, "must use '/' separators")
 
     def test_f10_case_is_exact_on_every_system(self):
-        for ref in ("privacy.md", "PRIVACY.MD", "Privacy.md", "security.md"):
+        for ref in ("privacy.md", "PRIVACY.MD", "Privacy.md", "security.md", "upstream.md"):
             self.assertRefBad(ref, "is not an allowed document")
 
     def test_f11_whitespace(self):

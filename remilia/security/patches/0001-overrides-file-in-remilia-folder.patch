@@ -1,0 +1,27 @@
+Category: security
+Summary: read the user overrides file from %USERPROFILE%\.remilia\ instead of LibreWolf's .librewolf folder
+
+Purpose: LibreWolf's profile-directory.patch makes AutoConfig load
+librewolf.overrides.cfg from %USERPROFILE%\.librewolf\ on Windows (the branch
+without XDG support). With that path, overrides written for an installed
+LibreWolf would also change Remilia's prefs, including security and privacy
+prefs. Remilia reads only %USERPROFILE%\.remilia\librewolf.overrides.cfg.
+Files: extensions/pref/autoconfig/src/prefcalls.js (Windows/non-XDG branch).
+The file name stays librewolf.overrides.cfg: it is internal to the AutoConfig
+mechanism, like librewolf.cfg. The Linux XDG and legacy branches are not
+changed (Linux is not a Remilia target).
+Prefs touched: the default of autoadmin.global_config_url, computed at startup.
+Upstreamable: no (Remilia identity).
+Reverting: Remilia reads LibreWolf's overrides file again.
+
+--- a/extensions/pref/autoconfig/src/prefcalls.js
++++ b/extensions/pref/autoconfig/src/prefcalls.js
+@@ -51,7 +51,7 @@
+       if ((profile_directory = Services.env.get("USERPROFILE") || Services.env.get("HOME"))) {
+         defaults.setCharPref(
+           "autoadmin.global_config_url",
+-          `file://${profile_directory}/.librewolf/librewolf.overrides.cfg`
++          `file://${profile_directory}/.remilia/librewolf.overrides.cfg`
+         );
+       }
+     }

@@ -7,16 +7,16 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [BUILD.md](../../BUILD.md)
-> - **Source revision:** sha256:adf617eee0385e53aee38f2f12b67f9a1d5dec7f1161d376d756d87546b218ce
+> - **Source revision:** sha256:717bcf7ecd7362413cfc986362c160ad2db3db152e186aa189a38d505409553e
 <!-- /i18n:meta -->
 
-# Compilando o REMILIA
+# Compilando o Remilia
 
 Status: **infraestrutura de build escrita e parcialmente comprovada; primeira
 build completa adiada.** As etapas de fetch, prepare e toolchains foram
 executadas com sucesso. A etapa de compilação rodou até 260 de 1145 arquivos
 C++ unificados do LibreWolf 161.0-1 sem modificações e então foi interrompida
-de propósito: a primeira build completa será do REMILIA, quando branding,
+de propósito: a primeira build completa será do Remilia, quando branding,
 segurança e privacidade estiverem integrados (Fase 5 do ROADMAP). As
 etapas marcadas com *(Phase 5)* ainda não foram concluídas.
 
@@ -49,7 +49,7 @@ alvo `x86_64-pc-windows-msvc`, o Windows SDK baixado pelo
 # from the repository root, in Git Bash or any shell with Docker
 ./scripts/docker.sh image       # build-environment image
 ./scripts/docker.sh fetch       # Firefox tarball + GPG verify, LibreWolf @ pinned commit
-./scripts/docker.sh prepare     # apply LibreWolf, then REMILIA layers
+./scripts/docker.sh prepare     # apply LibreWolf, then Remilia layers
 ./scripts/docker.sh toolchains  # clang, Rust, Windows SDK, Wine, NSIS
 ./scripts/docker.sh build       # mach build
 ./scripts/docker.sh package     # .win64.zip + sha256 + provenance in dist/
@@ -65,7 +65,7 @@ Observações:
 - O `prepare.sh` se recusa a sobrescrever uma árvore já preparada, porque o
   diretório de objetos fica dentro dela. `--force` apaga os dois. Nunca o use na
   árvore preservada no volume `remilia-builds`.
-- `REMILIA_LAYERS` escolhe as categorias do REMILIA que o `prepare.sh` aplica:
+- `REMILIA_LAYERS` escolhe as categorias do Remilia que o `prepare.sh` aplica:
   `all` (padrão), `none` (LibreWolf sem modificações) ou uma lista como
   `security,privacy`. Veja `remilia/README.md`.
 - `prepare.sh --staging <name>` prepara uma árvore separada em
@@ -107,7 +107,7 @@ Os limites são parâmetros, ou chaves de um arquivo `.psd1` passado com
 
 1. Instale o MozillaBuild (versão mais recente) em `C:\mozilla-build`.
 2. Abra `C:\mozilla-build\start-shell.bat`.
-3. Na árvore preparada do REMILIA: `./mach --no-interactive bootstrap --application-choice=browser`
+3. Na árvore preparada do Remilia: `./mach --no-interactive bootstrap --application-choice=browser`
    (baixa clang, Rust e Windows SDK; pede o UAC uma vez para as exclusões do Defender).
 4. `./mach build`, depois `./mach run`.
 
@@ -120,5 +120,5 @@ de front-end (JS/CSS/XHTML/Fluent); use-o para trabalho de interface e branding.
 - `about:support` mostra a versão e os níveis de `Multiprocess Windows`, `Fission` e
   `Sandbox`; cada um deve ser igual ao nível informado por uma build oficial do
   Firefox da mesma versão, na mesma máquina.
-- `about:policies` mostra as políticas do REMILIA como ativas.
-- `about:config` → `general.config.filename` mostra o cfg do REMILIA.
+- `about:policies` mostra as políticas do Remilia como ativas.
+- `about:config` → `general.config.filename` mostra o cfg do Remilia.

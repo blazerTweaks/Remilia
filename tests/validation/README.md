@@ -41,7 +41,7 @@ valid (Mozilla Corporation). It is extracted with 7-Zip and **not installed**.
 From the repository root:
 
 ```sh
-python tests/validation/validate_win64.py --app-dir <unzipped>/librewolf --exe librewolf.exe \
+python tests/validation/validate_win64.py --app-dir <unzipped>/remilia --exe remilia.exe \
   --geckodriver geckodriver.exe --zip <package>.win64.zip --out internal/evidence/<date>-<build>/
 
 python tests/validation/validate_win64.py --app-dir <ff161>/core --exe firefox.exe \

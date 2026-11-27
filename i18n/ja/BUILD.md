@@ -7,16 +7,16 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [BUILD.md](../../BUILD.md)
-> - **Source revision:** sha256:adf617eee0385e53aee38f2f12b67f9a1d5dec7f1161d376d756d87546b218ce
+> - **Source revision:** sha256:717bcf7ecd7362413cfc986362c160ad2db3db152e186aa189a38d505409553e
 <!-- /i18n:meta -->
 
-# REMILIA のビルド
+# Remilia のビルド
 
 ステータス：**ビルド基盤は作成済みで一部を実証済み。最初のフルビルドは延期。**
 fetch、prepare、toolchains の各ステップは正常に完了しています。コンパイルの
 ステップは、無変更の LibreWolf 161.0-1 の統合 C++ ファイル 1145 個のうち 260 個まで
 進んだところで意図的に停止しました。最初のフルビルドは、ブランディング、セキュリティ、
-プライバシーが統合された時点で REMILIA に対して行います（ROADMAP のフェーズ 5）。
+プライバシーが統合された時点で Remilia に対して行います（ROADMAP のフェーズ 5）。
 *(Phase 5)* と記載された手順は、まだ完了していません。
 
 ## 要件
@@ -48,7 +48,7 @@ Windows SDK、Wine（`widl`）、`fxc2`、NSIS を含む Debian イメージを�
 # from the repository root, in Git Bash or any shell with Docker
 ./scripts/docker.sh image       # build-environment image
 ./scripts/docker.sh fetch       # Firefox tarball + GPG verify, LibreWolf @ pinned commit
-./scripts/docker.sh prepare     # apply LibreWolf, then REMILIA layers
+./scripts/docker.sh prepare     # apply LibreWolf, then Remilia layers
 ./scripts/docker.sh toolchains  # clang, Rust, Windows SDK, Wine, NSIS
 ./scripts/docker.sh build       # mach build
 ./scripts/docker.sh package     # .win64.zip + sha256 + provenance in dist/
@@ -65,7 +65,7 @@ Windows SDK、Wine（`widl`）、`fxc2`、NSIS を含む Debian イメージを�
 - `prepare.sh` は、準備済みのツリーを上書きしません。オブジェクトディレクトリが
   その中にあるためです。`--force` を付けると両方とも削除されます。`remilia-builds`
   ボリュームに保持しているツリーには決して使わないでください。
-- `REMILIA_LAYERS` で `prepare.sh` が適用する REMILIA のカテゴリーを選びます。
+- `REMILIA_LAYERS` で `prepare.sh` が適用する Remilia のカテゴリーを選びます。
   `all`（既定）、`none`（無変更の LibreWolf）、または `security,privacy` のような
   リストです。`remilia/README.md` を参照してください。
 - `prepare.sh --staging <name>` は `/builds/work/staging/<name>` に別のツリーを
@@ -107,7 +107,7 @@ Windows SDK、Wine（`widl`）、`fxc2`、NSIS を含む Debian イメージを�
 
 1. MozillaBuild（最新版）を `C:\mozilla-build` にインストールする。
 2. `C:\mozilla-build\start-shell.bat` を開く。
-3. 準備済みの REMILIA のツリーで：`./mach --no-interactive bootstrap --application-choice=browser`
+3. 準備済みの Remilia のツリーで：`./mach --no-interactive bootstrap --application-choice=browser`
    （clang、Rust、Windows SDK をダウンロードする。Defender の除外設定のために UAC が一度表示される）。
 4. `./mach build`、続いて `./mach run`。
 
@@ -121,5 +121,5 @@ Windows SDK、Wine（`widl`）、`fxc2`、NSIS を含む Debian イメージを�
 - `about:support` にはバージョンと、`Multiprocess Windows`、`Fission`、
   `Sandbox` の各レベルが表示されます。いずれも、同じマシン上の同じバージョンの
   公式 Firefox ビルドが示すレベルと一致しなければなりません。
-- `about:policies` に REMILIA のポリシーが有効として表示されます。
-- `about:config` → `general.config.filename` に REMILIA の cfg が表示されます。
+- `about:policies` に Remilia のポリシーが有効として表示されます。
+- `about:config` → `general.config.filename` に Remilia の cfg が表示されます。

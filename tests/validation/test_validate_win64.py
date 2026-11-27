@@ -151,6 +151,40 @@ class ResolveOutTests(unittest.TestCase):
         self.assertFalse((self.repo / "tests" / "results").exists())
 
 
+class PackageRulesTests(unittest.TestCase):
+    """Package checks that do not need pefile or a build."""
+
+    def test_essential_files_follow_the_exe_argument(self):
+        self.assertEqual(vw.essential_files("remilia.exe")[0], "remilia.exe")
+        self.assertNotIn("librewolf.exe", vw.essential_files("remilia.exe"))
+        self.assertIn("librewolf.cfg", vw.essential_files("remilia.exe"))  # internal name kept
+        self.assertEqual(vw.essential_files("x.exe")[1:], list(vw.ESSENTIAL_FILES))
+
+    def test_no_executable_name_is_hard_coded(self):
+        source = SCRIPT.read_text(encoding="utf-8")
+        self.assertNotIn("'librewolf.exe'", source)
+        self.assertNotIn('"librewolf.exe"', source)
+
+    def test_embedded_manifest_detection(self):
+        class Entry:
+            def __init__(self, id_):
+                self.id = id_
+
+        class Root:
+            def __init__(self, ids):
+                self.entries = [Entry(i) for i in ids]
+
+        class PE:
+            pass
+
+        pe = PE()
+        self.assertFalse(vw.has_embedded_manifest(pe))  # no resource directory at all
+        pe.DIRECTORY_ENTRY_RESOURCE = Root([3, 14, 16])  # icons, group icon, version
+        self.assertFalse(vw.has_embedded_manifest(pe))
+        pe.DIRECTORY_ENTRY_RESOURCE = Root([3, 24])
+        self.assertTrue(vw.has_embedded_manifest(pe))
+
+
 class CommandLineTests(unittest.TestCase):
     def run_script(self, *args: str) -> subprocess.CompletedProcess:
         return subprocess.run([sys.executable, "-B", str(SCRIPT), *args], capture_output=True,
@@ -160,7 +194,7 @@ class CommandLineTests(unittest.TestCase):
         r = self.run_script("--help")
         self.assertEqual(r.returncode, 0)
         out = r.stdout.decode("utf-8", "replace").replace("\r\n", "\n")  # Windows console newlines
-        self.assertIn("--exe librewolf.exe \\\n      --geckodriver", out)
+        self.assertIn("--exe remilia.exe \\\n      --geckodriver", out)
         self.assertIn("--out internal/evidence/<date>-<build>/", out)
         self.assertIn("A\nrelative --out is resolved against the repository root", out)
         self.assertIn("--overwrite", out)

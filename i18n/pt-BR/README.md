@@ -7,22 +7,22 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [README.md](../../README.md)
-> - **Source revision:** sha256:7d3436fb918ba4e9b83dc34ed449cb27a527d7757e695ceeb03668a563859353
+> - **Source revision:** sha256:6acd831d682ae634bb998ba687cd06e4a62293724e21f9e8eadee0e0d4e0459b
 <!-- /i18n:meta -->
 
-# REMILIA Browser
+# Remilia Browser
 
 **Project SCARLET** — um navegador desktop focado em privacidade, construído
 sobre o Firefox (Gecko) e o LibreWolf, com identidade própria inspirada em
 Remilia Scarlet.
 
 > **Status: em desenvolvimento.** A pesquisa está concluída e a infraestrutura
-> de build existe, mas ainda não há nenhuma build do REMILIA: a primeira build
+> de build existe, mas ainda não há nenhuma build do Remilia: a primeira build
 > completa está planejada para quando branding, segurança e privacidade
 > estiverem integrados. Nada abaixo é um recurso já lançado. O progresso é
 > acompanhado em [ROADMAP.md](ROADMAP.md).
 
-## O que o REMILIA é
+## O que o Remilia é
 
 - Um **navegador de verdade**: renderização Gecko, a pilha de rede do
   Firefox, multiprocessos e isolamento de sites, a sandbox do Windows e
@@ -37,7 +37,7 @@ Remilia Scarlet.
   escarlate. A referência é sutil, e a interface tem aparência profissional
   mesmo para quem nunca ouviu falar de Touhou.
 
-## O que o REMILIA não é
+## O que o Remilia não é
 
 Não é um wrapper de WebView, não é Electron, não é um novo motor e não é uma
 ferramenta de anonimato. Veja [PRIVACY.md](PRIVACY.md) para saber contra o que
@@ -57,16 +57,16 @@ ele protege e contra o que não protege.
 
 ## Créditos e licenciamento
 
-O REMILIA é construído sobre o Mozilla Firefox (MPL-2.0) e o LibreWolf
+O Remilia é construído sobre o Mozilla Firefox (MPL-2.0) e o LibreWolf
 (MPL-2.0), e inclui o uBlock Origin (GPL-3.0, distribuído sem modificações).
 "Firefox" é uma marca registrada da Mozilla e não é usada no nome nem no
-branding do REMILIA.
+branding do Remilia.
 
-Os arquivos originais do próprio REMILIA são licenciados sob a Mozilla Public
+Os arquivos originais do próprio Remilia são licenciados sob a Mozilla Public
 License 2.0 ([LICENSE](../../LICENSE)). Os arquivos herdados do Firefox, do
 LibreWolf e de outros componentes de terceiros mantêm suas próprias licenças e
-avisos, que o REMILIA não altera.
+avisos, que o Remilia não altera.
 
 Touhou Project e Remilia Scarlet são criações de ZUN / Team Shanghai Alice.
-O REMILIA é um projeto independente inspirado por fãs. Ele não usa nenhuma arte
+O Remilia é um projeto independente inspirado por fãs. Ele não usa nenhuma arte
 oficial, e todos os seus recursos visuais são originais.

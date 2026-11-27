@@ -7,10 +7,10 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [PRIVACY.md](../../PRIVACY.md)
-> - **Source revision:** sha256:683dcc0023b4ace9a5698760b08280755c308a8e03692cca9acec2fc39cf5d1d
+> - **Source revision:** sha256:5a9a65b92947c44c41f46f5ae265e99cac41daa6cbc2144cd03106131502a46c
 <!-- /i18n:meta -->
 
-# REMILIA Browser — Privacidade
+# Remilia Browser — Privacidade
 
 Status: **apenas design.** Nada neste documento foi compilado ou testado ainda.
 Cada item tem um status: `planned` (planejado), `implemented` (implementado),
@@ -20,21 +20,21 @@ como `planned`.
 ## Princípios
 
 1. **Mecanismos nativos em vez de código próprio.** O Firefox já inclui
-   Proteção Total de Cookies, ETP, RFP, Modo Somente HTTPS e DoH. O REMILIA
+   Proteção Total de Cookies, ETP, RFP, Modo Somente HTTPS e DoH. O Remilia
    apenas os configura.
 2. **Herdar do LibreWolf por padrão.** Qualquer divergência em relação ao
    `librewolf.cfg` precisa de uma justificativa escrita, porque toda divergência
-   é trabalho de manutenção e pode tornar os usuários do REMILIA mais
+   é trabalho de manutenção e pode tornar os usuários do Remilia mais
    distinguíveis dentro da população maior do LibreWolf.
 3. **Quebra de sites precisa trazer ganho de privacidade.** Uma configuração
    que quebra sites sem ganho significativo de privacidade não é ativada por
    padrão.
-4. **Sem exageros.** O REMILIA reduz a superfície de rastreamento e de
+4. **Sem exageros.** O Remilia reduz a superfície de rastreamento e de
    fingerprinting. Ele não torna ninguém anônimo. O DoH não esconde quais sites
    você visita do provedor de DoH, nem dos operadores dos sites, nem de quem
    observa o SNI do TLS, a menos que o ECH seja usado.
 
-## Contra o que o REMILIA protege — e contra o que não protege
+## Contra o que o Remilia protege — e contra o que não protege
 
 | Protege (reduz) | **Não** protege contra |
 |---|---|
@@ -47,12 +47,12 @@ como `planned`.
 
 ## Configuração de base (do `librewolf.cfg` v8.6 do LibreWolf, Firefox 161)
 
-Legenda — **Manter**: herdar do LibreWolf. **Alterar**: o REMILIA diverge.
+Legenda — **Manter**: herdar do LibreWolf. **Alterar**: o Remilia diverge.
 **Avaliar**: decidir na Fase 4, com testes.
 
 ### Rastreamento e cookies
 
-| Configuração | LibreWolf | REMILIA | Observações |
+| Configuração | LibreWolf | Remilia | Observações |
 |---|---|---|---|
 | `browser.contentblocking.category` | `strict` | Manter | ETP Rigoroso: Proteção Total de Cookies, listas rigorosas, shims do SmartBlock, remoção de parâmetros de consulta. |
 | Lista de remoção de parâmetros de consulta | lista do Brave | Manter | Remove `fbclid`, `gclid` etc. |
@@ -64,13 +64,13 @@ Legenda — **Manter**: herdar do LibreWolf. **Alterar**: o REMILIA diverge.
 
 ### Fingerprinting
 
-| Configuração | LibreWolf | REMILIA | Observações |
+| Configuração | LibreWolf | Remilia | Observações |
 |---|---|---|---|
 | `privacy.resistFingerprinting` | `true` | Manter | Compartilhado com Tor/Mullvad/LibreWolf, de modo que os usuários se misturam a um grupo maior. Efeitos colaterais: fuso horário informado como UTC, idioma informado como `en-US`, tema claro informado aos sites, tamanho de janela arredondado. Todos expostos como opções claras nas configurações. |
 | Letterboxing | desativado | Manter | |
 | WebGL | ativado (protegido pelo RFP) | Manter | Desativar o WebGL quebra mapas e 3D, e essa escolha em si pode ser usada para fingerprinting. |
 | WebGPU | desativado | Manter | |
-| Randomização própria | — | **Nunca** | Tornaria os usuários do REMILIA uma população pequena e distinta. |
+| Randomização própria | — | **Nunca** | Tornaria os usuários do Remilia uma população pequena e distinta. |
 
 Não alegamos: proteção completa contra fingerprinting. A enumeração de fontes,
 o tamanho da tela e os detalhes de hardware são reduzidos pelo RFP, não
@@ -78,7 +78,7 @@ eliminados.
 
 ### Telemetria e conexões em segundo plano
 
-| Item | REMILIA |
+| Item | Remilia |
 |---|---|
 | Telemetria | Desativada em tempo de compilação (`MOZ_TELEMETRY_REPORTING` vazio) **e** por política. |
 | Estudos / experimentos Normandy / Nimbus | Desativados (`DisableFirefoxStudies`, `DisableRemoteImprovements`). |
@@ -91,11 +91,11 @@ Contatos de rede ainda esperados, a serem listados com exatidão na Fase 4 com
 uma captura de pacotes: Remote Settings (revogação de certificados/CRLite,
 listas de bloqueio de segurança), atualizações de extensões da AMO,
 atualizações das listas de filtros do uBO, verificação de atualizações do
-REMILIA. Nenhum deles envia o histórico de navegação.
+Remilia. Nenhum deles envia o histórico de navegação.
 
 ### DNS e rede
 
-| Configuração | LibreWolf | REMILIA | Observações |
+| Configuração | LibreWolf | Remilia | Observações |
 |---|---|---|---|
 | DoH (`network.trr.mode`) | `5` (desativado) | **Avaliar** | Desativado significa que o resolvedor do sistema operacional é usado. Ativado (modo 2/3) transfere a confiança para o provedor. Proposta: desativado por padrão, com uma escolha oferecida na primeira execução. |
 | Lista de provedores de DoH | Quad9 ×2, LibreDNS ×2, Wikimedia, DNS4All | Manter + avaliar a inclusão de um provedor adequado para o Brasil | Nenhum provedor é imposto. |
@@ -117,9 +117,9 @@ REMILIA. Nenhum deles envia o histórico de navegação.
 - A barra de endereços não envia consultas a lugar nenhum até que o usuário as
   confirme.
 
-## Dados que o REMILIA nunca coleta
+## Dados que o Remilia nunca coleta
 
-O REMILIA (o projeto) não opera nenhuma analítica, nenhuma conta, nenhum
+O Remilia (o projeto) não opera nenhuma analítica, nenhuma conta, nenhum
 serviço de sincronização. A verificação de atualizações envia a requisição que
 o formato do atualizador da Mozilla exige (versão, alvo da build, canal). Essa
 requisição será documentada em [SECURITY.md](SECURITY.md) quando o servidor de
