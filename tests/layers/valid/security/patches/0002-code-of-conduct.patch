@@ -1,0 +1,15 @@
+Category: security
+Summary: fixture: edit one line of CODE_OF_CONDUCT.md
+
+TEST FIXTURE (tests/layers/README.md). Never applied to the baseline tree, never packaged.
+
+--- a/CODE_OF_CONDUCT.md
++++ b/CODE_OF_CONDUCT.md
+@@ -1,6 +1,6 @@
+ # Community Participation Guidelines
+ 
+-This repository is governed by Mozilla's code of conduct and etiquette guidelines.
++This repository is governed by Mozilla's code of conduct and etiquette guidelines. (REMILIA fixture, security 0002)
+ For more details, please read the
+ [Mozilla Community Participation Guidelines](https://www.mozilla.org/about/governance/policies/participation/).
+ 

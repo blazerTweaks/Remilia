@@ -7,7 +7,7 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [PRIVACY.md](../../PRIVACY.md)
-> - **Source revision:** sha256:3d383430b03fb0ac9e685314d8c6a73cc750d90952a99898e79c50b0e2627a8b
+> - **Source revision:** sha256:683dcc0023b4ace9a5698760b08280755c308a8e03692cca9acec2fc39cf5d1d
 <!-- /i18n:meta -->
 
 # REMILIA Browser — プライバシー
@@ -107,7 +107,7 @@ REMILIA のアップデート確認。いずれも閲覧履歴は送信しませ
 
 - デフォルトの検索プロバイダーを強制しません。提示する候補：DuckDuckGo、
   Brave Search、Startpage、Mojeek（継承）、Google、Bing。デフォルトの選択は
-  今後決定します（ADR 作成予定）。
+  今後決定します（ROADMAP の未決定事項 D1）。
 - 検索候補はデフォルトで **無効** です。有効にすると、入力した文字が選択した
   プロバイダーに送信されます。設定画面にはその旨をわかりやすく明記します。
 - アドレスバーは、ユーザーが確定するまでクエリをどこにも送信しません。

@@ -1,0 +1,3 @@
+# fixture: override LibreWolf's application name, add a new variable
+ac_add_options --with-app-name=remilia-fixture # deviation: BRAND-001
+export REMILIA_FIXTURE_BRANDING=1

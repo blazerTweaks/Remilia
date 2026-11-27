@@ -7,9 +7,10 @@
 **Project SCARLET** — a privacy-focused desktop browser built on Firefox (Gecko)
 and LibreWolf, with its own identity inspired by Remilia Scarlet.
 
-> **Status: Phase 1 (research & architecture).** There is no REMILIA build
-> yet. Nothing below is a shipped feature. Progress is tracked in
-> [ROADMAP.md](ROADMAP.md).
+> **Status: in development.** Research is done and the build infrastructure
+> exists, but there is no REMILIA build yet: the first full build is planned
+> once branding, security and privacy are integrated. Nothing below is a
+> shipped feature. Progress is tracked in [ROADMAP.md](ROADMAP.md).
 
 ## What REMILIA is
 
@@ -47,6 +48,11 @@ See [PRIVACY.md](PRIVACY.md) for what it does and does not protect against.
 REMILIA is built on Mozilla Firefox (MPL-2.0) and LibreWolf (MPL-2.0), and
 bundles uBlock Origin (GPL-3.0, distributed unmodified). "Firefox" is a Mozilla
 trademark and is not used in REMILIA's name or branding.
+
+REMILIA's own original files are licensed under the Mozilla Public License 2.0
+([LICENSE](LICENSE)). Files inherited from Firefox, LibreWolf and other
+third-party components keep their own licenses and notices, which REMILIA does
+not change.
 
 Touhou Project and Remilia Scarlet are creations of ZUN / Team Shanghai Alice.
 REMILIA is an independent fan-inspired project. It uses no official artwork, and

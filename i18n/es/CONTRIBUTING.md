@@ -7,7 +7,7 @@
 > - **Language:** es
 > - **Original language:** English
 > - **Source:** [CONTRIBUTING.md](../../CONTRIBUTING.md)
-> - **Source revision:** sha256:2264196e465502b70acd3022adfb1275a9317dc9a2ceca7b8788f556fea90b67
+> - **Source revision:** sha256:d2159a306b0c86d12c64fd3d5e3d306ebc924a3b7f6fa3b887e39d72b6f7e428
 <!-- /i18n:meta -->
 
 # Contribuir a REMILIA
@@ -25,8 +25,8 @@
 4. **Primero el upstream.** Prefiere prefs, después políticas, después
    superposición de archivos y, por último, parches de código fuente. Ver
    UPSTREAM.md.
-5. **Ninguna dependencia ni framework nuevo** sin un motivo concreto registrado
-   en un ADR. La interfaz del navegador usa las propias tecnologías de front-end
+5. **Ninguna dependencia ni framework nuevo** sin un motivo concreto, explicado
+   en el propio cambio y aceptado por el mantenedor. La interfaz del navegador usa las propias tecnologías de front-end
    de Firefox.
 6. **Nunca inventes resultados de pruebas ni benchmarks.** Registra qué se
    ejecutó, en qué compilación y en qué fecha, y qué falló.
@@ -40,24 +40,44 @@
   única categoría, `remilia/<category>/`. Un parche va en `patches/` y `series`
   de esa categoría, con una cabecera (categoría, propósito, archivos y prefs
   afectados, si se puede enviar al upstream, efecto de revertirlo). Un cambio que
-  abarca dos categorías se divide en dos.
-- Las decisiones a nivel de arquitectura llevan un registro de decisión de
-  arquitectura (ADR): Contexto, Decisión, Consecuencias, Estado.
+  abarca dos categorías se divide en dos. Los formatos exactos están en
+  `remilia/README.md`.
+- Un valor que sobrescribe a LibreWolf lleva una entrada en el `deviations.tsv`
+  de la categoría y su motivo en PRIVACY.md o SECURITY.md.
+- Las decisiones a nivel de arquitectura se presentan al mantenedor antes de
+  implementarlas, con contexto, decisión y consecuencias. Una vez adoptadas,
+  su efecto se describe en ARCHITECTURE.md.
 - Actualiza ROADMAP.md cuando cambie el estado de una tarea.
 
 ## Verificación
 
-Tras cualquier cambio que afecte a la compilación: una compilación completa y,
-después, la lista de comprobación de pruebas de humo de BUILD.md ("Verificar una
-compilación"). Tras un cambio en una pref de privacidad: vuelve a ejecutar las
-pruebas correspondientes en `tests/` y actualiza los resultados.
+En cada cambio: las comprobaciones estáticas (V0 en ROADMAP.md, "Estrategia
+de validación"). Antes de cerrar una fase: las comprobaciones de árbol (V1).
+
+```sh
+python scripts/remilia_layers.py check        # V0: categories, duplicates, deviations
+python -m unittest discover -s tests/layers   # V0: tests of the category tool
+python -m unittest discover -s tests/validation  # V0: tests of the validation harness
+python i18n/i18n.py check                     # V0: documentation translations
+./scripts/docker.sh verify                    # V1: staging trees, no compilation
+```
+
+No hace falta una compilación completa tras cada cambio; la primera llega cuando
+la imagen de marca, la seguridad y la privacidad estén integradas.
+Si un cambio solo puede validarse compilándolo, explica el motivo antes de
+iniciar la compilación.
 
 Una compilación correcta no es un navegador que funciona. Antes de calificar
-cualquier compilación como funcional, ejecuta la lista de comprobación de
-validación (ROADMAP.md, Fase 2, paso 3) y registra los resultados en
-`tests/results/` (ADR 0005).
+cualquier compilación como funcional, ejecuta la
+[lista de comprobación de validación](ROADMAP.md#lista-de-comprobación-de-validación)
+y registra los resultados en `internal/evidence/<date>-<build>/` (una carpeta
+local que Git ignora; los registros de validación nunca se incluyen en un
+commit). El trabajo que solo
+ha superado V0 y V1 queda `static-verified`, no `done`.
 
 ## Licencias
 
-Las contribuciones que afectan a archivos de Firefox o LibreWolf son MPL-2.0. La
-licencia de los archivos originales de REMILIA está pendiente (ROADMAP B5).
+Los archivos originales propios de REMILIA son MPL-2.0 ([LICENSE](../../LICENSE)).
+Las contribuciones que afectan a archivos de Firefox o LibreWolf también son
+MPL-2.0. Los archivos heredados de Firefox, LibreWolf y otros componentes de
+terceros conservan sus propias licencias y avisos; no los modifiques.

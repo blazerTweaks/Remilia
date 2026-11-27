@@ -1,0 +1,2 @@
+# fixture: a new build variable (no LibreWolf override)
+export REMILIA_FIXTURE_BUILD_FIXES=1

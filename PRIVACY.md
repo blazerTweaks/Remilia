@@ -96,7 +96,7 @@ checks. None of these sends browsing history.
 
 - No default search provider is forced. Candidates offered: DuckDuckGo, Brave
   Search, Startpage, Mojeek (inherited), Google, Bing. Default choice to be
-  decided (ADR pending).
+  decided (ROADMAP, open decision D1).
 - Search suggestions are **off** by default. When enabled, keystrokes are sent
   to the chosen provider; the setting says so in plain text.
 - The address bar does not send queries anywhere until the user submits.

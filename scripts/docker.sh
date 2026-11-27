@@ -4,6 +4,8 @@
 #   scripts/docker.sh image                 build the build-environment image
 #   scripts/docker.sh fetch|prepare|toolchains|build|package [args]
 #   scripts/docker.sh all                   fetch, prepare, toolchains, build, package
+#   scripts/docker.sh verify                V1 tree checks (no compilation; volume read-only
+#                                           except its staging/ directory)
 #   scripts/docker.sh shell                 interactive shell in the container
 #
 # Sources and object files live in Docker volumes (Linux filesystem: fast).
@@ -38,11 +40,27 @@ run() {
     "$image_tag" "$@"
 }
 
+# V1 checks: the whole build volume is mounted read-only (baseline tree, object
+# directory, downloads, LibreWolf checkout, logs); only its staging/ directory
+# is writable. The toolchain volume is not mounted at all.
+verify() {
+  docker image inspect "$image_tag" >/dev/null 2>&1 || build_image
+  mkdir -p "$root/dist"
+  docker run --rm -v remilia-builds:/builds/work "$image_tag" mkdir -p /builds/work/staging
+  docker run --rm \
+    -v remilia-builds:/builds/work:ro \
+    --mount type=volume,src=remilia-builds,dst=/builds/work/staging,volume-subpath=staging \
+    -v "$host_root:/remilia:ro" \
+    -v "$host_root/dist:/out" \
+    "$image_tag" bash /remilia/scripts/verify-tree.sh "$@"
+}
+
 cmd=${1:-}; shift || true
 case "$cmd" in
   image) build_image ;;
+  verify) verify "$@" ;;
   fetch|prepare|toolchains|build|package) run bash "/remilia/scripts/$cmd.sh" "$@" ;;
   all) for step in fetch prepare toolchains build package; do run bash "/remilia/scripts/$step.sh"; done ;;
   shell) run bash "$@" ;;
-  *) sed -n '2,10p' "$0"; exit 2 ;;
+  *) sed -n '2,12p' "$0"; exit 2 ;;
 esac

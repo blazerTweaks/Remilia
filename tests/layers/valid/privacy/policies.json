@@ -1,0 +1,14 @@
+{
+    "policies": {
+        "ExtensionSettings": {
+            "fixture-privacy@remilia.invalid": {
+                "installation_mode": "blocked"
+            },
+            "uBlock0@raymondhill.net": {
+                "installation_mode": "force_installed",
+                "install_url": "file:///fixture/uBlock0.xpi",
+                "private_browsing": true
+            }
+        }
+    }
+}

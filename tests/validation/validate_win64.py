@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
-"""REMILIA Phase 2 validation harness for a Windows x64 build (ROADMAP.md, Phase 2 step 3).
+r"""REMILIA Phase 2 validation harness for a Windows x64 build (ROADMAP.md, Phase 2 step 3).
 
 Collects *evidence* for each checklist item; it does not decide PASS/FAIL on its
 own. A human reviews results.json, the logs and the screenshots, and writes the
-verdicts into tests/results/. This tool never modifies the browser under test.
+verdicts into internal/evidence/ (local only, ignored by Git, never published).
+This tool never modifies the browser under test.
 
-Usage (Windows host):
-  python validate_win64.py --app-dir <unzipped browser dir> --exe librewolf.exe \
-      --geckodriver <geckodriver.exe> --out <evidence dir> [--zip <package.zip>] \
-      [--only package,startup,suite,profiles] [--snapshot-only]
+Usage (Windows host, from any directory):
+  python tests/validation/validate_win64.py --app-dir <unzipped browser dir> --exe librewolf.exe \
+      --geckodriver <geckodriver.exe> --out internal/evidence/<date>-<build>/ [--zip <package.zip>] \
+      [--only package,startup,suite,profiles] [--snapshot-only] [--overwrite]
 
-Requirements: Python 3.10+, selenium 4.x, pefile, geckodriver (see README.md).
+--out must be a directory inside internal/evidence/ of this repository. A
+relative --out is resolved against the repository root (found through
+upstream/pins.env), never against the current directory. The destination must
+be ignored by Git (git check-ignore) and must be empty unless --overwrite is
+given. All of this is checked before anything is written.
+
+Requirements: Python 3.10+, selenium 4.x, pefile, geckodriver, git (see README.md).
 """
 
 import argparse
@@ -29,6 +36,67 @@ import zipfile
 from pathlib import Path
 
 RESULTS = {}
+
+REPO_MARKER = ("upstream", "pins.env")
+EVIDENCE_PARTS = ("internal", "evidence")
+
+
+class OutputError(Exception):
+    """The requested --out destination is not acceptable."""
+
+
+def find_repo_root(script=__file__):
+    """Repository root (two levels above tests/validation/), or None without upstream/pins.env."""
+    root = Path(script).resolve().parents[2]
+    return root if root.joinpath(*REPO_MARKER).is_file() else None
+
+
+def git_check_ignore(repo_root, rel_posix):
+    """Exit status of 'git check-ignore -q' (0: ignored, 1: not ignored), or -1 without git."""
+    try:
+        r = subprocess.run(["git", "-C", str(repo_root), "check-ignore", "-q", "--", rel_posix],
+                           capture_output=True)
+    except FileNotFoundError:
+        return -1
+    return r.returncode
+
+
+def resolve_out(arg, repo_root, overwrite=False, check_ignore=git_check_ignore):
+    """Resolve and validate --out before anything is written. Returns the absolute directory."""
+    if repo_root is None:
+        raise OutputError("repository root not found (no upstream/pins.env two levels above this "
+                          "script); run the copy of this tool that is inside the REMILIA repository")
+    raw = str(arg)
+    p = Path(raw)
+    if p.drive and not p.is_absolute():
+        raise OutputError(f"--out {raw}: drive-relative paths are not accepted")
+    if not p.is_absolute():
+        p = Path(repo_root) / p
+    norm = Path(os.path.normpath(p))
+    root = Path(os.path.normpath(repo_root))
+    try:
+        rel = norm.relative_to(root)
+    except ValueError:
+        raise OutputError(f"--out {raw} is outside the repository; use internal/evidence/<date>-<build>/") from None
+    if rel.parts[:2] != EVIDENCE_PARTS or len(rel.parts) < 3:
+        raise OutputError(f"--out {raw} must be a directory inside internal/evidence/ "
+                          f"(resolved to {rel.as_posix() or '.'})")
+    real = norm.resolve()
+    evidence = root.joinpath(*EVIDENCE_PARTS).resolve()
+    if real == evidence or not real.is_relative_to(evidence):
+        raise OutputError(f"--out {raw} resolves outside internal/evidence/ ({real})")
+    status = check_ignore(root, rel.as_posix() + "/")
+    if status == -1:
+        raise OutputError("git not found: cannot confirm that --out is ignored by Git")
+    if status != 0:
+        raise OutputError(f"--out {rel.as_posix()} is not ignored by Git (git check-ignore exit {status}); "
+                          "refusing to write evidence that could be committed")
+    if real.exists():
+        if not real.is_dir():
+            raise OutputError(f"--out {raw} exists and is not a directory")
+        if any(real.iterdir()) and not overwrite:
+            raise OutputError(f"--out {raw} is not empty; pass --overwrite to reuse it")
+    return real
 
 
 def record(section, key, value):
@@ -689,13 +757,18 @@ def main():
     ap.add_argument("--app-dir", required=True, type=Path)
     ap.add_argument("--exe", required=True)
     ap.add_argument("--geckodriver", required=True, type=Path)
-    ap.add_argument("--out", required=True, type=Path)
+    ap.add_argument("--out", required=True,
+                    help="evidence directory inside internal/evidence/ (relative to the repository root)")
+    ap.add_argument("--overwrite", action="store_true", help="allow a non-empty --out directory")
     ap.add_argument("--zip", type=Path)
     ap.add_argument("--only", default="package,startup,suite,profiles")
     ap.add_argument("--snapshot-only", action="store_true",
                     help="only collect the Troubleshoot snapshot (used for the official Firefox reference)")
     a = ap.parse_args()
-    OUT = a.out
+    try:
+        OUT = resolve_out(a.out, find_repo_root(), a.overwrite)  # before anything is written
+    except OutputError as e:
+        ap.error(str(e))
     OUT.mkdir(parents=True, exist_ok=True)
     exe = a.app_dir / a.exe
     steps = a.only.split(",")

@@ -1,0 +1,3 @@
+# id	kind	key	reference
+PRIV-001	pref	network.trr.mode	tests/layers/README.md
+PRIV-002	policy	ExtensionSettings/uBlock0@raymondhill.net	tests/layers/README.md

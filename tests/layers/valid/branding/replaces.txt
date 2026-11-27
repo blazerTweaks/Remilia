@@ -1,0 +1,2 @@
+# Inherited files the branding fixture overwrites
+browser/branding/librewolf/locales/en-US/brand.ftl

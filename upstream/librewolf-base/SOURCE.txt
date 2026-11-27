@@ -1,0 +1,7 @@
+Verbatim copies of LibreWolf base files. Do not edit. Source: LibreWolf 161.0-1 @ e2baf3254fc7e0a0c5e283596c1ece62ce641716, tree prepared by scripts/prepare.sh (Firefox 161.0, bsys6 af13a34f7e24ac63b9228b840964e37af042579a)
+Refresh: scripts/remilia_layers.py snapshot (see remilia/README.md).
+
+16016cb5713ad2fe12fad3136b7077440f35140f350f525407bc2542e24669b9  librewolf.cfg
+f69006bd2584f461680f2899a6afd3937b91a2c6722cefd7062b1be63de312b2  policies.json
+84189784f9278068689c9d52414ac81f23499b8e42ed6e8be8165cb21d246580  mozconfig
+b2147ef46a64e6c5342080ca97b7c44fdbf8870bf27c4e77ec67c3dd1fdf9a36  patches.txt

@@ -7,7 +7,7 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [CONTRIBUTING.md](../../CONTRIBUTING.md)
-> - **Source revision:** sha256:2264196e465502b70acd3022adfb1275a9317dc9a2ceca7b8788f556fea90b67
+> - **Source revision:** sha256:d2159a306b0c86d12c64fd3d5e3d306ebc924a3b7f6fa3b887e39d72b6f7e428
 <!-- /i18n:meta -->
 
 # REMILIA へのコントリビューション
@@ -23,8 +23,8 @@
    理由とともに PRIVACY.md または SECURITY.md に記載すること。
 4. **アップストリーム優先。** pref、次にポリシー、次にファイルの上書き、最後に
    ソースパッチの順に検討する。UPSTREAM.md を参照。
-5. **新しい依存関係やフレームワークは追加しない。** ADR に具体的な理由を記録した場合を
-   除く。ブラウザの UI には Firefox 自身のフロントエンド技術を使う。
+5. **新しい依存関係やフレームワークは追加しない。** 具体的な理由を変更の中で説明し、
+   メンテナーが受け入れた場合を除く。ブラウザの UI には Firefox 自身のフロントエンド技術を使う。
 6. **テスト結果やベンチマークを捏造しない。** 何を、どのビルドで、いつ実行し、
    何が失敗したかを記録する。
 
@@ -37,22 +37,40 @@
   `remilia/<category>/` に置く。パッチはそのカテゴリーの `patches/` と `series` に
   入れ、ヘッダー（カテゴリー、目的、影響するファイルと pref、アップストリームに提出
   可能か、取り消した場合の影響）を付ける。2 つのカテゴリーにまたがる変更は 2 つに
-  分割する。
-- アーキテクチャに関わる選択は、アーキテクチャ決定記録（ADR）を作成する
-  （コンテキスト、決定、影響、ステータス）。
+  分割する。正確な形式は `remilia/README.md` にある。
+- LibreWolf の値を上書きする値は、そのカテゴリーの `deviations.tsv` にエントリーを
+  追加し、理由を PRIVACY.md または SECURITY.md に記す。
+- アーキテクチャに関わる選択は、実装の前にコンテキスト、決定、影響を添えて
+  メンテナーに提案する。採用されたら、その効果を ARCHITECTURE.md に記述する。
 - タスクのステータスが変わったら ROADMAP.md を更新する。
 
 ## 検証
 
-ビルドに関わる変更の後：フルビルドを行い、続いて BUILD.md のスモークテストの
-チェックリスト（「ビルドの検証」）を実施する。プライバシー関連の pref を変更した後：
-`tests/` の該当テストを再実行し、結果を更新する。
+変更のたびに：静的チェック（ROADMAP.md の「検証の方針」の V0）。フェーズを
+完了する前に：ツリーチェック（V1）。
+
+```sh
+python scripts/remilia_layers.py check        # V0: categories, duplicates, deviations
+python -m unittest discover -s tests/layers   # V0: tests of the category tool
+python -m unittest discover -s tests/validation  # V0: tests of the validation harness
+python i18n/i18n.py check                     # V0: documentation translations
+./scripts/docker.sh verify                    # V1: staging trees, no compilation
+```
+
+変更のたびにフルビルドを行う必要はない。
+最初のフルビルドは、ブランディング、セキュリティ、プライバシーが統合された時点で
+行う。コンパイルしないと検証できない変更は、ビルドを始める前に理由を
+説明する。
 
 ビルドの成功は、ブラウザが動作することを意味しない。どのビルドも、動作するものと
-呼ぶ前に検証チェックリスト（ROADMAP.md、フェーズ 2、ステップ 3）を実施し、結果を
-`tests/results/` に記録する（ADR 0005）。
+呼ぶ前に[検証チェックリスト](ROADMAP.md#検証チェックリスト)を実施し、結果を
+`internal/evidence/<date>-<build>/`（Git が無視するローカルのフォルダー。検証記録は
+コミットしない）に記録する。V0 と V1 にだけ合格した作業は
+`static-verified` であり、`done` ではない。
 
 ## ライセンス
 
-Firefox や LibreWolf のファイルに関わるコントリビューションは MPL-2.0 となります。
-REMILIA 独自のファイルのライセンスは未定です（ROADMAP B5）。
+REMILIA 独自のオリジナルファイルは MPL-2.0 です（[LICENSE](../../LICENSE)）。
+Firefox や LibreWolf のファイルに関わるコントリビューションも MPL-2.0 となります。
+Firefox、LibreWolf その他の第三者コンポーネントから継承したファイルは、それぞれの
+ライセンスと表示を保持します。それらを変更しないでください。

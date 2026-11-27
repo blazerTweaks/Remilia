@@ -1,9 +1,13 @@
 # Validation harness (Windows x64)
 
 `validate_win64.py` collects evidence for the validation checklist in
-ROADMAP.md (Phase 2, step 3). It does not decide PASS/FAIL. A person reviews
+ROADMAP.md ("Validation checklist"). It does not decide PASS/FAIL. A person reviews
 `results.json`, the logs and the screenshots, then writes the verdicts to
-`tests/results/<date>-<build>.md` (ADR 0005).
+`internal/evidence/<date>-<build>/`, a local folder ignored by Git; validation
+records are never committed. The record states the build identity (provenance
+file and package sha256), the machine, what was checked and how, the result,
+and anything not checked with the reason. Failures are recorded, not hidden. A
+check that cannot apply is marked not applicable with the reason, never passed.
 
 The harness only observes the browser. It never patches or reconfigures the
 build under test. The few test-only prefs it sets in its throwaway profiles are
@@ -17,6 +21,7 @@ recorded in `results.json` (`suite.test_prefs_set`).
 | selenium | 4.54.0 (`pip install "selenium==4.*"`) | PyPI |
 | pefile | 2024.8.26 | PyPI |
 | geckodriver | 0.37.1, `geckodriver-v0.37.1-win64.zip` | sha256 `dfed9315abe8d2fbc1b6161a2ee8002452e79cf05ee92fdc653a4e26bc35edd8` (GitHub release digest) |
+| git | any | — (used to confirm that `--out` is ignored by Git) |
 
 geckodriver runs with `--allow-system-access` so that chrome-context scripts
 can read Gecko's own diagnostics (Troubleshoot snapshot, AddonManager,
@@ -25,7 +30,7 @@ Downloads, profile service).
 ## Reference browser
 
 Sandbox and process-model results are compared with **official Firefox** of the
-same version, run on the same machine in `--snapshot-only` mode. For Phase 2:
+same version, run on the same machine in `--snapshot-only` mode. For Firefox 161:
 `Firefox Setup 161.0.exe` (win64, en-US) from `archive.mozilla.org`. Its
 SHA-512 matches `SHA512SUMS`, which is GPG-signed by Mozilla's release key
 `14F26682D0916CDD81E37B6D61B7B526D98F0353`, and its Authenticode signature is
@@ -33,13 +38,33 @@ valid (Mozilla Corporation). It is extracted with 7-Zip and **not installed**.
 
 ## Running
 
-```sh
-python validate_win64.py --app-dir <unzipped>/librewolf --exe librewolf.exe \
-  --geckodriver geckodriver.exe --zip <package>.win64.zip --out <evidence-dir>
+From the repository root:
 
-python validate_win64.py --app-dir <ff161>/core --exe firefox.exe \
-  --geckodriver geckodriver.exe --out <reference-dir> --snapshot-only
+```sh
+python tests/validation/validate_win64.py --app-dir <unzipped>/librewolf --exe librewolf.exe \
+  --geckodriver geckodriver.exe --zip <package>.win64.zip --out internal/evidence/<date>-<build>/
+
+python tests/validation/validate_win64.py --app-dir <ff161>/core --exe firefox.exe \
+  --geckodriver geckodriver.exe --out internal/evidence/<date>-<build>/ --snapshot-only
 ```
+
+For the reference run, `<build>` names the official Firefox build.
+
+Rules for `--out`, all checked before anything is written:
+
+- `--out` is required. A relative path is resolved against the repository
+  root (found through `upstream/pins.env`), never against the current
+  directory, so the same command gives the same destination from any
+  directory.
+- The destination must be a directory inside `internal/evidence/`, with that
+  exact case. Every other place is refused: elsewhere in the repository,
+  absolute paths outside it, and symbolic links that lead out of it.
+- Git is required: `git check-ignore` must confirm that the destination is
+  ignored, so evidence cannot be committed by accident.
+- A directory that is not empty is refused. Pass `--overwrite` to reuse it.
+
+These rules have unit tests that run on the host without a browser:
+`python -m unittest discover -s tests/validation`.
 
 Browser windows open and close on the desktop while it runs. The `startup`
 step launches the browser **without** automation and captures the screen.

@@ -5,8 +5,11 @@
 # REMILIA Browser — Architecture
 
 Project codename: **SCARLET**
-Status: Phase 2 (browser foundation) — build pipeline in progress; no REMILIA changes applied yet.
-Last reviewed: 2026-11-25
+Status: build infrastructure written and partly proven; first full build deferred
+until REMILIA's categories are integrated, so that the first full build is of
+REMILIA rather than unmodified LibreWolf. The category mechanism
+exists (Phase 3a, `static-verified`), but no REMILIA change has been applied yet.
+Last reviewed: 2026-11-26
 
 This document records *what REMILIA is built from, how the layers fit together,
 and why*.
@@ -60,8 +63,6 @@ upstream security releases cheap to absorb (see [UPSTREAM.md](UPSTREAM.md)).
 | **Overlay on a pinned LibreWolf commit** | **Chosen** | LibreWolf's own build already works as "verified Firefox tarball + ordered patch list + copied files". REMILIA repeats the same pattern one level up. Clear 4-layer separation, small diffs, easy rebase. |
 | Firefox ESR instead of Release | Rejected for now | LibreWolf tracks Release; following ESR would forfeit LibreWolf's maintenance. Revisit if REMILIA's maintainer capacity cannot keep a 4-week cadence (see §8). |
 
-Decision record: ADR-0001.
-
 ### 2.2 What LibreWolf actually is (verified 2026-11-25)
 
 Source: `https://codeberg.org/librewolf/source`, `main` at commit
@@ -105,25 +106,32 @@ Source: `https://codeberg.org/librewolf/source`, `main` at commit
 ```
 REMILIA/
 ├── upstream/               # category "upstream": pins.env (Firefox, LibreWolf,
-│                           #   l10n, bsys6, base image, Rust); LibreWolf exclusions
+│                           #   l10n, bsys6, base image, Rust); librewolf-exclude.txt;
+│                           #   librewolf-base/ (snapshot of LibreWolf's config files)
 ├── remilia/                # REMILIA changes, one directory per category
+│   ├── README.md           # the category contract checked by the tools
 │   ├── build-fixes/        # compile-only fixes, no behaviour change (layer 3)
 │   ├── security/           # sandbox, certificates, signing, updates (layer 3)
 │   ├── privacy/            # tracking, fingerprinting, cookies, DNS, telemetry,
 │   │                       #   uBlock Origin (layer 3)
 │   └── branding/           # logos, icons, colours, theme, names, UI (layer 4)
 │       # each category holds only what it needs:
-│       #   patches/ + series, prefs.cfg, policies.json, mozconfig, files/
+│       #   patches/ + series, prefs.cfg, policies.json, mozconfig, files/,
+│       #   replaces.txt, deviations.tsv
 ├── build/                  # build-environment image (windows-cross.Dockerfile)
-├── scripts/                # fetch, prepare, toolchains, build, package, docker
+├── scripts/                # fetch, prepare, toolchains, build, package, docker,
+│   │                       #   remilia_layers.py (categories), verify-tree.sh (V1)
+│   └── windows/            # host-side tools (build resource guard)
 ├── i18n/                   # documentation translations
-├── tests/                  # validation checklists and recorded results
+├── tests/                  # validation harness, category test fixtures
+│                           #   (tests/layers/)
+├── LICENSE                 # MPL-2.0, for REMILIA's own files
 └── *.md                    # this documentation set
 ```
 
-`remilia/` and `tests/` do not exist yet. They are created when they first get
-real content (Phase 3a and Phase 2 validation respectively) — no empty
-scaffolding. Category rules are in §10.
+`remilia/` holds only its contract (`README.md`) for now. Each category
+directory is created when it first gets real content (Phase 3b onwards), with
+no empty scaffolding. Category rules are in §10.
 
 ---
 
@@ -151,7 +159,7 @@ Two paths, both legitimate; see [BUILD.md](BUILD.md):
    incremental front-end changes). LibreWolf's shell scripts need the
    GNU tools that MozillaBuild ships.
 
-Phase 2 will validate both and record which one is authoritative for releases.
+Phase 5 will validate both and record which one is authoritative for releases.
 Expectation: Docker cross-compile for releases, native for iteration.
 
 ---
@@ -202,8 +210,6 @@ in [SECURITY.md](SECURITY.md).
   Rule: no statistic is displayed that the blocker did not produce. Firefox's
   own ETP panel already reports real per-site tracker counts and stays.
 
-Decision record: ADR-0003.
-
 ---
 
 ## 7. Updates
@@ -234,7 +240,7 @@ Realistic requirements:
 
 - **Per release:** bump pins, re-run patch series, fix rejects, full build
   (≈1.5–3 h on a 6-core Ryzen 5 3600 for an optimized build, to be measured in
-  Phase 2), smoke tests, sign, publish.
+  Phase 5), smoke tests, sign, publish.
 - **Target:** security releases published within **72 hours** of LibreWolf's.
   If that cannot be met reliably, users must be told plainly; an outdated
   privacy browser is a security liability.
@@ -261,7 +267,7 @@ Details: [UPSTREAM.md](UPSTREAM.md).
 
 Every REMILIA change belongs to exactly one category. Categories are isolated
 so that each can be reviewed, debugged, reverted and re-synchronized with
-upstream on its own (ADR-0004).
+upstream on its own.
 
 | Category | Covers | Location |
 |---|---|---|
@@ -281,14 +287,22 @@ Rules:
 - Firefox reads one AutoConfig file, one `distribution/policies.json` and one
   `mozconfig`. `prepare.sh` assembles them from the category fragments, with a
   header per category, and fails if two categories set the same pref or policy.
+- A value that overrides LibreWolf needs a registered deviation
+  (`deviations.tsv`) pointing to its written reason, and must keep the
+  function LibreWolf used (`pref`, `defaultPref`, `lockPref`). Redefining a
+  pref LibreWolf locks is marked `runtime-unverified` until a running browser
+  confirms its effect.
 - Fixed application order: build-fixes → security → privacy → branding. Any
   subset can be applied, so each category can be built and validated alone,
   and a regression can be bisected to a category.
 - Every patch header records: category, purpose, files and prefs touched,
   whether it can be upstreamed, and what reverting it changes.
 
-The assembly and subset selection in `prepare.sh` are Phase 3a work; today
-`prepare.sh` applies no REMILIA layer.
+Implementation (Phase 3a): `prepare.sh` with `REMILIA_LAYERS`, and
+`scripts/remilia_layers.py` for the checks and the assembly. The contract is
+`remilia/README.md`. Deviations are checked against a snapshot of LibreWolf's
+configuration files in `upstream/librewolf-base/`, so the static checks run
+without Docker.
 
 ---
 
@@ -296,8 +310,18 @@ The assembly and subset selection in `prepare.sh` are Phase 3a work; today
 
 A successful compilation proves that the build infrastructure works. It does
 not make a usable browser. No build is described as functional until it passes
-the validation checklist in [ROADMAP.md](ROADMAP.md) (Phase 2, step 3), with the
-results recorded in `tests/results/`
-(ADR-0005). Each
-category introduced later repeats the checklist twice: with that category alone,
-and with all categories applied.
+the validation checklist in [ROADMAP.md](ROADMAP.md#validation-checklist), with
+the results recorded as described in `tests/validation/README.md`.
+Validation records are kept locally by the maintainer and are not published
+in this repository.
+
+The first full build is deferred until branding, security and privacy are
+integrated. Until then, changes are checked without compiling:
+static checks on every change (V0) and a fresh, per-category tree preparation
+before each phase closes (V1). V1 prepares separate staging trees in
+`staging/` inside the build volume. The rest of the volume, with the preserved
+tree and its object directory, is mounted read-only while V1 runs. Work that
+passed only V0 and V1 is
+`static-verified`, never `done`. The full build (V2) and the checklist (V3)
+come in ROADMAP Phase 5. Whether each category also gets a full build of its
+own there is a Phase 5 decision; `REMILIA_LAYERS` (§10) makes it possible.

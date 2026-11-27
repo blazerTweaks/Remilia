@@ -23,9 +23,55 @@ BSYS6_DIR="$WORK/bsys6"
 LOGS="$WORK/logs"
 MOZ_TARGET="x86_64-pc-windows-msvc"
 
+# Staging trees (prepare.sh --staging, V1 checks) live here and nowhere else.
+# Outside the LibreWolf checkout, so its `git clean` can never reach them.
+STAGING_ROOT="$WORK/staging"
+STAGING_MARKER=".remilia-staging"
+# The preserved baseline and its inputs. Staging code refuses to delete any of
+# them or anything that contains them.
+PROTECTED_DIRS=("$WORK" "$DOWNLOADS" "$LW_DIR" "$FF_PRISTINE" "$SRC" "$L10N_DIR" "$BSYS6_DIR" "$LOGS")
+
 log()  { printf '\033[1;31m==>\033[0m %s\n' "$*" >&2; }
 die()  { printf '\033[1;31mERROR:\033[0m %s\n' "$*" >&2; exit 1; }
 need() { for c in "$@"; do command -v "$c" >/dev/null || die "missing command: $c"; done; }
+
+# assert_staging_dir <dir>: dies unless <dir> is a direct child of $STAGING_ROOT
+# that is not, and does not contain, any protected directory.
+assert_staging_dir() {
+  local d=${1:-} real root p
+  [ -n "$d" ] || die "refusing: empty staging path"
+  real=$(realpath -m -- "$d")
+  root=$(realpath -m -- "$STAGING_ROOT")
+  case "$real" in
+    "$root"/*/*|"$root"/) die "refusing: $real is not a direct child of $root" ;;
+    "$root"/?*) ;;
+    *) die "refusing: $real is not inside $root" ;;
+  esac
+  for p in "${PROTECTED_DIRS[@]}"; do
+    p=$(realpath -m -- "$p")
+    case "$p/" in "$real"/*) die "refusing: $real is or contains protected $p" ;; esac
+  done
+}
+
+# staging_remove <dir>: validated removal of a staging tree created by staging_create.
+staging_remove() {
+  local d=${1:-}
+  assert_staging_dir "$d"
+  [ -e "$d" ] || [ -L "$d" ] || return 0
+  [ ! -L "$d" ] || die "refusing: $d is a symlink"
+  [ -f "$d/$STAGING_MARKER" ] || die "refusing to delete $d: it has no $STAGING_MARKER marker"
+  log "removing staging tree $d"
+  rm -rf --one-file-system -- "$d"
+}
+
+# staging_create <dir>: fresh, empty, marked staging directory.
+staging_create() {
+  local d=${1:-}
+  staging_remove "$d"
+  mkdir -p -- "$d"
+  printf 'REMILIA staging tree created %s by %s. Never built or packaged; safe to delete.\n' \
+    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$0" >"$d/$STAGING_MARKER"
+}
 
 # git_at_commit <repo-url> <commit> <dir> [--blobless]
 # Ensures <dir> is a git checkout whose HEAD is exactly <commit>.

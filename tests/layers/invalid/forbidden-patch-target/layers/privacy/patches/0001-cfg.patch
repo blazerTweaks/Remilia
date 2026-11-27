@@ -1,0 +1,8 @@
+Category: privacy
+Summary: fixture: forbidden target
+
+--- a/lw/librewolf.cfg
++++ b/lw/librewolf.cfg
+@@ -1 +1,2 @@
+ 
++defaultPref("x", 1);
