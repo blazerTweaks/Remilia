@@ -7,10 +7,10 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [CONTRIBUTING.md](../../CONTRIBUTING.md)
-> - **Source revision:** sha256:d2159a306b0c86d12c64fd3d5e3d306ebc924a3b7f6fa3b887e39d72b6f7e428
+> - **Source revision:** sha256:b5ac924c1175ab8aea06d732c1e42d22a068a209da050a76dbc932fb21f3cc43
 <!-- /i18n:meta -->
 
-# Contribuindo com o REMILIA
+# Contribuindo com o Remilia
 
 ## Regras básicas
 
@@ -35,7 +35,7 @@
 - Commits pequenos, com uma preocupação e uma categoria cada (upstream,
   correções de build, segurança, privacidade, branding; ARCHITECTURE.md §10). A
   mensagem explica o *porquê*.
-- Novo patch, pref ou política do REMILIA: coloque-o no diretório da sua única
+- Novo patch, pref ou política do Remilia: coloque-o no diretório da sua única
   categoria, `remilia/<category>/`. Um patch vai para `patches/` e `series`
   dessa categoria, com um cabeçalho (categoria, propósito, arquivos e prefs
   afetados, se pode ir para o upstream, efeito de revertê-lo). Uma mudança que
@@ -76,7 +76,7 @@ V1 fica `static-verified`, não `done`.
 
 ## Licenciamento
 
-Os arquivos originais do próprio REMILIA são MPL-2.0 ([LICENSE](../../LICENSE)).
+Os arquivos originais do próprio Remilia são MPL-2.0 ([LICENSE](../../LICENSE)).
 Contribuições que alteram arquivos do Firefox ou do LibreWolf também são
 MPL-2.0. Os arquivos herdados do Firefox, do LibreWolf e de outros componentes
 de terceiros mantêm suas próprias licenças e avisos; não os altere.

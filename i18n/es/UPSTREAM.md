@@ -7,23 +7,23 @@
 > - **Language:** es
 > - **Original language:** English
 > - **Source:** [UPSTREAM.md](../../UPSTREAM.md)
-> - **Source revision:** sha256:928a4476b63ce5794056918ae2ad2afdbffbb1132346c2eb913cabf00f5beb2d
+> - **Source revision:** sha256:3c4f0985bab48033d659032e6d03434aa9446a54fbe4aa7198fa802704873f76
 <!-- /i18n:meta -->
 
 # Sincronización con el upstream
 
-REMILIA deriva de dos proyectos. Mantenerse al día con ellos es la tarea de
+Remilia deriva de dos proyectos. Mantenerse al día con ellos es la tarea de
 mantenimiento continua más importante, porque casi todas las correcciones de
 seguridad llegan desde el upstream.
 
 ## Capas
 
-| Capa | Origen | Fijada en | ¿La edita REMILIA? |
+| Capa | Origen | Fijada en | ¿La edita Remilia? |
 |---|---|---|---|
 | 1. Firefox | `archive.mozilla.org/pub/firefox/releases/<ver>/source/` (tarball firmado con GPG). Repositorio canónico: `github.com/mozilla-firefox/firefox` | `upstream/pins.env` → `FIREFOX_VERSION` | Nunca directamente; solo mediante parches de la capa 3 |
-| 2. LibreWolf | `codeberg.org/librewolf/source` (parches, ajustes, scripts de compilación) | `upstream/pins.env` → `LIBREWOLF_COMMIT` | Nunca; REMILIA superpone sus cambios encima |
-| 3. Correcciones de compilación, seguridad y privacidad de REMILIA | `remilia/build-fixes/`, `remilia/security/`, `remilia/privacy/` (una categoría cada uno, ARCHITECTURE.md §10) | — | Sí |
-| 4. Imagen de marca de REMILIA | `remilia/branding/` | — | Sí |
+| 2. LibreWolf | `codeberg.org/librewolf/source` (parches, ajustes, scripts de compilación) | `upstream/pins.env` → `LIBREWOLF_COMMIT` | Nunca; Remilia superpone sus cambios encima |
+| 3. Correcciones de compilación, seguridad y privacidad de Remilia | `remilia/build-fixes/`, `remilia/security/`, `remilia/privacy/` (una categoría cada uno, ARCHITECTURE.md §10) | — | Sí |
+| 4. Imagen de marca de Remilia | `remilia/branding/` | — | Sí |
 
 ## Ciclos de publicación que hay que seguir
 
@@ -33,30 +33,30 @@ seguridad llegan desde el upstream.
 - LibreWolf: etiquetas `<firefox-version>-<lw-release>` (por ejemplo, `161.0-1`),
   normalmente pocos días después de Firefox.
 - uBlock Origin: independiente; se actualiza a través de AMO, sin relación con
-  las versiones de REMILIA.
+  las versiones de Remilia.
 
 ## Procedimiento de actualización
 
 1. Aparece una nueva etiqueta de LibreWolf para una nueva versión de Firefox.
 2. Actualiza `upstream/pins.env`: `FIREFOX_VERSION`, `LIBREWOLF_COMMIT`, `LIBREWOLF_TAG`.
 3. `./scripts/fetch.sh`, que verifica la firma GPG de Mozilla y el hash del commit.
-4. `./scripts/prepare.sh`. Se niega a aplicar las categorías de REMILIA
+4. `./scripts/prepare.sh`. Se niega a aplicar las categorías de Remilia
    mientras `upstream/librewolf-base/` difiera de los nuevos archivos de
-   LibreWolf. Si un parche de REMILIA no se aplica:
+   LibreWolf. Si un parche de Remilia no se aplica:
    - actualízalo contra el nuevo árbol;
    - si el código que modifica cambió de significado, revisa la cabecera de
      propósito del parche y rehazlo. No lo fuerces.
 5. Actualiza la instantánea de la base de LibreWolf con
    `scripts/remilia_layers.py snapshot` y revisa su diff: `librewolf.cfg`,
    `policies.json`, `mozconfig` y `patches.txt`. Revisa cada pref cambiada
-   frente a PRIVACY.md y SECURITY.md, porque las sobrescrituras de REMILIA
+   frente a PRIVACY.md y SECURITY.md, porque las sobrescrituras de Remilia
    pueden ahora entrar en conflicto con el upstream o duplicarlo. Después
    ejecuta `python scripts/remilia_layers.py check`.
 6. Comprobaciones de árbol (`./scripts/docker.sh verify`); después compila,
    ejecuta la lista de comprobación de validación, empaqueta, firma y publica.
 7. Las notas de la versión enumeran los avisos MFSA incluidos.
 
-## Reglas para los parches de REMILIA
+## Reglas para los parches de Remilia
 
 - Un asunto y una categoría por parche (ARCHITECTURE.md §10). Una cabecera
   indica: categoría, propósito, prefs/archivos afectados, si podría enviarse a
@@ -74,7 +74,7 @@ seguridad llegan desde el upstream.
   aparezca exactamente una vez en `patches.txt`, y el motivo; una línea en el
   formato antiguo, con un identificador de decisión en lugar del motivo, se
   rechaza. La lista está vacía para LibreWolf 161.0-1.
-- Las correcciones que no son específicas de REMILIA se proponen primero al
+- Las correcciones que no son específicas de Remilia se proponen primero al
   upstream.
 
 ## Cambio de marca de un árbol de LibreWolf: puntos de contacto
@@ -101,7 +101,7 @@ minúsculas. Qué no cubre:
   (`remilia/README.md`, "What the checks cover"). Es trabajo pendiente para
   las Fases 3b, 4a y 4b.
 
-La Fase 3b cambia a REMILIA la identidad que ve el usuario: nombre, iconos,
+La Fase 3b cambia a Remilia la identidad que ve el usuario: nombre, iconos,
 interfaz, ejecutables y perfil. Los nombres internos se quedan: el directorio
 `lw/`, el nombre de archivo `librewolf.cfg` y el espacio de nombres de prefs
 `librewolf.*`. Renombrarlos haría que la seguridad y la privacidad dependieran
@@ -111,7 +111,7 @@ de la imagen de marca.
 |---|---|---|---|
 | Nombre de la aplicación, directorio de marca, nombre de remoting | `mozconfig` líneas 21, 23, 30; `browser/branding/librewolf/configure.sh` líneas 8–11; valores por defecto de vendor y nombre de aplicación en `toolkit/moz.configure` líneas 23, 37 | Imagen de marca (desviaciones de `mozconfig`) | 3b |
 | ID de distribución `net.librewolf` | `mozconfig` línea 22 | Imagen de marca | 3b, depende de B1 |
-| Directorio de marca: iconos (`.ico`, `.png`, `.icns`, `.bmp`), logotipo, `brand.ftl`, `brand.dtd`, `brand.properties`, `branding.nsi` | `browser/branding/librewolf/` (42 entradas, copiadas por `patch.sh` desde `themes/` de LibreWolf) | Imagen de marca: un nuevo directorio de marca de REMILIA; el de LibreWolf no se edita | 3b |
+| Directorio de marca: iconos (`.ico`, `.png`, `.icns`, `.bmp`), logotipo, `brand.ftl`, `brand.dtd`, `brand.properties`, `branding.nsi` | `browser/branding/librewolf/` (42 entradas, copiadas por `patch.sh` desde `themes/` de LibreWolf) | Imagen de marca: un nuevo directorio de marca de Remilia; el de LibreWolf no se edita | 3b |
 | Manifiesto del ejecutable | `browser/app/librewolf.exe.manifest` líneas 6, 9 | Imagen de marca | 3b |
 | Nombres de los directorios de perfil y de datos | `toolkit/xre/nsXREDirProvider.cpp` líneas 337, 430, 432, 1010, 1307, 1317 (`profile-directory.patch`, `mozilla-dirs.patch`); carpeta de copia de seguridad `browser/components/backup/BackupService.sys.mjs` línea 661 | Imagen de marca | 3b |
 | Archivo de sobrescrituras del usuario `librewolf.overrides.cfg`, leído del perfil | `extensions/pref/autoconfig/src/prefcalls.js` líneas 25–54 | Abierto: nombre de archivo visible para el usuario dentro del mecanismo interno de AutoConfig | Decisión de 3b |

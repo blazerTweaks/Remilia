@@ -7,42 +7,42 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [ARCHITECTURE.md](../../ARCHITECTURE.md)
-> - **Source revision:** sha256:0a67ffd6d7c69a8fda3bf872c3e6b6e505e5db82ad402287610c01a001c2bb3e
+> - **Source revision:** sha256:749aef02a89ed2ddfeeb6202e0487524bf84dc23a38b321e9f117c767f87d7fd
 <!-- /i18n:meta -->
 
-# REMILIA Browser — Arquitetura
+# Remilia Browser — Arquitetura
 
 Codinome do projeto: **SCARLET**
 Status: infraestrutura de build escrita e parcialmente comprovada; primeira build
-completa adiada até que as categorias do REMILIA estejam integradas, para que
-a primeira build completa seja do REMILIA, e não do LibreWolf sem modificações.
+completa adiada até que as categorias do Remilia estejam integradas, para que
+a primeira build completa seja do Remilia, e não do LibreWolf sem modificações.
 O mecanismo de categorias existe (Fase 3a, `static-verified`), mas nenhuma
-mudança do REMILIA foi aplicada ainda.
+mudança do Remilia foi aplicada ainda.
 Última revisão: 2026-11-26
 
-Este documento registra *a partir do que o REMILIA é construído, como as
+Este documento registra *a partir do que o Remilia é construído, como as
 camadas se encaixam e por quê*.
 
 ---
 
 ## 1. Resumo
 
-O REMILIA é uma **build derivada (downstream) do Firefox (Gecko)**, construída
+O Remilia é uma **build derivada (downstream) do Firefox (Gecko)**, construída
 sobre **o conjunto de patches e a configuração de privacidade do LibreWolf**,
 com uma camada fina, mantida separadamente, de patches, configurações e
-branding do REMILIA.
+branding do Remilia.
 
-O REMILIA **não** contém um motor de navegador próprio, não encapsula uma
+O Remilia **não** contém um motor de navegador próprio, não encapsula uma
 WebView e não é um aplicativo Electron. Toda página é renderizada pelo Gecko,
 toda requisição passa pelo Necko (a pilha de rede do Firefox) e todo processo de
 conteúdo roda dentro da sandbox do Firefox para Windows.
 
 ```
 ┌───────────────────────────────────────────────────────────────┐
-│ Layer 4  REMILIA branding & assets                            │
+│ Layer 4  Remilia branding & assets                            │
 │          icons, wordmark, about pages, installer art, theme   │
 ├───────────────────────────────────────────────────────────────┤
-│ Layer 3  REMILIA build-fixes, security, privacy               │
+│ Layer 3  Remilia build-fixes, security, privacy               │
 │          one directory per category: patches, prefs,          │
 │          policies, mozconfig; applied/reverted separately     │
 ├───────────────────────────────────────────────────────────────┤
@@ -70,15 +70,15 @@ barato absorver as versões de segurança do upstream (veja
 | Escrever um motor | Rejeitada | Inviável; explicitamente proibido pelas regras do projeto. |
 | Chromium / CEF / Electron | Rejeitada | O objetivo do projeto é um navegador Gecko; uma base Chromium perderia a compatibilidade com extensões do Firefox, a Proteção Total de Cookies e o RFP, e não oferece nenhum benefício documentado para esses objetivos. |
 | Fork direto do Firefox (mozilla-firefox/firefox) | Rejeitada como base principal | Exigiria refazer tudo o que o LibreWolf já mantém (remoção de telemetria, 68 patches, configurações). Mantido como o *upstream do upstream*. |
-| **Fork do LibreWolf via git fork de `librewolf/source`** | Rejeitada | Conflitos de merge a cada versão de 4 semanas; as mudanças do REMILIA ficariam intercaladas com o histórico do LibreWolf, tornando a procedência confusa. |
-| **Camada sobre um commit fixado do LibreWolf** | **Escolhida** | A própria build do LibreWolf já funciona como "tarball verificado do Firefox + lista ordenada de patches + arquivos copiados". O REMILIA repete o mesmo padrão um nível acima. Separação clara em 4 camadas, diffs pequenos, rebase fácil. |
-| Firefox ESR em vez do Release | Rejeitada por enquanto | O LibreWolf acompanha o Release; seguir o ESR significaria abrir mão da manutenção do LibreWolf. Reavaliar se a capacidade dos mantenedores do REMILIA não sustentar o ciclo de 4 semanas (veja §8). |
+| **Fork do LibreWolf via git fork de `librewolf/source`** | Rejeitada | Conflitos de merge a cada versão de 4 semanas; as mudanças do Remilia ficariam intercaladas com o histórico do LibreWolf, tornando a procedência confusa. |
+| **Camada sobre um commit fixado do LibreWolf** | **Escolhida** | A própria build do LibreWolf já funciona como "tarball verificado do Firefox + lista ordenada de patches + arquivos copiados". O Remilia repete o mesmo padrão um nível acima. Separação clara em 4 camadas, diffs pequenos, rebase fácil. |
+| Firefox ESR em vez do Release | Rejeitada por enquanto | O LibreWolf acompanha o Release; seguir o ESR significaria abrir mão da manutenção do LibreWolf. Reavaliar se a capacidade dos mantenedores do Remilia não sustentar o ciclo de 4 semanas (veja §8). |
 
 ### 2.2 O que o LibreWolf realmente é (verificado em 2026-11-25)
 
 Fonte: `https://codeberg.org/librewolf/source`, `main` no commit
 `ed92167b4c56` (Makefile `VERSION = 161.0`, `RELEASE = 1`). A tag de release
-`161.0-1` é o commit `e2baf3254fc7`; o REMILIA fixa a tag, não a `main`.
+`161.0-1` é o commit `e2baf3254fc7`; o Remilia fixa a tag, não a `main`.
 
 - **Entrada da build:** `firefox-<ver>.source.tar.xz` de `archive.mozilla.org`,
   verificado com `gpg --verify` contra `assets/MOZILLA_PUBKEY.asc`.
@@ -119,11 +119,11 @@ Fonte: `https://codeberg.org/librewolf/source`, `main` no commit
 ## 3. Estrutura do repositório (alvo)
 
 ```
-REMILIA/
+Remilia/
 ├── upstream/               # category "upstream": pins.env (Firefox, LibreWolf,
 │                           #   l10n, bsys6, base image, Rust); librewolf-exclude.txt;
 │                           #   librewolf-base/ (snapshot of LibreWolf's config files)
-├── remilia/                # REMILIA changes, one directory per category
+├── remilia/                # Remilia changes, one directory per category
 │   ├── README.md           # the category contract checked by the tools
 │   ├── build-fixes/        # compile-only fixes, no behaviour change (layer 3)
 │   ├── security/           # sandbox, certificates, signing, updates (layer 3)
@@ -140,7 +140,7 @@ REMILIA/
 ├── i18n/                   # documentation translations
 ├── tests/                  # validation harness, category test fixtures
 │                           #   (tests/layers/)
-├── LICENSE                 # MPL-2.0, for REMILIA's own files
+├── LICENSE                 # MPL-2.0, for Remilia's own files
 └── *.md                    # this documentation set
 ```
 
@@ -157,8 +157,8 @@ na §10.
 fetch   → firefox-161.0.source.tar.xz (+ .asc)      gpg --verify (Mozilla key)
         → librewolf/source @ <pinned commit>         git, commit hash checked
 prepare → LibreWolf patch.sh on a pristine copy       = layer 2 applied
-        → REMILIA patch series + file overlays        = layers 3 + 4 applied
-build   → ./mach build   (mozconfig: LW base + REMILIA overrides)
+        → Remilia patch series + file overlays        = layers 3 + 4 applied
+build   → ./mach build   (mozconfig: LW base + Remilia overrides)
 package → ./mach package → zip → NSIS installer, .mar update files
 ```
 
@@ -194,7 +194,7 @@ configurados, nunca reimplementados:
 | DNS | TRR do Firefox (DoH) — desativado por padrão, provedores selecionáveis |
 | Transporte | Modo Somente HTTPS ativado, CRLite obrigatório, 0-RTT desativado |
 
-A avaliação completa de cada configuração, incluindo os pontos em que o REMILIA
+A avaliação completa de cada configuração, incluindo os pontos em que o Remilia
 **diverge** deliberadamente do LibreWolf, está em [PRIVACY.md](PRIVACY.md). As
 diferenças relevantes para a segurança estão em [SECURITY.md](SECURITY.md).
 
@@ -203,7 +203,7 @@ diferenças relevantes para a segurança estão em [SECURITY.md](SECURITY.md).
 ## 6. Arquitetura de bloqueio de anúncios
 
 - **Motor:** uBlock Origin, sem modificações, a build assinada pela AMO. O
-  REMILIA nunca faz fork nem reempacota o código do uBO, então o motor de
+  Remilia nunca faz fork nem reempacota o código do uBO, então o motor de
   filtragem, o popup com contagens reais de requisições por site e o painel de
   controle são todos do próprio uBO.
 - **Distribuição:** o `.xpi` assinado (versão fixada + SHA-256) é colocado em
@@ -213,7 +213,7 @@ diferenças relevantes para a segurança estão em [SECURITY.md](SECURITY.md).
   normal de atualizações assinadas da AMO. A verificação de assinatura continua
   obrigatória.
 - **Listas padrão:** definidas por meio do mecanismo suportado pelo uBO,
-  `adminSettings.assetsBootstrapLocation` → um `assets.json` do REMILIA.
+  `adminSettings.assetsBootstrapLocation` → um `assets.json` do Remilia.
   Isso define apenas os *padrões da primeira instalação*; o usuário mantém
   controle total. **Não** `toOverwrite.filterLists`: o `restoreAdminSettings()`
   do uBO reaplica isso a cada inicialização (verificado em `src/js/storage.js`),
@@ -222,10 +222,10 @@ diferenças relevantes para a segurança estão em [SECURITY.md](SECURITY.md).
   dedicada ao Brasil; a lista regional que cobre pt-BR é `spa-1` (AdGuard
   Spanish/Portuguese). O uBO ativa listas regionais automaticamente a partir de
   `navigator.language`, mas o RFP falsifica esse valor como `en-US`, então o
-  REMILIA precisa ativar `spa-1` explicitamente no seu manifesto de assets.
+  Remilia precisa ativar `spa-1` explicitamente no seu manifesto de assets.
   Listas comunitárias brasileiras adicionais serão avaliadas na Fase 5.
 - **Popup:** a Fase 5 decide entre (a) usar o próprio popup do uBO como painel
-  de "proteção" da barra de ferramentas, ou (b) um painel do REMILIA que lê
+  de "proteção" da barra de ferramentas, ou (b) um painel do Remilia que lê
   apenas os dados expostos pelo uBO. Regra: nenhuma estatística é exibida se não
   tiver sido produzida pelo bloqueador. O painel de ETP do próprio Firefox já
   informa contagens reais de rastreadores por site e permanece.
@@ -234,16 +234,16 @@ diferenças relevantes para a segurança estão em [SECURITY.md](SECURITY.md).
 
 ## 7. Atualizações
 
-O REMILIA usa **o próprio atualizador da Mozilla** (arquivos MAR +
+O Remilia usa **o próprio atualizador da Mozilla** (arquivos MAR +
 `update.xml`), o mesmo mecanismo que o LibreWolf usa hoje, com **identidade
-própria do REMILIA**:
+própria do Remilia**:
 
-- Par de chaves de assinatura MAR do REMILIA; as chaves públicas substituem as
+- Par de chaves de assinatura MAR do Remilia; as chaves públicas substituem as
   do LibreWolf em `release_primary.der` / `release_secondary.der`. **Compilar a
-  árvore do LibreWolf sem modificações faria o REMILIA aceitar atualizações
+  árvore do LibreWolf sem modificações faria o Remilia aceitar atualizações
   assinadas pelo LibreWolf e consultar `update.librewolf.net` — isso precisa ser
   substituído antes de qualquer build pública.**
-- `MOZ_APPUPDATE_HOST` → um host controlado pelo REMILIA (domínio ainda não
+- `MOZ_APPUPDATE_HOST` → um host controlado pelo Remilia (domínio ainda não
   escolhido — veja os bloqueios no ROADMAP).
 - As atualizações nunca mexem no diretório do perfil; os dados do usuário são
   migrados apenas pelo código de migração de perfil do próprio Firefox.
@@ -257,8 +257,8 @@ AMO.
 
 O Firefox lança uma versão principal a cada **4 semanas**, além de versões
 pontuais de segurança não programadas ("chemspill"). O LibreWolf normalmente
-acompanha em poucos dias. A latência do REMILIA até os usuários = latência do
-LibreWolf + rebase do REMILIA + build + publicação.
+acompanha em poucos dias. A latência do Remilia até os usuários = latência do
+LibreWolf + rebase do Remilia + build + publicação.
 
 Requisitos realistas:
 
@@ -270,7 +270,7 @@ Requisitos realistas:
   LibreWolf. Se isso não puder ser cumprido de forma confiável, os usuários
   devem ser avisados claramente; um navegador de privacidade desatualizado é um
   risco de segurança.
-- **Orçamento de patches:** manter os patches de código-fonte do REMILIA poucos
+- **Orçamento de patches:** manter os patches de código-fonte do Remilia poucos
   e pequenos. Preferir prefs, políticas e sobreposição de arquivos a diffs em
   C++/JS. Todo patch tem um cabeçalho informando propósito, camada e se pode ser
   enviado ao upstream.
@@ -283,7 +283,7 @@ Detalhes: [UPSTREAM.md](UPSTREAM.md).
 
 - Nenhum código próprio de renderização, rede, criptografia ou sandbox.
 - Nenhuma "randomização" própria de fingerprinting que tornaria os usuários do
-  REMILIA uma população pequena e distinguível.
+  Remilia uma população pequena e distinguível.
 - Nenhum framework de frontend ou bundler (nada de React, nada de Vite). As
   mudanças na interface do navegador são feitas no próprio front-end do Firefox
   em XHTML/CSS/JS/Fluent.
@@ -293,13 +293,13 @@ Detalhes: [UPSTREAM.md](UPSTREAM.md).
 
 ## 10. Categorias de mudança
 
-Toda mudança do REMILIA pertence a exatamente uma categoria. As categorias são
+Toda mudança do Remilia pertence a exatamente uma categoria. As categorias são
 isoladas para que cada uma possa ser revisada, depurada, revertida e
 ressincronizada com o upstream de forma independente.
 
 | Categoria | Abrange | Local |
 |---|---|---|
-| Upstream | Firefox e LibreWolf, sem modificações; pins; patches do LibreWolf que o REMILIA exclui | `upstream/` |
+| Upstream | Firefox e LibreWolf, sem modificações; pins; patches do LibreWolf que o Remilia exclui | `upstream/` |
 | Correções de build | Mudanças necessárias apenas para compilar; nenhuma mudança de comportamento | `remilia/build-fixes/` |
 | Segurança | Sandbox, certificados, validação HTTPS, assinaturas, proteção de processos, atualizações | `remilia/security/` |
 | Privacidade | Proteção contra rastreamento, fingerprinting, cookies, DNS, telemetria, bloqueio de conteúdo (uBlock Origin) | `remilia/privacy/` |

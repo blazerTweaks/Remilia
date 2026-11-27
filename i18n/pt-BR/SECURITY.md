@@ -7,23 +7,23 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [SECURITY.md](../../SECURITY.md)
-> - **Source revision:** sha256:a93382773a101575a8d0edac736d9c03534c00051f0870bfca987ba98d37c1a1
+> - **Source revision:** sha256:49897316889797b3935a17c3227f452cbcc1931e7f575a47ffdd0e014a61900a
 <!-- /i18n:meta -->
 
-# REMILIA Browser — Segurança
+# Remilia Browser — Segurança
 
-Status: **apenas design.** Ainda não existe nenhuma build do REMILIA.
+Status: **apenas design.** Ainda não existe nenhuma build do Remilia.
 
 Privacidade e segurança são coisas diferentes. Uma configuração de privacidade
 nunca deve enfraquecer a arquitetura de segurança do Firefox. Este arquivo
-lista toda modificação relevante para a segurança que o REMILIA faz ou herda,
+lista toda modificação relevante para a segurança que o Remilia faz ou herda,
 com sua justificativa.
 
 ## Como relatar vulnerabilidades
 
 Até que exista um canal dedicado, relate de forma privada ao mantenedor. Não
 abra issues públicas para vulnerabilidades. Vulnerabilidades do motor pertencem
-ao upstream (Bugzilla da Mozilla, grupo de segurança); o REMILIA distribuirá a
+ao upstream (Bugzilla da Mozilla, grupo de segurança); o Remilia distribuirá a
 correção quando a versão do upstream que a contém for lançada.
 
 ## Preservado sem alterações
@@ -53,12 +53,12 @@ correção quando a versão do upstream que a contém for lançada.
 | `network.IDN_show_punycode = true` | Proteção contra homógrafos. |
 | `pdfjs.enableScripting = false` | Sem JS no visualizador de PDF. |
 
-## Divergências do REMILIA em relação ao LibreWolf (motivadas por segurança)
+## Divergências do Remilia em relação ao LibreWolf (motivadas por segurança)
 
-| # | LibreWolf | REMILIA (planejado) | Motivo |
+| # | LibreWolf | Remilia (planejado) | Motivo |
 |---|---|---|---|
 | S1 | `MOZ_REQUIRE_SIGNING=` (vazio): extensões não assinadas podem ser ativadas por uma pref | Manter o padrão da Mozilla: assinatura **obrigatória**, sem possibilidade de anulação por pref | Impede a instalação de extensões adulteradas ou não assinadas. Desenvolvedores ainda podem carregar complementos temporários pelo `about:debugging`. |
-| S2 | Inclui as chaves públicas de assinatura MAR do LibreWolf; host de atualização `update.librewolf.net` | Chaves MAR e host de atualização próprios do REMILIA | Um binário do REMILIA deve aceitar apenas atualizações assinadas pelo REMILIA. Obrigatório antes de qualquer build pública. |
+| S2 | Inclui as chaves públicas de assinatura MAR do LibreWolf; host de atualização `update.librewolf.net` | Chaves MAR e host de atualização próprios do Remilia | Um binário do Remilia deve aceitar apenas atualizações assinadas pelo Remilia. Obrigatório antes de qualquer build pública. |
 | S3 | Safe Browsing totalmente desativado | **Avaliar — veja abaixo** | Os requisitos do projeto pedem proteção de Safe Browsing. |
 | S4 | `extensions.webextensions.restrictedDomains = ""` (extensões podem rodar em addons.mozilla.org etc.) | **Avaliar:** restaurar o padrão do Firefox | A lista de domínios restritos impede que uma extensão comprometida manipule as páginas da loja de complementos. |
 
@@ -73,7 +73,7 @@ Web Risk API, que é paga.
 
 Opções, a serem decididas na Fase 4:
 
-1. Obter uma chave de API Safe Browsing para o REMILIA (projeto não comercial) e
+1. Obter uma chave de API Safe Browsing para o Remilia (projeto não comercial) e
    ativar as verificações das listas de phishing/malware. As verificações
    *remotas* de reputação de downloads
    (`browser.safebrowsing.downloads.remote.*`) enviam metadados dos arquivos ao
@@ -100,5 +100,5 @@ Mark-of-the-Web) independem do Safe Browsing e continuam ativadas.
 ## Política de atualizações de segurança
 
 As versões de segurança do Firefox são a prioridade máxima. Meta: uma build do
-REMILIA publicada em até 72 horas após a versão correspondente do LibreWolf.
+Remilia publicada em até 72 horas após a versão correspondente do LibreWolf.
 Cada nota de versão lista os Mozilla Security Advisories (MFSA) incluídos.

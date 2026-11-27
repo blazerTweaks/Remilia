@@ -1,7 +1,7 @@
 # Category test fixtures
 
 Test data for `scripts/remilia_layers.py` and the V1 tree checks
-(`scripts/verify-tree.sh`). **These are not REMILIA changes.** They are never
+(`scripts/verify-tree.sh`). **These are not Remilia changes.** They are never
 applied to the baseline tree and never packaged:
 
 - `prepare.sh` accepts a layer root other than `remilia/`, or an exclusion list

@@ -1,4 +1,4 @@
-# REMILIA documentation translations
+# Remilia documentation translations
 
 English is the canonical language. The English Markdown files in the
 repository root are the single source of truth. This directory holds
@@ -113,7 +113,7 @@ locale: `current`, `stale` (status says Current but the source changed),
 2. Put the metadata block at the top with `Translation status: Draft` and
    `Source revision: pending`.
 3. Translate the prose. Keep unchanged: code blocks, inline code, commands,
-   configuration keys, file paths, URLs, and the names REMILIA, SCARLET,
+   configuration keys, file paths, URLs, and the names Remilia, SCARLET,
    LibreWolf, Firefox, Gecko, uBlock Origin. Keep headings, tables and lists
    structurally identical.
 4. Fix links: links to other root documents stay as `OTHER.md` (they resolve to

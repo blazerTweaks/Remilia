@@ -2,19 +2,19 @@
 **English** | [Português (Brasil)](i18n/pt-BR/SECURITY.md) | [日本語](i18n/ja/SECURITY.md) | [Español](i18n/es/SECURITY.md)
 <!-- /i18n:nav -->
 
-# REMILIA Browser — Security
+# Remilia Browser — Security
 
-Status: **design only.** No REMILIA build exists yet.
+Status: **design only.** No Remilia build exists yet.
 
 Privacy and security are different. A privacy setting must never weaken
 Firefox's security architecture. This file lists every security-relevant
-modification REMILIA makes or inherits, with justification.
+modification Remilia makes or inherits, with justification.
 
 ## Reporting vulnerabilities
 
 Until a dedicated channel exists, report privately to the maintainer. Do not
 open public issues for vulnerabilities. Engine vulnerabilities belong upstream
-(Mozilla Bugzilla, security group); REMILIA will ship the fix when the upstream
+(Mozilla Bugzilla, security group); Remilia will ship the fix when the upstream
 release containing it is out.
 
 ## Preserved without change
@@ -42,12 +42,12 @@ release containing it is out.
 | `network.IDN_show_punycode = true` | Homograph protection. |
 | `pdfjs.enableScripting = false` | No JS in the PDF viewer. |
 
-## REMILIA deviations from LibreWolf (security-motivated)
+## Remilia deviations from LibreWolf (security-motivated)
 
-| # | LibreWolf | REMILIA (planned) | Reason |
+| # | LibreWolf | Remilia (planned) | Reason |
 |---|---|---|---|
 | S1 | `MOZ_REQUIRE_SIGNING=` (empty): unsigned extensions can be enabled with a pref | Keep Mozilla's default: signing **required**, not overridable by pref | Prevents installing tampered or unsigned extensions. Developers can still load temporary add-ons through `about:debugging`. |
-| S2 | Ships LibreWolf's MAR update-signing public keys; update host `update.librewolf.net` | REMILIA's own MAR keys and update host | A REMILIA binary must accept only REMILIA-signed updates. Required before any public build. |
+| S2 | Ships LibreWolf's MAR update-signing public keys; update host `update.librewolf.net` | Remilia's own MAR keys and update host | A Remilia binary must accept only Remilia-signed updates. Required before any public build. |
 | S3 | Safe Browsing fully disabled | **Evaluate — see below** | Project requirements ask for Safe Browsing protection. |
 | S4 | `extensions.webextensions.restrictedDomains = ""` (extensions may run on addons.mozilla.org etc.) | **Evaluate:** restore Firefox default | The restricted-domain list stops a compromised extension from manipulating the add-on store pages. |
 
@@ -61,7 +61,7 @@ commercial use requires the paid Web Risk API.
 
 Options, to be decided in Phase 4:
 
-1. Obtain a REMILIA Safe Browsing API key (non-commercial project) and enable
+1. Obtain a Remilia Safe Browsing API key (non-commercial project) and enable
    phishing/malware list checks. Remote *download* reputation checks
    (`browser.safebrowsing.downloads.remote.*`) send file metadata to Google and
    stay **off**.
@@ -85,6 +85,6 @@ independent of Safe Browsing and stay on.
 
 ## Security update policy
 
-Firefox security releases are the highest priority. Target: a REMILIA build
+Firefox security releases are the highest priority. Target: a Remilia build
 published within 72 hours of LibreWolf's corresponding release. Each release
 note lists the Mozilla Security Advisories (MFSA) it includes.

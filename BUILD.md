@@ -2,13 +2,13 @@
 **English** | [Português (Brasil)](i18n/pt-BR/BUILD.md) | [日本語](i18n/ja/BUILD.md) | [Español](i18n/es/BUILD.md)
 <!-- /i18n:nav -->
 
-# Building REMILIA
+# Building Remilia
 
 Status: **build infrastructure written and partly proven; first full build
 deferred.** The fetch, prepare and toolchain steps have run successfully. The
 compile step ran up to 260 of 1145 unified C++ files of unmodified LibreWolf
 161.0-1 and was then stopped on purpose: the first full build will be of
-REMILIA, once branding, security and privacy are integrated (ROADMAP Phase 5).
+Remilia, once branding, security and privacy are integrated (ROADMAP Phase 5).
 Steps marked *(Phase 5)* have not been completed yet.
 
 ## Requirements
@@ -39,7 +39,7 @@ This mirrors how LibreWolf builds its published Windows binaries (`bsys6`,
 # from the repository root, in Git Bash or any shell with Docker
 ./scripts/docker.sh image       # build-environment image
 ./scripts/docker.sh fetch       # Firefox tarball + GPG verify, LibreWolf @ pinned commit
-./scripts/docker.sh prepare     # apply LibreWolf, then REMILIA layers
+./scripts/docker.sh prepare     # apply LibreWolf, then Remilia layers
 ./scripts/docker.sh toolchains  # clang, Rust, Windows SDK, Wine, NSIS
 ./scripts/docker.sh build       # mach build
 ./scripts/docker.sh package     # .win64.zip + sha256 + provenance in dist/
@@ -55,7 +55,7 @@ Notes:
 - `prepare.sh` refuses to overwrite an existing prepared tree, because the
   object directory lives inside it. `--force` deletes both. Never use it on the
   kept tree in the `remilia-builds` volume.
-- `REMILIA_LAYERS` selects the REMILIA categories `prepare.sh` applies: `all`
+- `REMILIA_LAYERS` selects the Remilia categories `prepare.sh` applies: `all`
   (default), `none` (unmodified LibreWolf), or a list such as
   `security,privacy`. See `remilia/README.md`.
 - `prepare.sh --staging <name>` prepares a separate tree in
@@ -96,7 +96,7 @@ Thresholds are parameters, or keys in a `.psd1` file passed with
 
 1. Install MozillaBuild (latest), to `C:\mozilla-build`.
 2. Open `C:\mozilla-build\start-shell.bat`.
-3. In the prepared REMILIA tree: `./mach --no-interactive bootstrap --application-choice=browser`
+3. In the prepared Remilia tree: `./mach --no-interactive bootstrap --application-choice=browser`
    (downloads clang, Rust, Windows SDK; prompts UAC once for Defender exclusions).
 4. `./mach build`, then `./mach run`.
 
@@ -109,5 +109,5 @@ XHTML/Fluent) in seconds; use it for UI and branding work.
 - `about:support` shows the version, `Multiprocess Windows`, `Fission` and
   `Sandbox` levels; each must equal the level reported by an official Firefox
   build of the same version on the same machine.
-- `about:policies` shows REMILIA's policies as active.
-- `about:config` → `general.config.filename` shows the REMILIA cfg.
+- `about:policies` shows Remilia's policies as active.
+- `about:config` → `general.config.filename` shows the Remilia cfg.

@@ -7,16 +7,16 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [SECURITY.md](../../SECURITY.md)
-> - **Source revision:** sha256:a93382773a101575a8d0edac736d9c03534c00051f0870bfca987ba98d37c1a1
+> - **Source revision:** sha256:49897316889797b3935a17c3227f452cbcc1931e7f575a47ffdd0e014a61900a
 <!-- /i18n:meta -->
 
-# REMILIA Browser — セキュリティ
+# Remilia Browser — セキュリティ
 
-ステータス：**設計のみ。** REMILIA のビルドはまだ存在しません。
+ステータス：**設計のみ。** Remilia のビルドはまだ存在しません。
 
 プライバシーとセキュリティは別の概念です。プライバシーのための設定が Firefox の
 セキュリティアーキテクチャを弱めることは決してあってはなりません。このファイルでは、
-REMILIA が行う、または継承する、セキュリティに関わるすべての変更を、その根拠と
+Remilia が行う、または継承する、セキュリティに関わるすべての変更を、その根拠と
 ともに列挙します。
 
 ## 脆弱性の報告
@@ -24,7 +24,7 @@ REMILIA が行う、または継承する、セキュリティに関わるすべ
 専用の窓口ができるまでは、メンテナーに非公開で報告してください。脆弱性について
 公開の issue を立てないでください。エンジンの脆弱性はアップストリーム（Mozilla の
 Bugzilla、セキュリティグループ）に報告すべきものです。修正を含むアップストリームの
-リリースが公開された時点で、REMILIA もその修正を配布します。
+リリースが公開された時点で、Remilia もその修正を配布します。
 
 ## 変更せずに維持するもの
 
@@ -51,12 +51,12 @@ Bugzilla、セキュリティグループ）に報告すべきものです。修
 | `network.IDN_show_punycode = true` | ホモグラフ攻撃への対策。 |
 | `pdfjs.enableScripting = false` | PDF ビューアーで JS を実行しない。 |
 
-## REMILIA と LibreWolf の相違点（セキュリティ上の理由によるもの）
+## Remilia と LibreWolf の相違点（セキュリティ上の理由によるもの）
 
-| # | LibreWolf | REMILIA（計画） | 理由 |
+| # | LibreWolf | Remilia（計画） | 理由 |
 |---|---|---|---|
 | S1 | `MOZ_REQUIRE_SIGNING=`（空）：pref により署名のない拡張機能を有効にできる | Mozilla のデフォルトを維持：署名は **必須** で、pref では無効にできない | 改ざんされた拡張機能や署名のない拡張機能のインストールを防ぐ。開発者は引き続き `about:debugging` から一時的なアドオンを読み込める。 |
-| S2 | LibreWolf の MAR アップデート署名用公開鍵を同梱。アップデートホストは `update.librewolf.net` | REMILIA 独自の MAR 鍵とアップデートホスト | REMILIA のバイナリは、REMILIA が署名したアップデートだけを受け入れなければならない。公開ビルドの前に必須。 |
+| S2 | LibreWolf の MAR アップデート署名用公開鍵を同梱。アップデートホストは `update.librewolf.net` | Remilia 独自の MAR 鍵とアップデートホスト | Remilia のバイナリは、Remilia が署名したアップデートだけを受け入れなければならない。公開ビルドの前に必須。 |
 | S3 | セーフブラウジングを完全に無効化 | **評価 — 下記を参照** | プロジェクトの要件はセーフブラウジングによる保護を求めている。 |
 | S4 | `extensions.webextensions.restrictedDomains = ""`（拡張機能が addons.mozilla.org などで動作できる） | **評価：** Firefox のデフォルトに戻す | 制限ドメインのリストは、侵害された拡張機能がアドオンストアのページを操作することを防ぐ。 |
 
@@ -71,7 +71,7 @@ Safe Browsing API の利用を非商用に限定しており、商用利用に�
 
 フェーズ 4 で決定する選択肢：
 
-1. REMILIA 用の Safe Browsing API キー（非商用プロジェクトとして）を取得し、
+1. Remilia 用の Safe Browsing API キー（非商用プロジェクトとして）を取得し、
    フィッシング／マルウェアのリスト照合を有効にする。ダウンロードの *リモート*
    レピュテーション確認（`browser.safebrowsing.downloads.remote.*`）はファイルの
    メタデータを Google に送信するため、**無効** のままにする。
@@ -95,5 +95,5 @@ Safe Browsing API の利用を非商用に限定しており、商用利用に�
 ## セキュリティアップデートの方針
 
 Firefox のセキュリティリリースが最優先です。目標：対応する LibreWolf のリリースから
-72 時間以内に REMILIA のビルドを公開する。各リリースノートには、含まれる Mozilla
+72 時間以内に Remilia のビルドを公開する。各リリースノートには、含まれる Mozilla
 Security Advisories（MFSA）を記載します。
