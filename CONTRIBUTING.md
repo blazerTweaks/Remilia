@@ -30,7 +30,8 @@
   upstreamable?, effect of reverting it). A change spanning two categories is
   split into two. The exact formats are in `remilia/README.md`.
 - A value that overrides LibreWolf gets an entry in the category's
-  `deviations.tsv` and its reason in PRIVACY.md or SECURITY.md.
+  `deviations.tsv` and its reason in PRIVACY.md or SECURITY.md (branding:
+  the touch-point table in UPSTREAM.md).
 - Architecture-level choices are proposed to the maintainer before
   implementation, with context, decision and consequences. Once adopted, their
   effect is described in ARCHITECTURE.md.

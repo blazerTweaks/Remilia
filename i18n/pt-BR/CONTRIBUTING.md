@@ -7,7 +7,7 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [CONTRIBUTING.md](../../CONTRIBUTING.md)
-> - **Source revision:** sha256:b5ac924c1175ab8aea06d732c1e42d22a068a209da050a76dbc932fb21f3cc43
+> - **Source revision:** sha256:54c611a0a73f59196c60663e6a67fb6e8c3faff4b56ea530995b10477c23308b
 <!-- /i18n:meta -->
 
 # Contribuindo com o Remilia
@@ -42,7 +42,8 @@
   abrange duas categorias é dividida em duas. Os formatos exatos estão em
   `remilia/README.md`.
 - Um valor que sobrescreve o LibreWolf ganha uma entrada no `deviations.tsv`
-  da categoria e o seu motivo no PRIVACY.md ou no SECURITY.md.
+  da categoria e o seu motivo no PRIVACY.md ou no SECURITY.md (branding: a
+  tabela de pontos de contato do UPSTREAM.md).
 - Escolhas de nível de arquitetura são apresentadas ao mantenedor antes da
   implementação, com contexto, decisão e consequências. Depois de adotadas, o
   efeito delas é descrito no ARCHITECTURE.md.

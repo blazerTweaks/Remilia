@@ -7,7 +7,7 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [CONTRIBUTING.md](../../CONTRIBUTING.md)
-> - **Source revision:** sha256:b5ac924c1175ab8aea06d732c1e42d22a068a209da050a76dbc932fb21f3cc43
+> - **Source revision:** sha256:54c611a0a73f59196c60663e6a67fb6e8c3faff4b56ea530995b10477c23308b
 <!-- /i18n:meta -->
 
 # Remilia へのコントリビューション
@@ -39,7 +39,8 @@
   可能か、取り消した場合の影響）を付ける。2 つのカテゴリーにまたがる変更は 2 つに
   分割する。正確な形式は `remilia/README.md` にある。
 - LibreWolf の値を上書きする値は、そのカテゴリーの `deviations.tsv` にエントリーを
-  追加し、理由を PRIVACY.md または SECURITY.md に記す。
+  追加し、理由を PRIVACY.md または SECURITY.md に記す（ブランディングは
+  UPSTREAM.md の変更箇所一覧）。
 - アーキテクチャに関わる選択は、実装の前にコンテキスト、決定、影響を添えて
   メンテナーに提案する。採用されたら、その効果を ARCHITECTURE.md に記述する。
 - タスクのステータスが変わったら ROADMAP.md を更新する。
