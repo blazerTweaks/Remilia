@@ -4,3 +4,11 @@
 *.env       text eol=lf
 *.Dockerfile text eol=lf
 *.py        text eol=lf
+
+# REMILIA category content, test fixtures and LibreWolf base snapshots are
+# applied byte-for-byte to the Firefox tree: never convert line endings.
+# (V0 rejects CR characters in text fragments.)
+remilia/**              -text
+tests/layers/**         -text
+upstream/librewolf-base/** -text
+upstream/*.txt          text eol=lf
