@@ -7,7 +7,7 @@
 > - **Language:** es
 > - **Original language:** English
 > - **Source:** [UPSTREAM.md](../../UPSTREAM.md)
-> - **Source revision:** sha256:3c4f0985bab48033d659032e6d03434aa9446a54fbe4aa7198fa802704873f76
+> - **Source revision:** sha256:78b60c4f52a5aa358b5bae55549602fb82f0f7cdead29794fe77201d14c5e91b
 <!-- /i18n:meta -->
 
 # Sincronización con el upstream
@@ -114,7 +114,7 @@ de la imagen de marca.
 | Directorio de marca: iconos (`.ico`, `.png`, `.icns`, `.bmp`), logotipo, `brand.ftl`, `brand.dtd`, `brand.properties`, `branding.nsi` | `browser/branding/librewolf/` (42 entradas, copiadas por `patch.sh` desde `themes/` de LibreWolf) | Imagen de marca: un nuevo directorio de marca de Remilia; el de LibreWolf no se edita | 3b |
 | Manifiesto del ejecutable | `browser/app/librewolf.exe.manifest` líneas 6, 9 | Imagen de marca | 3b |
 | Nombres de los directorios de perfil y de datos | `toolkit/xre/nsXREDirProvider.cpp` líneas 337, 430, 432, 1010, 1307, 1317 (`profile-directory.patch`, `mozilla-dirs.patch`); carpeta de copia de seguridad `browser/components/backup/BackupService.sys.mjs` línea 661 | Imagen de marca | 3b |
-| Archivo de sobrescrituras del usuario `librewolf.overrides.cfg`, leído del perfil | `extensions/pref/autoconfig/src/prefcalls.js` líneas 25–54 | Abierto: nombre de archivo visible para el usuario dentro del mecanismo interno de AutoConfig | Decisión de 3b |
+| Archivo de sobrescrituras del usuario `librewolf.overrides.cfg` (en Windows, leído de `%USERPROFILE%\.librewolf\`) | `extensions/pref/autoconfig/src/prefcalls.js` líneas 25–54 | Seguridad: Remilia lo lee de `%USERPROFILE%\.remilia\`, con el mismo nombre de archivo (SECURITY.md, S5) | 3b, hecho (`static-verified`) |
 | Ventana "Acerca de" y página `about:librewolf` | `browser/base/content/aboutDialog.xhtml` líneas 38, 44, 45; `toolkit/content/librewolf.html`; `toolkit/locales/en-US/toolkit/about/aboutLibreWolf.ftl`; `docshell/build/components.conf` línea 18 | Imagen de marca (texto visible); la dirección `about:` es una decisión abierta de 3b | 3b |
 | Panel de ajustes | `browser/components/preferences/librewolf.js`, `librewolf.inc.xhtml`; `browser/locales/en-US/browser/preferences/preferences.ftl` (46 líneas) | Imagen de marca para nombres e iconos; el comportamiento de cada control queda en su propia categoría | 3b |
 | Cadenas fijas | `appstrings.properties` (reescrito por `patch.sh`, 12 líneas); `dom/locales/en-US/chrome/appstrings.properties`; superposiciones de `lw/l10n/` (1545 líneas con el nombre visible) | Imagen de marca | 3b |

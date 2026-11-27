@@ -7,7 +7,7 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [UPSTREAM.md](../../UPSTREAM.md)
-> - **Source revision:** sha256:3c4f0985bab48033d659032e6d03434aa9446a54fbe4aa7198fa802704873f76
+> - **Source revision:** sha256:78b60c4f52a5aa358b5bae55549602fb82f0f7cdead29794fe77201d14c5e91b
 <!-- /i18n:meta -->
 
 # アップストリームとの同期
@@ -107,7 +107,7 @@ Remilia は 2 つのプロジェクトのダウンストリームです。これ
 | ブランディングディレクトリ：アイコン（`.ico`、`.png`、`.icns`、`.bmp`）、ワードマーク、`brand.ftl`、`brand.dtd`、`brand.properties`、`branding.nsi` | `browser/branding/librewolf/`（42 項目。`patch.sh` が LibreWolf の `themes/` からコピー） | ブランディング：Remilia の新しいブランディングディレクトリを作り、LibreWolf のものは編集しない | 3b |
 | 実行ファイルのマニフェスト | `browser/app/librewolf.exe.manifest` 6、9 行目 | ブランディング | 3b |
 | プロファイルとデータのディレクトリ名 | `toolkit/xre/nsXREDirProvider.cpp` 337、430、432、1010、1307、1317 行目（`profile-directory.patch`、`mozilla-dirs.patch`）；バックアップフォルダー `browser/components/backup/BackupService.sys.mjs` 661 行目 | ブランディング | 3b |
-| プロファイルから読み込むユーザー上書きファイル `librewolf.overrides.cfg` | `extensions/pref/autoconfig/src/prefcalls.js` 25–54 行目 | 未決：内部の AutoConfig の仕組みの中にある、ユーザーに見えるファイル名 | 3b で決定 |
+| ユーザー上書きファイル `librewolf.overrides.cfg`（Windows では `%USERPROFILE%\.librewolf\` から読み込む） | `extensions/pref/autoconfig/src/prefcalls.js` 25–54 行目 | セキュリティ：Remilia は `%USERPROFILE%\.remilia\` から読み込み、ファイル名は変えない（SECURITY.md、S5） | 3b、完了（`static-verified`） |
 | 「について」ダイアログと `about:librewolf` ページ | `browser/base/content/aboutDialog.xhtml` 38、44、45 行目；`toolkit/content/librewolf.html`；`toolkit/locales/en-US/toolkit/about/aboutLibreWolf.ftl`；`docshell/build/components.conf` 18 行目 | ブランディング（表示テキスト）。`about:` のアドレスは 3b の未決事項 | 3b |
 | 設定画面 | `browser/components/preferences/librewolf.js`、`librewolf.inc.xhtml`；`browser/locales/en-US/browser/preferences/preferences.ftl`（46 行） | 名前とアイコンはブランディング。各項目の動作はそれぞれのカテゴリーに属する | 3b |
 | 埋め込みの文字列 | `appstrings.properties`（`patch.sh` が書き換え、12 行）；`dom/locales/en-US/chrome/appstrings.properties`；`lw/l10n/` のオーバーレイ（表示名を含む 1545 行） | ブランディング | 3b |

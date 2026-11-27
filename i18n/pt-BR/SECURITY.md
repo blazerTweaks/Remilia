@@ -7,7 +7,7 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [SECURITY.md](../../SECURITY.md)
-> - **Source revision:** sha256:49897316889797b3935a17c3227f452cbcc1931e7f575a47ffdd0e014a61900a
+> - **Source revision:** sha256:ab8ffc730db55bc9fd30040ac1cde236b667f95b8bba14b8d107b4f169263334
 <!-- /i18n:meta -->
 
 # Remilia Browser — Segurança
@@ -61,6 +61,7 @@ correção quando a versão do upstream que a contém for lançada.
 | S2 | Inclui as chaves públicas de assinatura MAR do LibreWolf; host de atualização `update.librewolf.net` | Chaves MAR e host de atualização próprios do Remilia | Um binário do Remilia deve aceitar apenas atualizações assinadas pelo Remilia. Obrigatório antes de qualquer build pública. |
 | S3 | Safe Browsing totalmente desativado | **Avaliar — veja abaixo** | Os requisitos do projeto pedem proteção de Safe Browsing. |
 | S4 | `extensions.webextensions.restrictedDomains = ""` (extensões podem rodar em addons.mozilla.org etc.) | **Avaliar:** restaurar o padrão do Firefox | A lista de domínios restritos impede que uma extensão comprometida manipule as páginas da loja de complementos. |
+| S5 | No Windows, o AutoConfig também carrega `%USERPROFILE%\.librewolf\librewolf.overrides.cfg`, então sobreposições escritas para um LibreWolf instalado também valem | Lê apenas `%USERPROFILE%\.remilia\librewolf.overrides.cfg` (implementado, `static-verified`) | O arquivo de outro programa não deve alterar as prefs do Remilia, inclusive as de segurança e privacidade. |
 
 ### S3 — Safe Browsing: problema em aberto
 

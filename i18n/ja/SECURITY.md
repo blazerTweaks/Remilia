@@ -7,7 +7,7 @@
 > - **Language:** ja
 > - **Original language:** English
 > - **Source:** [SECURITY.md](../../SECURITY.md)
-> - **Source revision:** sha256:49897316889797b3935a17c3227f452cbcc1931e7f575a47ffdd0e014a61900a
+> - **Source revision:** sha256:ab8ffc730db55bc9fd30040ac1cde236b667f95b8bba14b8d107b4f169263334
 <!-- /i18n:meta -->
 
 # Remilia Browser — セキュリティ
@@ -59,6 +59,7 @@ Bugzilla、セキュリティグループ）に報告すべきものです。修
 | S2 | LibreWolf の MAR アップデート署名用公開鍵を同梱。アップデートホストは `update.librewolf.net` | Remilia 独自の MAR 鍵とアップデートホスト | Remilia のバイナリは、Remilia が署名したアップデートだけを受け入れなければならない。公開ビルドの前に必須。 |
 | S3 | セーフブラウジングを完全に無効化 | **評価 — 下記を参照** | プロジェクトの要件はセーフブラウジングによる保護を求めている。 |
 | S4 | `extensions.webextensions.restrictedDomains = ""`（拡張機能が addons.mozilla.org などで動作できる） | **評価：** Firefox のデフォルトに戻す | 制限ドメインのリストは、侵害された拡張機能がアドオンストアのページを操作することを防ぐ。 |
+| S5 | Windows では AutoConfig が `%USERPROFILE%\.librewolf\librewolf.overrides.cfg` も読み込むため、インストール済みの LibreWolf 向けに書いた上書き設定も適用される | `%USERPROFILE%\.remilia\librewolf.overrides.cfg` だけを読み込む（実装済み、`static-verified`） | 他のプログラムのファイルが、セキュリティやプライバシーの pref を含む Remilia の pref を変更してはならない。 |
 
 ### S3 — セーフブラウジング：未解決の課題
 

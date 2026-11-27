@@ -50,6 +50,7 @@ release containing it is out.
 | S2 | Ships LibreWolf's MAR update-signing public keys; update host `update.librewolf.net` | Remilia's own MAR keys and update host | A Remilia binary must accept only Remilia-signed updates. Required before any public build. |
 | S3 | Safe Browsing fully disabled | **Evaluate — see below** | Project requirements ask for Safe Browsing protection. |
 | S4 | `extensions.webextensions.restrictedDomains = ""` (extensions may run on addons.mozilla.org etc.) | **Evaluate:** restore Firefox default | The restricted-domain list stops a compromised extension from manipulating the add-on store pages. |
+| S5 | On Windows, AutoConfig also loads `%USERPROFILE%\.librewolf\librewolf.overrides.cfg`, so overrides written for an installed LibreWolf apply too | Reads only `%USERPROFILE%\.remilia\librewolf.overrides.cfg` (implemented, `static-verified`) | Another program's file must not change Remilia's prefs, including its security and privacy prefs. |
 
 ### S3 — Safe Browsing: open problem
 

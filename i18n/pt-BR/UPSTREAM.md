@@ -7,7 +7,7 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [UPSTREAM.md](../../UPSTREAM.md)
-> - **Source revision:** sha256:3c4f0985bab48033d659032e6d03434aa9446a54fbe4aa7198fa802704873f76
+> - **Source revision:** sha256:78b60c4f52a5aa358b5bae55549602fb82f0f7cdead29794fe77201d14c5e91b
 <!-- /i18n:meta -->
 
 # Sincronização com o upstream
@@ -109,7 +109,7 @@ Renomeá-los faria a segurança e a privacidade dependerem do branding.
 | Diretório de branding: ícones (`.ico`, `.png`, `.icns`, `.bmp`), wordmark, `brand.ftl`, `brand.dtd`, `brand.properties`, `branding.nsi` | `browser/branding/librewolf/` (42 entradas, copiadas pelo `patch.sh` de `themes/` do LibreWolf) | Branding: um novo diretório de branding do Remilia; o do LibreWolf não é editado | 3b |
 | Manifesto do executável | `browser/app/librewolf.exe.manifest` linhas 6, 9 | Branding | 3b |
 | Nomes dos diretórios de perfil e de dados | `toolkit/xre/nsXREDirProvider.cpp` linhas 337, 430, 432, 1010, 1307, 1317 (`profile-directory.patch`, `mozilla-dirs.patch`); pasta de backup `browser/components/backup/BackupService.sys.mjs` linha 661 | Branding | 3b |
-| Arquivo de sobreposições do usuário `librewolf.overrides.cfg`, lido do perfil | `extensions/pref/autoconfig/src/prefcalls.js` linhas 25–54 | Em aberto: nome de arquivo visível ao usuário dentro do mecanismo interno de AutoConfig | Decisão da 3b |
+| Arquivo de sobreposições do usuário `librewolf.overrides.cfg` (no Windows, lido de `%USERPROFILE%\.librewolf\`) | `extensions/pref/autoconfig/src/prefcalls.js` linhas 25–54 | Segurança: o Remilia o lê de `%USERPROFILE%\.remilia\`, com o mesmo nome de arquivo (SECURITY.md, S5) | 3b, feito (`static-verified`) |
 | Janela "Sobre" e página `about:librewolf` | `browser/base/content/aboutDialog.xhtml` linhas 38, 44, 45; `toolkit/content/librewolf.html`; `toolkit/locales/en-US/toolkit/about/aboutLibreWolf.ftl`; `docshell/build/components.conf` linha 18 | Branding (texto visível); o endereço `about:` é uma decisão em aberto da 3b | 3b |
 | Painel de configurações | `browser/components/preferences/librewolf.js`, `librewolf.inc.xhtml`; `browser/locales/en-US/browser/preferences/preferences.ftl` (46 linhas) | Branding para nomes e ícones; o comportamento de cada controle fica na sua própria categoria | 3b |
 | Strings fixas | `appstrings.properties` (reescrito pelo `patch.sh`, 12 linhas); `dom/locales/en-US/chrome/appstrings.properties`; sobreposições em `lw/l10n/` (1545 linhas com o nome visível) | Branding | 3b |
