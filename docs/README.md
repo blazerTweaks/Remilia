@@ -72,10 +72,11 @@ never rewrites.
 - Fonts are self-hosted, all under the SIL Open Font License: Cormorant
   Garamond (headings) and JetBrains Mono (code) from `@fontsource-variable`,
   and Inter (text), bundled with VitePress.
-- `public/brand/` holds unmodified copies of the brand vectors: the wordmark
-  (header and home), the mascot (home) and the bat symbol `remilia-hat.svg`
-  (favicon and home divider). Replace them with new exports from the source
-  files; do not edit them here.
+- `public/brand/` holds unmodified copies of the brand vectors: the mascot
+  (home) and the bat symbol `remilia-hat.svg` (favicon). Replace them with new
+  exports from the source files; do not edit them here.
+- The wordmark is not used yet: the name is set as text, in the header
+  (`title` in `config.ts`) and on the home page, until a final wordmark exists.
 
 ## Publishing (GitHub Pages)
 
