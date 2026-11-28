@@ -77,7 +77,7 @@ never rewrites.
 
   | File | Used in |
   |---|---|
-  | `remilia-wordmark-3.svg` (flat scarlet) | Site header and home page; README on GitHub's dark theme |
+  | `remilia-wordmark-3.svg` (flat scarlet) | Site header; README on GitHub's dark theme |
   | `remilia-wordmark-2.svg` (scarlet, dark outline) | README on GitHub's light theme |
   | `remilia-mascot.svg` | Home page |
   | `remilia-hat.svg` (bat symbol) | Favicon and home page divider |

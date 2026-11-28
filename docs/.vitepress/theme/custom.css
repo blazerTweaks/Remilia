@@ -232,14 +232,13 @@
   padding: 48px 0 56px;
 }
 
+/* Plain text in the heading serif: the wordmark stays in the header, and the
+   hero title should not compete with the mascot. */
 .rm-hero__title {
-  margin-top: 20px !important;
-}
-
-.rm-hero__wordmark {
-  display: block;
-  width: min(100%, 440px);
-  height: auto;
+  margin-top: 16px !important;
+  font-size: 52px;
+  line-height: 1.05;
+  color: var(--rm-text);
 }
 
 .rm-hero__lead {
@@ -317,8 +316,8 @@
     padding: 72px 0 80px;
   }
 
-  .rm-hero__wordmark {
-    width: min(100%, 520px);
+  .rm-hero__title {
+    font-size: 64px;
   }
 
   .rm-hero__art img {

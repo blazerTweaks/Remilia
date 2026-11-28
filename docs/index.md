@@ -14,9 +14,7 @@ import { withBase } from 'vitepress'
 <section class="rm-hero" aria-labelledby="rm-title">
   <div>
     <p class="rm-eyebrow">Project SCARLET · in development</p>
-    <h1 id="rm-title" class="rm-hero__title">
-      <img class="rm-hero__wordmark" src="/brand/remilia-wordmark-3.svg" alt="Remilia" width="1756" height="588">
-    </h1>
+    <h1 id="rm-title" class="rm-hero__title">Remilia</h1>
     <p class="rm-hero__lead">A privacy-focused desktop browser built on Firefox (Gecko) and LibreWolf, with its own identity inspired by Remilia Scarlet.</p>
     <p class="rm-status"><strong>There is no Remilia build yet.</strong> Research is done and the build infrastructure exists. The first full build is planned once branding, security and privacy are integrated. Nothing on this site describes a shipped feature. Progress is tracked in the <a class="rm-link" :href="withBase('/project/roadmap')">roadmap</a>.</p>
     <div class="rm-actions">
