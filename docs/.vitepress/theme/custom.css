@@ -182,6 +182,14 @@
 
 /* ---------------------------------------------------------------- Home page */
 
+/* Site title in the navigation bar, set as text until a final wordmark exists. */
+.VPNavBar .VPNavBarTitle .title {
+  font-family: var(--rm-font-display);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
 .rm-home {
   max-width: 1152px;
   margin: 0 auto;
@@ -190,8 +198,7 @@
 }
 
 .rm-home h1,
-.rm-home h2,
-.rm-home h3 {
+.rm-home h2 {
   margin: 0;
   font-family: var(--rm-font-display);
   font-weight: 600;
@@ -233,14 +240,12 @@
   padding: 48px 0 56px;
 }
 
+/* Large display text: Bright Scarlet passes the 3:1 large-text contrast. */
 .rm-hero__title {
-  margin-top: 20px !important;
-}
-
-.rm-hero__wordmark {
-  display: block;
-  width: min(100%, 520px);
-  height: auto;
+  margin-top: 12px !important;
+  font-size: 72px;
+  line-height: 1;
+  color: var(--rm-scarlet-bright);
 }
 
 .rm-hero__lead {
@@ -315,7 +320,11 @@
   .rm-hero {
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
     gap: 48px;
-    padding: 72px 0 88px;
+    padding: 72px 0 80px;
+  }
+
+  .rm-hero__title {
+    font-size: 104px;
   }
 
   .rm-hero__art img {
@@ -324,233 +333,62 @@
   }
 }
 
-/* The bat symbol separates the hero from the rest of the page. */
-.rm-divider {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
+/* Design goals: side by side on wide screens, separated by hairlines. */
 
-.rm-divider::before,
-.rm-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--rm-border);
-}
-
-.rm-divider img {
-  width: 44px;
-  height: auto;
-}
-
-/* Sections */
-
-.rm-section {
+.rm-tenets {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 32px;
-  padding-top: 80px;
-}
-
-.rm-section__head h2 {
-  margin-top: 12px;
-  font-size: 34px;
-  line-height: 1.2;
-}
-
-.rm-section__head p:not(.rm-eyebrow) {
-  margin-top: 16px;
-  font-size: 16px;
-  line-height: 1.7;
-  color: var(--rm-text-2);
-}
-
-.rm-section__head .rm-link {
-  display: inline-block;
-  margin-top: 20px;
-}
-
-@media (min-width: 960px) {
-  .rm-section {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
-    gap: 64px;
-  }
-
-  .rm-section__head {
-    position: sticky;
-    top: calc(var(--vp-nav-height) + 32px);
-    align-self: start;
-  }
-
-  .rm-section__head h2 {
-    font-size: 40px;
-  }
-}
-
-/* Design goals: numbered, separated by hairlines, no boxes. */
-.rm-tenets {
+  gap: 0 32px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .rm-tenets li {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  gap: 4px 16px;
   padding: 24px 0;
   border-top: 1px solid var(--rm-border);
 }
 
-.rm-tenets li:last-child {
-  border-bottom: 1px solid var(--rm-border);
-}
-
 .rm-numeral {
-  grid-row: span 2;
+  display: block;
   font-family: var(--rm-font-display);
   font-size: 26px;
   line-height: 1;
   color: var(--rm-scarlet-bright);
 }
 
-.rm-tenets h3 {
+.rm-tenets h2 {
+  margin-top: 14px;
   font-size: 24px;
   line-height: 1.2;
 }
 
 .rm-tenets p {
+  margin-top: 10px !important;
   font-size: 15px;
   line-height: 1.7;
   color: var(--rm-text-2);
-}
-
-.rm-tag {
-  margin-left: 10px;
-  font-family: var(--vp-font-family-base);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  vertical-align: middle;
-  color: var(--rm-muted);
-}
-
-.rm-footnote {
-  margin-top: 20px !important;
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--rm-text-2);
-}
-
-/* Architecture: the layer stack, top layer first. */
-.rm-layers {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border: 1px solid var(--rm-border);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.rm-layers li {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
-  gap: 16px;
-  padding: 20px 24px 20px 0;
-  background: var(--rm-bg-2);
-}
-
-.rm-layers li + li {
-  border-top: 1px solid var(--rm-border);
-}
-
-.rm-layers li.rm-layers__own {
-  background: linear-gradient(90deg, rgba(49, 13, 24, 0.9), var(--rm-bg-2) 70%);
-}
-
-.rm-layers__n {
-  display: flex;
-  justify-content: center;
-  font-family: var(--rm-font-display);
-  font-size: 30px;
-  line-height: 1;
-  color: var(--rm-muted);
-}
-
-.rm-layers__own .rm-layers__n {
-  color: var(--rm-scarlet-bright);
-}
-
-.rm-layers h3 {
-  font-size: 22px;
-  line-height: 1.2;
-}
-
-.rm-layers p {
-  margin-top: 6px !important;
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--rm-text-2);
-}
-
-.rm-layers__owner {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--rm-muted);
-}
-
-/* Principles and documentation index: definition lists in two columns. */
-.rm-defs {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0 40px;
-  margin: 0;
-}
-
-.rm-defs > div {
-  padding: 20px 0;
-  border-top: 1px solid var(--rm-border);
-}
-
-.rm-defs dt {
-  font-family: var(--rm-font-display);
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-.rm-defs dd {
-  margin: 8px 0 0;
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--rm-text-2);
-}
-
-.rm-defs a {
-  color: var(--rm-text);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.rm-defs a:hover {
-  color: var(--rm-scarlet-bright);
-}
-
-.rm-defs a::after {
-  content: ' →';
-  color: var(--rm-scarlet-bright);
 }
 
 @media (min-width: 640px) {
-  .rm-defs {
+  .rm-tenets {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+@media (min-width: 960px) {
+  .rm-tenets {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.rm-footnote {
+  margin-top: 16px !important;
+  padding-top: 20px;
+  border-top: 1px solid var(--rm-border);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--rm-text-2);
 }
 
 @media (max-width: 639px) {
@@ -565,21 +403,12 @@
   .rm-hero__lead {
     font-size: 18px;
   }
-
-  .rm-section {
-    padding-top: 64px;
-  }
-
-  .rm-section__head h2 {
-    font-size: 30px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .vp-doc a,
   .rm-link,
-  .rm-button,
-  .rm-defs a {
+  .rm-button {
     transition: none;
   }
 }

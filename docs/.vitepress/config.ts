@@ -42,9 +42,8 @@ export default defineConfig({
   },
 
   themeConfig: {
-    logo: { src: '/brand/remilia-wordmark.svg', alt: 'Remilia' },
-    siteTitle: false,
-
+    // The site title is set as text ("Remilia", from `title` above) until a
+    // final wordmark exists.
     nav: [
       { text: 'Guide', link: '/guide/overview', activeMatch: '^/(guide|browser)/' },
       { text: 'Privacy', link: '/privacy/', activeMatch: '^/privacy/' },
