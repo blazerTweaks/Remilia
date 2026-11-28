@@ -1,0 +1,4 @@
+# VitePress site: dependencies, cache and build output are never committed
+node_modules/
+.vitepress/cache/
+.vitepress/dist/

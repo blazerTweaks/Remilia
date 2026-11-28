@@ -1,0 +1,20 @@
+{
+  "name": "remilia-docs",
+  "private": true,
+  "description": "Public documentation website for the Remilia Browser (VitePress).",
+  "license": "MPL-2.0",
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@fontsource-variable/cormorant-garamond": "5.3.0",
+    "@fontsource-variable/jetbrains-mono": "5.3.0",
+    "vitepress": "1.6.4"
+  }
+}

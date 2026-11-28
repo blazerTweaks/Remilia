@@ -1,0 +1,585 @@
+/*
+ * Remilia documentation theme.
+ *
+ * The VitePress default theme, recoloured with the Remilia palette and set in
+ * Cormorant Garamond (headings), Inter (text) and JetBrains Mono (code).
+ * The site is always dark (appearance: 'force-dark'), so the tokens are set
+ * for both :root and .dark.
+ *
+ * Contrast on the main background: primary text 15.2:1, secondary text 7.2:1,
+ * Bright Scarlet 3.8:1. Bright Scarlet is therefore used for active states,
+ * hover and underlines, not for running text: links in body text keep the
+ * primary text colour and carry a scarlet underline.
+ */
+
+:root {
+  --rm-scarlet: #a6192e;
+  --rm-scarlet-bright: #c83b50;
+  --rm-wine: #310d18;
+  --rm-bg: #111014;
+  --rm-bg-2: #17151a;
+  --rm-surface: #1d1a20;
+  --rm-text: #eae5e7;
+  --rm-text-2: #a69da3;
+  --rm-muted: #716971;
+  --rm-border: #302a32;
+
+  --rm-font-display: 'Cormorant Garamond Variable', 'Cormorant Garamond', Garamond, 'Times New Roman', serif;
+}
+
+:root,
+.dark {
+  /* Surfaces */
+  --vp-c-bg: var(--rm-bg);
+  --vp-c-bg-alt: var(--rm-bg-2);
+  --vp-c-bg-elv: var(--rm-surface);
+  --vp-c-bg-soft: var(--rm-surface);
+  --vp-c-border: var(--rm-border);
+  --vp-c-divider: var(--rm-border);
+  --vp-c-gutter: var(--rm-bg);
+
+  /* Text */
+  --vp-c-text-1: var(--rm-text);
+  --vp-c-text-2: var(--rm-text-2);
+  --vp-c-text-3: var(--rm-muted);
+
+  /* Neutral greys, used by default buttons, badges and inline code */
+  --vp-c-gray-1: var(--rm-muted);
+  --vp-c-gray-2: var(--rm-border);
+  --vp-c-gray-3: var(--rm-surface);
+  --vp-c-gray-soft: rgba(113, 105, 113, 0.16);
+
+  /* Brand: Bright Scarlet for active states and hover, Scarlet for fills */
+  --vp-c-brand-1: var(--rm-scarlet-bright);
+  --vp-c-brand-2: var(--rm-scarlet-bright);
+  --vp-c-brand-3: var(--rm-scarlet);
+  --vp-c-brand-soft: rgba(166, 25, 46, 0.16);
+
+  /* Callouts: notes stay neutral so that only tips carry the brand colour;
+     important, warning and danger keep the default theme's signal colours. */
+  --vp-c-note-1: var(--rm-text-2);
+  --vp-c-note-2: var(--rm-text);
+  --vp-c-note-3: var(--rm-muted);
+  --vp-c-note-soft: rgba(166, 157, 163, 0.1);
+
+  /* Buttons */
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-text: var(--rm-text);
+  --vp-button-brand-bg: var(--rm-scarlet);
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-hover-text: var(--rm-text);
+  --vp-button-brand-hover-bg: var(--rm-scarlet-bright);
+  --vp-button-brand-active-border: transparent;
+  --vp-button-brand-active-text: var(--rm-text);
+  --vp-button-brand-active-bg: var(--rm-scarlet);
+
+  /* Code */
+  --vp-font-family-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  --vp-code-color: var(--rm-text);
+  --vp-code-bg: rgba(166, 157, 163, 0.12);
+  --vp-code-block-bg: var(--rm-bg-2);
+
+  /* Navigation */
+  --vp-nav-bg-color: var(--rm-bg);
+  --vp-nav-screen-bg-color: var(--rm-bg);
+  --vp-nav-logo-height: 30px;
+  --vp-sidebar-bg-color: var(--rm-bg-2);
+
+  /* Search */
+  --vp-local-search-bg: var(--rm-bg);
+  --vp-local-search-result-bg: var(--rm-surface);
+  --vp-local-search-result-border: var(--rm-border);
+  --vp-local-search-result-selected-bg: var(--rm-surface);
+  --vp-local-search-result-selected-border: var(--rm-scarlet-bright);
+  --vp-local-search-highlight-bg: var(--rm-scarlet);
+  --vp-local-search-highlight-text: var(--rm-text);
+}
+
+::selection {
+  background: rgba(166, 25, 46, 0.55);
+  color: var(--rm-text);
+}
+
+/* ---------------------------------------------------------------- Documents */
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+  font-family: var(--rm-font-display);
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--rm-text);
+}
+
+.vp-doc h1 {
+  font-size: 38px;
+  line-height: 1.15;
+}
+
+.vp-doc h2 {
+  font-size: 29px;
+  line-height: 1.25;
+}
+
+.vp-doc h3 {
+  font-size: 23px;
+  line-height: 1.3;
+}
+
+@media (min-width: 768px) {
+  .vp-doc h1 {
+    font-size: 46px;
+  }
+}
+
+/* Code inside a serif heading stays the size of surrounding body text. */
+.vp-doc :is(h1, h2, h3) code {
+  font-size: 0.6em;
+  vertical-align: 0.12em;
+}
+
+.vp-doc a {
+  color: var(--rm-text);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--rm-scarlet-bright);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.2s, text-decoration-thickness 0.2s;
+}
+
+.vp-doc a:hover {
+  color: var(--rm-scarlet-bright);
+  text-decoration-thickness: 2px;
+}
+
+.vp-doc a > code {
+  color: inherit;
+}
+
+/* Header anchors stay quiet until the heading is hovered. */
+.vp-doc .header-anchor {
+  text-decoration: none;
+  color: var(--rm-muted);
+}
+
+.vp-doc blockquote {
+  border-left-color: var(--rm-scarlet);
+}
+
+.vp-doc table {
+  font-size: 15px;
+}
+
+/* ------------------------------------------------------------------ Sidebar */
+
+.VPSidebarItem.level-0 > .item > .text {
+  font-family: var(--rm-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* ---------------------------------------------------------------- Home page */
+
+.rm-home {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px 96px;
+  color: var(--rm-text);
+}
+
+.rm-home h1,
+.rm-home h2,
+.rm-home h3 {
+  margin: 0;
+  font-family: var(--rm-font-display);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.rm-home p {
+  margin: 0;
+}
+
+.rm-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rm-text-2);
+}
+
+.rm-link {
+  color: var(--rm-text);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--rm-scarlet-bright);
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.rm-link:hover {
+  color: var(--rm-scarlet-bright);
+}
+
+/* Hero */
+
+.rm-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  padding: 48px 0 56px;
+}
+
+.rm-hero__title {
+  margin-top: 20px !important;
+}
+
+.rm-hero__wordmark {
+  display: block;
+  width: min(100%, 520px);
+  height: auto;
+}
+
+.rm-hero__lead {
+  max-width: 34rem;
+  margin-top: 24px !important;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--rm-text);
+}
+
+.rm-status {
+  max-width: 34rem;
+  margin-top: 24px !important;
+  padding-left: 16px;
+  border-left: 2px solid var(--rm-scarlet);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--rm-text-2);
+}
+
+.rm-status strong {
+  color: var(--rm-text);
+}
+
+.rm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.rm-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 20px;
+  min-height: 44px;
+  border: 1px solid var(--rm-border);
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--rm-text);
+  text-decoration: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.rm-button:hover {
+  border-color: var(--rm-scarlet-bright);
+}
+
+.rm-button--primary {
+  border-color: transparent;
+  background: var(--rm-scarlet);
+}
+
+.rm-button--primary:hover {
+  border-color: transparent;
+  background: var(--rm-scarlet-bright);
+}
+
+.rm-hero__art {
+  display: flex;
+  justify-content: center;
+}
+
+.rm-hero__art img {
+  width: min(100%, 420px);
+  height: auto;
+}
+
+@media (min-width: 960px) {
+  .rm-hero {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 48px;
+    padding: 72px 0 88px;
+  }
+
+  .rm-hero__art img {
+    width: 100%;
+    max-width: 520px;
+  }
+}
+
+/* The bat symbol separates the hero from the rest of the page. */
+.rm-divider {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.rm-divider::before,
+.rm-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rm-border);
+}
+
+.rm-divider img {
+  width: 44px;
+  height: auto;
+}
+
+/* Sections */
+
+.rm-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  padding-top: 80px;
+}
+
+.rm-section__head h2 {
+  margin-top: 12px;
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.rm-section__head p:not(.rm-eyebrow) {
+  margin-top: 16px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--rm-text-2);
+}
+
+.rm-section__head .rm-link {
+  display: inline-block;
+  margin-top: 20px;
+}
+
+@media (min-width: 960px) {
+  .rm-section {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+    gap: 64px;
+  }
+
+  .rm-section__head {
+    position: sticky;
+    top: calc(var(--vp-nav-height) + 32px);
+    align-self: start;
+  }
+
+  .rm-section__head h2 {
+    font-size: 40px;
+  }
+}
+
+/* Design goals: numbered, separated by hairlines, no boxes. */
+.rm-tenets {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rm-tenets li {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 4px 16px;
+  padding: 24px 0;
+  border-top: 1px solid var(--rm-border);
+}
+
+.rm-tenets li:last-child {
+  border-bottom: 1px solid var(--rm-border);
+}
+
+.rm-numeral {
+  grid-row: span 2;
+  font-family: var(--rm-font-display);
+  font-size: 26px;
+  line-height: 1;
+  color: var(--rm-scarlet-bright);
+}
+
+.rm-tenets h3 {
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.rm-tenets p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--rm-text-2);
+}
+
+.rm-tag {
+  margin-left: 10px;
+  font-family: var(--vp-font-family-base);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  color: var(--rm-muted);
+}
+
+.rm-footnote {
+  margin-top: 20px !important;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--rm-text-2);
+}
+
+/* Architecture: the layer stack, top layer first. */
+.rm-layers {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--rm-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.rm-layers li {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 16px;
+  padding: 20px 24px 20px 0;
+  background: var(--rm-bg-2);
+}
+
+.rm-layers li + li {
+  border-top: 1px solid var(--rm-border);
+}
+
+.rm-layers li.rm-layers__own {
+  background: linear-gradient(90deg, rgba(49, 13, 24, 0.9), var(--rm-bg-2) 70%);
+}
+
+.rm-layers__n {
+  display: flex;
+  justify-content: center;
+  font-family: var(--rm-font-display);
+  font-size: 30px;
+  line-height: 1;
+  color: var(--rm-muted);
+}
+
+.rm-layers__own .rm-layers__n {
+  color: var(--rm-scarlet-bright);
+}
+
+.rm-layers h3 {
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.rm-layers p {
+  margin-top: 6px !important;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--rm-text-2);
+}
+
+.rm-layers__owner {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rm-muted);
+}
+
+/* Principles and documentation index: definition lists in two columns. */
+.rm-defs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 40px;
+  margin: 0;
+}
+
+.rm-defs > div {
+  padding: 20px 0;
+  border-top: 1px solid var(--rm-border);
+}
+
+.rm-defs dt {
+  font-family: var(--rm-font-display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.rm-defs dd {
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--rm-text-2);
+}
+
+.rm-defs a {
+  color: var(--rm-text);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.rm-defs a:hover {
+  color: var(--rm-scarlet-bright);
+}
+
+.rm-defs a::after {
+  content: ' →';
+  color: var(--rm-scarlet-bright);
+}
+
+@media (min-width: 640px) {
+  .rm-defs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 639px) {
+  .rm-home {
+    padding: 0 16px 72px;
+  }
+
+  .rm-hero {
+    padding-top: 32px;
+  }
+
+  .rm-hero__lead {
+    font-size: 18px;
+  }
+
+  .rm-section {
+    padding-top: 64px;
+  }
+
+  .rm-section__head h2 {
+    font-size: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vp-doc a,
+  .rm-link,
+  .rm-button,
+  .rm-defs a {
+    transition: none;
+  }
+}
