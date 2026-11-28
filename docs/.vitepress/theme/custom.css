@@ -232,13 +232,13 @@
   padding: 48px 0 56px;
 }
 
-/* Plain text in the heading serif: the wordmark stays in the header, and the
-   hero title should not compete with the mascot. */
+/* Text in the heading serif, not the wordmark (which stays in the header).
+   At this size Bright Scarlet meets the 3:1 contrast for large text. */
 .rm-hero__title {
   margin-top: 16px !important;
-  font-size: 52px;
-  line-height: 1.05;
-  color: var(--rm-text);
+  font-size: 64px;
+  line-height: 1;
+  color: var(--rm-scarlet-bright);
 }
 
 .rm-hero__lead {
@@ -317,7 +317,7 @@
   }
 
   .rm-hero__title {
-    font-size: 64px;
+    font-size: 88px;
   }
 
   .rm-hero__art img {
