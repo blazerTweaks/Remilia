@@ -72,11 +72,21 @@ never rewrites.
 - Fonts are self-hosted, all under the SIL Open Font License: Cormorant
   Garamond (headings) and JetBrains Mono (code) from `@fontsource-variable`,
   and Inter (text), bundled with VitePress.
-- `public/brand/` holds unmodified copies of the brand vectors: the mascot
-  (home) and the bat symbol `remilia-hat.svg` (favicon). Replace them with new
-  exports from the source files; do not edit them here.
-- The wordmark is not used yet: the name is set as text, in the header
-  (`title` in `config.ts`) and on the home page, until a final wordmark exists.
+- `public/brand/` holds unmodified copies of the brand vectors. Replace them
+  with new exports from the source files; do not edit them here.
+
+  | File | Used in |
+  |---|---|
+  | `remilia-wordmark-3.svg` (flat scarlet) | Site header and home page; README on GitHub's dark theme |
+  | `remilia-wordmark-2.svg` (scarlet, dark outline) | README on GitHub's light theme |
+  | `remilia-mascot.svg` | Home page |
+  | `remilia-hat.svg` (bat symbol) | Favicon and home page divider |
+
+  Wordmark 1 (with a light outer border) is meant for backgrounds of unknown
+  colour, such as the repository's social preview image, and is not used here.
+- The root `README.md` shows the logo inside `<!-- readme:logo -->` markers.
+  `.vitepress/repo-links.ts` removes that block from the Overview page, which
+  already has the wordmark in the site header.
 
 ## Publishing (GitHub Pages)
 

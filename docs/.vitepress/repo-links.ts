@@ -9,8 +9,9 @@
 // - any other relative link becomes a GitHub link to the file in the
 //   repository, and the build fails if that file does not exist;
 // - the build fails if an `@include` was not resolved;
-// - the `<!-- i18n:nav -->` language bar of the source documents is removed,
-//   because the translations are not published on the site.
+// - GitHub-only blocks of the source documents are removed: the
+//   `<!-- i18n:nav -->` language bar (translations are not published) and the
+//   `<!-- readme:logo -->` block (the site has the wordmark in its header).
 //
 // Relative links are read as relative to the repository root, which is where
 // every published document with links lives. Site pages themselves must use
@@ -53,8 +54,15 @@ export interface RepoLinksOptions {
   branch: string
 }
 
-const I18N_OPEN = '<!-- i18n:nav -->'
-const I18N_CLOSE = '<!-- /i18n:nav -->'
+/**
+ * Blocks of the source documents that only make sense on GitHub: the language
+ * bar (translations are not published) and the README logo (the site shows
+ * the wordmark in its own header).
+ */
+const GITHUB_ONLY_BLOCKS: ReadonlyArray<readonly [open: string, close: string]> = [
+  ['<!-- i18n:nav -->', '<!-- /i18n:nav -->'],
+  ['<!-- readme:logo -->', '<!-- /readme:logo -->'],
+]
 const HAS_SCHEME = /^[a-z][a-z\d+.-]*:/i
 const NOT_REPO_RELATIVE = /^(\/|#|\.\.?\/)/
 
@@ -95,12 +103,17 @@ export function repoLinks(md: MarkdownRenderer, options: RepoLinksOptions): void
     const where = (state.env as { relativePath?: string })?.relativePath ?? 'a page'
     const tokens = state.tokens
 
+    // The closing marker may share an HTML block with the markup before it, so
+    // it is matched with `includes`.
     for (let i = 0; i < tokens.length; i++) {
-      if (tokens[i].type !== 'html_block' || tokens[i].content.trim() !== I18N_OPEN) continue
+      if (tokens[i].type !== 'html_block') continue
+      const block = GITHUB_ONLY_BLOCKS.find(([open]) => tokens[i].content.trim() === open)
+      if (!block) continue
+      const [open, close] = block
       const end = tokens.findIndex(
-        (t, j) => j > i && t.type === 'html_block' && t.content.trim() === I18N_CLOSE,
+        (t, j) => j > i && t.type === 'html_block' && t.content.includes(close),
       )
-      if (end < 0) throw new Error(`${where}: "${I18N_OPEN}" has no matching "${I18N_CLOSE}"`)
+      if (end < 0) throw new Error(`${where}: "${open}" has no matching "${close}"`)
       tokens.splice(i, end - i + 1)
       i--
     }

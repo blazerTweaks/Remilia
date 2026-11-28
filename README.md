@@ -2,6 +2,15 @@
 **English** | [Português (Brasil)](i18n/pt-BR/README.md) | [日本語](i18n/ja/README.md) | [Español](i18n/es/README.md)
 <!-- /i18n:nav -->
 
+<!-- readme:logo -->
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/public/brand/remilia-wordmark-3.svg">
+    <img src="docs/public/brand/remilia-wordmark-2.svg" alt="Remilia" width="520">
+  </picture>
+</p>
+<!-- /readme:logo -->
+
 # Remilia Browser
 
 **Project SCARLET** — a privacy-focused desktop browser built on Firefox (Gecko)

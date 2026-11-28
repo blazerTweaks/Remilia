@@ -82,7 +82,7 @@
   /* Navigation */
   --vp-nav-bg-color: var(--rm-bg);
   --vp-nav-screen-bg-color: var(--rm-bg);
-  --vp-nav-logo-height: 30px;
+  --vp-nav-logo-height: 32px;
   --vp-sidebar-bg-color: var(--rm-bg-2);
 
   /* Search */
@@ -182,14 +182,6 @@
 
 /* ---------------------------------------------------------------- Home page */
 
-/* Site title in the navigation bar, set as text until a final wordmark exists. */
-.VPNavBar .VPNavBarTitle .title {
-  font-family: var(--rm-font-display);
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
 .rm-home {
   max-width: 1152px;
   margin: 0 auto;
@@ -240,12 +232,14 @@
   padding: 48px 0 56px;
 }
 
-/* Large display text: Bright Scarlet passes the 3:1 large-text contrast. */
 .rm-hero__title {
-  margin-top: 12px !important;
-  font-size: 72px;
-  line-height: 1;
-  color: var(--rm-scarlet-bright);
+  margin-top: 20px !important;
+}
+
+.rm-hero__wordmark {
+  display: block;
+  width: min(100%, 440px);
+  height: auto;
 }
 
 .rm-hero__lead {
@@ -323,14 +317,35 @@
     padding: 72px 0 80px;
   }
 
-  .rm-hero__title {
-    font-size: 104px;
+  .rm-hero__wordmark {
+    width: min(100%, 520px);
   }
 
   .rm-hero__art img {
     width: 100%;
     max-width: 520px;
   }
+}
+
+/* The bat symbol separates the hero from the design goals. */
+.rm-divider {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.rm-divider::before,
+.rm-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rm-border);
+}
+
+.rm-divider img {
+  width: 44px;
+  height: auto;
 }
 
 /* Design goals: side by side on wide screens, separated by hairlines. */

@@ -42,8 +42,10 @@ export default defineConfig({
   },
 
   themeConfig: {
-    // The site title is set as text ("Remilia", from `title` above) until a
-    // final wordmark exists.
+    // Wordmark 3 (flat scarlet): the cleanest at small sizes on a dark background.
+    logo: { src: '/brand/remilia-wordmark-3.svg', alt: 'Remilia' },
+    siteTitle: false,
+
     nav: [
       { text: 'Guide', link: '/guide/overview', activeMatch: '^/(guide|browser)/' },
       { text: 'Privacy', link: '/privacy/', activeMatch: '^/privacy/' },

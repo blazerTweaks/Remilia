@@ -7,8 +7,17 @@
 > - **Language:** pt-BR
 > - **Original language:** English
 > - **Source:** [README.md](../../README.md)
-> - **Source revision:** sha256:6acd831d682ae634bb998ba687cd06e4a62293724e21f9e8eadee0e0d4e0459b
+> - **Source revision:** sha256:ec08f1cc3da745d72fc40b8c849f820b151209ebb28bdb02bc47416fe9ce0003
 <!-- /i18n:meta -->
+
+<!-- readme:logo -->
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../../docs/public/brand/remilia-wordmark-3.svg">
+    <img src="../../docs/public/brand/remilia-wordmark-2.svg" alt="Remilia" width="520">
+  </picture>
+</p>
+<!-- /readme:logo -->
 
 # Remilia Browser
 
