@@ -27,6 +27,10 @@ import { withBase } from 'vitepress'
   </div>
 </section>
 
+<div class="rm-divider" aria-hidden="true">
+  <img src="/brand/remilia-hat.svg" alt="" width="345" height="146">
+</div>
+
 <section class="rm-goals" aria-label="Design goals">
   <ol class="rm-tenets">
     <li>
