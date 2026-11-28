@@ -37,3 +37,6 @@ __pycache__/
 /internal/
 # Former location of validation results (now internal/evidence/)
 /tests/results/
+
+# Brand source vectors: kept locally, never published
+/_branding-fonte/
