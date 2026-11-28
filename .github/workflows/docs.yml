@@ -1,0 +1,74 @@
+# Builds the documentation website in docs/ with VitePress and publishes it to
+# GitHub Pages: https://ivuia.github.io/Remilia/
+#
+# Requires Settings → Pages → Build and deployment → Source: "GitHub Actions"
+# (see docs/README.md). Only docs/.vitepress/dist is published.
+
+name: Documentation site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      # Repository documents published on the site (docs/.vitepress/repo-links.ts)
+      - '*.md'
+      - 'LICENSE'
+      - 'remilia/README.md'
+      - 'tests/validation/README.md'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+# Nothing by default; each job asks for what it needs.
+permissions: {}
+
+# One deployment at a time; a running deployment is never cancelled midway.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: docs
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+
+      - name: Install dependencies (from the lockfile)
+        run: npm ci
+
+      - name: Build
+        run: npm run docs:build
+
+      - name: Upload the site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: docs/.vitepress/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
